@@ -2,7 +2,7 @@
 
 ## Description :
 
-- Note Keeper is the web-based note-taking application designed to help users organize and manage their personal notes efficiently. Application provide a user-friendly interface for create Notes. Ensuring that users can easily capture and access their important information.
+- The Expense Tracker project is a web or mobile application designed to help individuals or businesses keep track of their expenses. It provides a user-friendly interface that allows users to record and categorize their expenses, monitor their spending habits, and gain insights into their financial activities. The primary goal of the Expense Tracker is to provide users with a comprehensive overview of their expenditures, helping them make informed decisions about their finances.
 
 - ## **Key Feature**
 
@@ -24,7 +24,6 @@
     - Provide charts and graphs to visualize spending patterns.
   - Responsive Design:
     - Develop a responsive and user-friendly interface that works well on different devices and screen sizes.
-
 
 - **Used Library** :
   - Authentication : firebase
