@@ -1,17 +1,23 @@
-import { initializeApp } from "@firebase/app";
+import { FirebaseApp, initializeApp } from "@firebase/app";
 import { FIREBASE_CONFIG } from "../../firebase-config";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   getAuth,
   updateProfile,
+  Auth,
+  User,
 } from "firebase/auth";
+import { object } from "prop-types";
 initializeApp(FIREBASE_CONFIG);
+interface AuthServiceType {
+  [key: string]: Function | boolean;
+}
 
-const AuthService: any = {};
+const AuthService: AuthServiceType = {};
 
-AuthService.register = (name: any, email: any, password: any) => {
-  const fauth = getAuth();
+AuthService!.register = (name: string, email: string, password: string) => {
+  const fauth: Auth = getAuth();
 
   return new Promise((resolve, reject) => {
     createUserWithEmailAndPassword(fauth, email, password)
@@ -38,15 +44,15 @@ AuthService.register = (name: any, email: any, password: any) => {
   });
 };
 
-AuthService.login = (email: any, password: any) => {
-  const fauth = getAuth();
+AuthService.login = (email: string, password: string) => {
+  const fauth: Auth = getAuth();
   return new Promise((resolve, reject) => {
     signInWithEmailAndPassword(fauth, email, password)
       .then((user) => {
         if (user) {
           resolve({ status: true, message: "Login successfully." });
         } else {
-          resolve({ status: false, message: "Incorrect Email or Password." });
+          reject({ status: false, message: "Incorrect Email or Password." });
         }
       })
       .catch((err) => {
@@ -57,11 +63,11 @@ AuthService.login = (email: any, password: any) => {
 
 AuthService.user = false;
 
-AuthService.getProfile = (hard = false) => {
+AuthService.getProfile = () => {
   return new Promise(async (res, rej) => {
-    const fauth = getAuth();
+    const fauth: Auth = getAuth();
 
-    await fauth.onAuthStateChanged((user) => {
+    await fauth.onAuthStateChanged((user: User | null) => {
       if (user) {
         res(user);
       } else {
@@ -73,7 +79,7 @@ AuthService.getProfile = (hard = false) => {
 
 AuthService.logout = async () => {
   return new Promise((resolve) => {
-    const fauth = getAuth();
+    const fauth: Auth = getAuth();
     fauth
       .signOut()
       .then(() => {

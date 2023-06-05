@@ -1,23 +1,23 @@
-import React from "react";
+import React, { ReactNode } from "react";
 import { Route } from "react-router-dom";
 import UnAuthGuard from "../guards/UnAuthGuard";
 import HomePage from "../pages/HomePage";
-import Login from "../pages/Login";
+import Form from "../pages/Form";
 
-const UnAuthRoutes = [
+const UnAuthRoutes: ReactNode[] = [
   <Route
-    key='Auth'
-    path='/login'
-    element={<UnAuthGuard component={<Login isLogin={true} />} />}
+    key="Auth"
+    path="/login"
+    element={<UnAuthGuard component={<Form isLogin={true} />} />}
   />,
   <Route
-    key='Auth'
-    path='/register'
-    element={<UnAuthGuard component={<Login isLogin={false} />} />}
+    key="Auth"
+    path="/register"
+    element={<UnAuthGuard component={<Form isLogin={false} />} />}
   />,
   <Route
-    key='Home'
-    path='/'
+    key="Home"
+    path="/"
     element={<UnAuthGuard component={<HomePage />} />}
   />,
 ];

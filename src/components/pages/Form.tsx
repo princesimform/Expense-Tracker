@@ -8,7 +8,7 @@ import { useNavigate, useParams } from "react-router-dom";
 interface PropType {
   isLogin: boolean;
 }
-function Login({ isLogin }: PropType) {
+function Form({ isLogin }: PropType) {
   const [isSignUp, setIsSignUp] = useState<boolean>(isLogin);
   const { authType } = useParams();
   const navigate = useNavigate();
@@ -92,4 +92,4 @@ function Login({ isLogin }: PropType) {
   );
 }
 
-export default Login;
+export default Form;

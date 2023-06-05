@@ -6,11 +6,12 @@ import React, {
 } from "react";
 import { useNavigate } from "react-router-dom";
 import AuthService from "../services/auth";
+import { User } from "@firebase/auth";
 interface PropType {
   component: ReactNode;
 }
 function AuthGuards({ component }: PropType) {
-  const [status, setStatus] = useState(false);
+  const [status, setStatus] = useState<boolean>(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -19,12 +20,13 @@ function AuthGuards({ component }: PropType) {
 
   const checkToken = async () => {
     try {
-      let user = await AuthService.getProfile(true);
-      if (!user) {
-        navigate(`/login`);
+      if (typeof AuthService.getProfile != "boolean") {
+        let user: User = await AuthService.getProfile(true);
+        if (!user) {
+          navigate(`/login`);
+        }
+        setStatus(true);
       }
-      setStatus(true);
-      return;
     } catch (error) {
       navigate(`/login`);
     }
