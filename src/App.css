@@ -1,13 +1,15 @@
-
-
 #root {
   max-width: 1280px;
   text-align: center;
   margin: auto;
 }
 
+#root > div,
+#root > div > div {
+  /* margin: 0 auto ; */
+}
 body {
-  margin:  0;
-  padding:  0;
+  margin: 0;
+  padding: 0;
   box-sizing: border-box;
 }

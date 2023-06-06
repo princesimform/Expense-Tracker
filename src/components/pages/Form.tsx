@@ -23,7 +23,7 @@ function Form({ isLogin }: PropType) {
   };
 
   return (
-    <Box className='w-[90%] md:h-[90vh] flex m-auto font-poppins tracking-wider font-sans  '>
+    <Box className='w-[90%] md:h-[90vh] flex m-auto font-poppins tracking-wider font-sans max-w-[1200px] '>
       <Grid container spacing={2}>
         <Grid
           className={

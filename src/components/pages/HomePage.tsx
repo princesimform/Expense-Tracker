@@ -32,21 +32,21 @@ function HomePage() {
     <Box>
       {isLoggedIn ? (
         <>
-          <NavLink to="/dashboard">
-            <Button variant="contained" color="error">
+          <NavLink to='/dashboard'>
+            <Button variant='contained' color='error'>
               Dashboard
             </Button>
           </NavLink>
         </>
       ) : (
         <>
-          <NavLink to="/login">
-            <Button variant="contained" color="error">
+          <NavLink to='/login'>
+            <Button variant='contained' color='error'>
               Log in
             </Button>
           </NavLink>
-          <NavLink to="/register">
-            <Button variant="contained" color="error">
+          <NavLink to='/register'>
+            <Button variant='contained' color='error'>
               Register
             </Button>
           </NavLink>

@@ -52,11 +52,11 @@ AuthService.login = (email: string, password: string) => {
         if (user) {
           resolve({ status: true, message: "Login successfully." });
         } else {
-          reject({ status: false, message: "Incorrect Email or Password." });
+          resolve({ status: false, message: "Incorrect Email or Password." });
         }
       })
       .catch((err) => {
-        reject({ status: false, message: "Incorrect Email or Password." });
+        resolve({ status: false, message: "Incorrect Email or Password." });
       });
   });
 };

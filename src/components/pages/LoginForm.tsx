@@ -62,13 +62,13 @@ function LoginForm({ toggleSignUp }: PropType) {
           }
         }
       } catch (e) {
-        console.log("e");
-        console.log(e);
-        enqueueSnackbar(e.message, {
-          variant: "error",
-          autoHideDuration: 3000,
-        });
-        setProcessing(false);
+        if (e instanceof Error) {
+          enqueueSnackbar(e.message, {
+            variant: "error",
+            autoHideDuration: 3000,
+          });
+          setProcessing(false);
+        }
       }
     } else {
       enqueueSnackbar("All fields are required.", {
@@ -80,35 +80,35 @@ function LoginForm({ toggleSignUp }: PropType) {
 
   return (
     <>
-      <Box className="w-100 sm:mx-0 md:m-auto pr-[1rem] md:mx-[4rem] ">
+      <Box className='w-100 sm:mx-0 md:m-auto pr-[1rem] md:mx-[4rem] '>
         <Box>
-          <p className=" text-3xl mb-5  text-left font-medium">Sign In</p>
+          <p className=' text-3xl mb-5  text-left font-medium'>Sign In</p>
         </Box>
-        <form className="mt-12" onSubmit={submitForm}>
+        <form className='mt-12' onSubmit={submitForm}>
           <TextField
             fullWidth
-            id="outlined-basic"
-            margin="dense"
-            label="Email Address"
-            variant="outlined"
-            name="email"
+            id='outlined-basic'
+            margin='dense'
+            label='Email Address'
+            variant='outlined'
+            name='email'
             autoFocus
             onChange={handleChange}
           />
-          <Box className="my-5"></Box>
+          <Box className='my-5'></Box>
           <TextField
             fullWidth
-            margin="dense"
-            id="outlined-basic"
-            label="Password"
-            name="password"
-            variant="outlined"
+            margin='dense'
+            id='outlined-basic'
+            label='Password'
+            name='password'
+            variant='outlined'
             type={passwordVisibility ? "text" : "password"}
             InputProps={{
               endAdornment: (
-                <InputAdornment position="end">
+                <InputAdornment position='end'>
                   <IconButton
-                    edge="end"
+                    edge='end'
                     tabIndex={-1}
                     onClick={(e) => setPasswordVisibility(!passwordVisibility)}
                   >
@@ -120,19 +120,19 @@ function LoginForm({ toggleSignUp }: PropType) {
             onChange={handleChange}
           />
 
-          <Box className="grid  md:flex md:flex-row-reverse my-5 md:justify-between">
+          <Box className='grid  md:flex md:flex-row-reverse my-5 md:justify-between'>
             <Button
-              type="submit"
-              variant="contained"
+              type='submit'
+              variant='contained'
               sx={{ color: "white", padding: "0.4rem 2rem" }}
               disabled={processing}
             >
               {processing ? "Processing..." : "Sign In"}
             </Button>
-            <Box className="my-5 md:my-auto ">
+            <Box className='my-5 md:my-auto '>
               <Link
-                underline="none"
-                className="text-center md:text-left "
+                underline='none'
+                className='text-center md:text-left '
                 sx={{ margin: "auto 0" }}
               >
                 Forgot Password?
@@ -143,9 +143,9 @@ function LoginForm({ toggleSignUp }: PropType) {
       </Box>
       <Box
         onClick={() => toggleSignUp()}
-        className="bg-primary bg-opacity-10 border-primary border-opacity-30 border-2 rounded-md mt-[0] md:mx-[4rem] mr-[1rem] mb-[1rem] md:mb-[4rem] p-4 cursor-pointer text-primary text-sm md:text-base"
+        className='bg-primary bg-opacity-10 border-primary border-opacity-30 border-2 rounded-md mt-[0] md:mx-[4rem] mr-[1rem] mb-[1rem] md:mb-[4rem] p-4 cursor-pointer text-primary text-sm md:text-base'
       >
-        Don't Have an Account ?<span className="font-bold"> Sign Up</span>
+        Don't Have an Account ?<span className='font-bold'> Sign Up</span>
       </Box>
     </>
   );
