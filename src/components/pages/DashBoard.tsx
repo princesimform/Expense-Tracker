@@ -6,7 +6,7 @@ function DashBoard() {
   return (
     <>
       <Navbar />
-      <Box className="bg-primary h-[100vh]">asd</Box>
+      <Box className=" h-[100vh] ">asd</Box>
      
     </>
   );

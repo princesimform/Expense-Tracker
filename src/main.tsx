@@ -40,7 +40,6 @@ export const theme = createTheme({
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
     <ThemeProvider theme={theme}>
-      <Container className='m-auto' sx={{ height: "100vh", display: "flex" }}>
         <SnackbarProvider
           anchorOrigin={{
             vertical: "top",
@@ -51,7 +50,6 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
         >
           <App />
         </SnackbarProvider>
-      </Container>
     </ThemeProvider>
   </React.StrictMode>
 );
