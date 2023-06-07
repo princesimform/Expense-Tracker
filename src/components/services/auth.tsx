@@ -8,8 +8,11 @@ import {
   Auth,
   User,
 } from "firebase/auth";
+
 import { object } from "prop-types";
-initializeApp(FIREBASE_CONFIG);
+import { getFirestore } from "firebase/firestore";
+
+const firebase =  initializeApp(FIREBASE_CONFIG);
 interface AuthServiceType {
   [key: string]: Function | boolean;
 }
@@ -91,4 +94,9 @@ AuthService.logout = async () => {
   });
 };
 
+AuthService.setDataToFireStore = (data: any) => {
+  console.log("setDataToFireStore");
+  
+  console.log(data);
+};
 export default AuthService;

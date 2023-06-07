@@ -37,6 +37,7 @@ function Navbar({ window }: PropsTypes) {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
   const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
+   
   const settings = ["Profile", "Logout"];
   const navItems = [
     "Dashboard",

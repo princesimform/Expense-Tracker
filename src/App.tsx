@@ -6,15 +6,18 @@ import Login from "./components/pages/Form";
 import { BrowserRouter, Routes } from "react-router-dom";
 import UnAuthRoutes from "./components/routes/UnAuthRoutes";
 import AuthRoutes from "./components/routes/AuthRoutes";
-
+import { Provider } from "react-redux";
+import store from "./store/store";
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        {AuthRoutes}
-        {UnAuthRoutes}
-      </Routes>
-    </BrowserRouter>
+    <Provider store={store}>
+      <BrowserRouter>
+        <Routes>
+          {AuthRoutes}
+          {UnAuthRoutes}
+        </Routes>
+      </BrowserRouter>
+    </Provider>
   );
 }
 
