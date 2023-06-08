@@ -14,7 +14,7 @@ import { getFirestore } from "firebase/firestore";
 
 const firebase =  initializeApp(FIREBASE_CONFIG);
 interface AuthServiceType {
-  [key: string]: Function | boolean;
+  [key: string]: Function ;
 }
 
 const AuthService: AuthServiceType = {};
@@ -64,7 +64,6 @@ AuthService.login = (email: string, password: string) => {
   });
 };
 
-AuthService.user = false;
 
 AuthService.getProfile = () => {
   return new Promise(async (res, rej) => {
@@ -94,9 +93,5 @@ AuthService.logout = async () => {
   });
 };
 
-AuthService.setDataToFireStore = (data: any) => {
-  console.log("setDataToFireStore");
-  
-  console.log(data);
-};
+
 export default AuthService;

@@ -1,6 +1,6 @@
 import React, { ReactNode, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import AuthService from "../services/auth";
+import AuthService from "../Services/auth";
 import { User } from "@firebase/auth";
 
 interface PropType {

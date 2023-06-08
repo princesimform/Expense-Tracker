@@ -1,7 +1,7 @@
 import { Box, Button } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
-import AuthService from "../services/auth";
+import AuthService from "../Services/auth";
 import { ErrorData } from "@firebase/util";
 import { User } from "@firebase/auth";
 

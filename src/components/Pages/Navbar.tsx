@@ -22,7 +22,7 @@ import {
 } from "@mui/material";
 import { useSnackbar } from "notistack";
 import { useNavigate, useParams } from "react-router-dom";
-import AuthService from "../services/auth";
+import AuthService from "../Services/auth";
 import { User } from "@firebase/auth";
 import MenuIcon from "@mui/icons-material/Menu";
 import AvatarImg from "./../../assets/avatar.jpg";
@@ -37,7 +37,7 @@ function Navbar({ window }: PropsTypes) {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
   const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
-   
+
   const settings = ["Profile", "Logout"];
   const navItems = [
     "Dashboard",
@@ -51,7 +51,6 @@ function Navbar({ window }: PropsTypes) {
   useEffect(() => {
     if (typeof AuthService.getProfile != "boolean") {
       AuthService.getProfile().then((user: User) => {
-        console.log(user);
 
         if (user && user.displayName != null) {
           setName(user.displayName);

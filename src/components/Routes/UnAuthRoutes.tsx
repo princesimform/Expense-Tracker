@@ -1,8 +1,8 @@
 import React, { ReactNode } from "react";
 import { Route } from "react-router-dom";
-import UnAuthGuard from "../guards/UnAuthGuard";
-import HomePage from "../pages/HomePage";
-import Form from "../pages/Form";
+import UnAuthGuard from "../Guards/UnAuthGuard";
+import HomePage from "../Pages/HomePage";
+import Form from "../Pages/Form";
 
 const UnAuthRoutes: ReactNode[] = [
   <Route

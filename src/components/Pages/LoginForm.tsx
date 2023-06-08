@@ -12,7 +12,7 @@ import {
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useSnackbar } from "notistack";
 import { useLocation, useNavigate } from "react-router-dom";
-import AuthService from "../services/auth";
+import AuthService from "../Services/auth";
 import { User } from "@firebase/auth";
 interface PropType {
   toggleSignUp: Function;

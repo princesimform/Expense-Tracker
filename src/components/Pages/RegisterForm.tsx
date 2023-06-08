@@ -13,7 +13,7 @@ import {
 } from "@mui/icons-material";
 import { Link, useNavigate } from "react-router-dom";
 import { useSnackbar } from "notistack";
-import AuthService from "../services/auth";
+import AuthService from "../Services/auth";
 
 interface PropType {
   toggleSignUp: Function;

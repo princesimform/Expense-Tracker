@@ -5,8 +5,10 @@ import React, {
   useState,
 } from "react";
 import { useNavigate } from "react-router-dom";
-import AuthService from "../services/auth";
+import AuthService from "../Services/auth";
 import { User } from "@firebase/auth";
+import Navbar from "../Pages/Navbar";
+import { Box } from "@mui/system";
 interface PropType {
   component: ReactNode;
 }
@@ -33,7 +35,11 @@ function AuthGuards({ component }: PropType) {
   };
 
   return status ? (
-    <React.Fragment>{component}</React.Fragment>
+    <React.Fragment>
+      <Navbar />
+      <Box sx={{ height : 70}}></Box>
+      {component}
+    </React.Fragment>
   ) : (
     <React.Fragment></React.Fragment>
   );
