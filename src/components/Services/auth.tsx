@@ -1,4 +1,4 @@
-import { FirebaseApp, initializeApp } from "@firebase/app";
+import { initializeApp } from "@firebase/app";
 import { FIREBASE_CONFIG } from "../../firebase-config";
 import {
   createUserWithEmailAndPassword,
@@ -9,12 +9,9 @@ import {
   User,
 } from "firebase/auth";
 
-import { object } from "prop-types";
-import { getFirestore } from "firebase/firestore";
-
-const firebase =  initializeApp(FIREBASE_CONFIG);
+const firebase = initializeApp(FIREBASE_CONFIG);
 interface AuthServiceType {
-  [key: string]: Function ;
+  [key: string]: Function;
 }
 
 const AuthService: AuthServiceType = {};
@@ -64,7 +61,6 @@ AuthService.login = (email: string, password: string) => {
   });
 };
 
-
 AuthService.getProfile = () => {
   return new Promise(async (res, rej) => {
     const fauth: Auth = getAuth();
@@ -92,6 +88,5 @@ AuthService.logout = async () => {
       });
   });
 };
-
 
 export default AuthService;

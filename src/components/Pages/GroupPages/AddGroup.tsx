@@ -14,10 +14,11 @@ import { useDispatch } from "react-redux";
 import { getGroups, setData } from "../../../store/groupSlice";
 import AddGroupImg from "./../../../assets/add_group.png";
 import { Field, Form, Formik } from "formik";
-import { AddGroupSchema } from "../Form/ValidationSchema";
+import { AddGroupSchema } from "../../Services/ValidationSchema";
 import { useSnackbar } from "notistack";
 import { useNavigate } from "react-router-dom";
 import AuthService from "../../Services/auth";
+import useToggle from "../../CustomHooks/useToggle";
 const style = {
   position: "absolute" as "absolute",
   top: "50%",
@@ -39,20 +40,13 @@ const initalValues: formDataType = {
 };
 
 function AddGroup() {
-  const [isModleOpen, setIsModleOpen] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const reader = new FileReader();
   const date = new Date();
+  const [toggles, toggle] = useToggle({ isModleOpen: false });
   const [GroupProfileimage, setgroupProfileimage] = useState<string>("");
-  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
-
-  const handleModleToggle = () => {
-    if (!isModleOpen) {
-      setgroupProfileimage("");
-    }
-    setIsModleOpen((prevState) => !prevState);
-  };
 
   const handleFileInputChange = (
     e: ChangeEvent<HTMLInputElement>,
@@ -73,9 +67,7 @@ function AddGroup() {
     } else {
       values.group_image = "";
     }
-
     const userData = await AuthService.getProfile();
-
     const createdAtTime =
       date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
     const req_data = {
@@ -89,7 +81,7 @@ function AddGroup() {
         variant: "success",
         autoHideDuration: 3000,
       });
-      handleModleToggle();
+      toggle("isModleOpen");
       dispatch(getGroups());
       navigate(`/group`);
     } catch (error) {
@@ -102,11 +94,11 @@ function AddGroup() {
 
   return (
     <>
-      <Button onClick={handleModleToggle}>Create Group</Button>
+      <Button onClick={() => toggle("isModleOpen")}>Create Group</Button>
       <Modal
         aria-labelledby='transition-modal-title'
         aria-describedby='transition-modal-description'
-        open={isModleOpen}
+        open={toggles.isModleOpen}
         // onClose={handleModleToggle}
         closeAfterTransition
         slots={{ backdrop: Backdrop }}
@@ -116,7 +108,7 @@ function AddGroup() {
           },
         }}
       >
-        <Fade in={isModleOpen}>
+        <Fade in={toggles.isModleOpen}>
           <Box sx={style}>
             <Typography
               id='transition-modal-title'
@@ -190,7 +182,10 @@ function AddGroup() {
                       Create Group
                     </Button>
 
-                    <Button variant='contained' onClick={handleModleToggle}>
+                    <Button
+                      variant='contained'
+                      onClick={() => toggle("isModleOpen")}
+                    >
                       Cancle
                     </Button>
                   </Box>

@@ -1,13 +1,22 @@
 import { useState } from "react";
 
-const useToggle = (initialValue = false) => {
-  const [value, setValue] = useState(initialValue);
+type TogglesState = Record<string, boolean>;
 
-  const toggle = () => {
-    setValue((prevValue) => !prevValue);
+type ToggleFunction = (toggleId: string) => void;
+
+const useToggle = (
+  initialState: TogglesState = {}
+): [TogglesState, ToggleFunction] => {
+  const [toggles, setToggles] = useState<TogglesState>(initialState);
+
+  const toggle: ToggleFunction = (toggleId) => {
+    setToggles((prevToggles) => ({
+      ...prevToggles,
+      [toggleId]: !prevToggles[toggleId],
+    }));
   };
 
-  return [value, toggle];
+  return [toggles, toggle];
 };
 
 export default useToggle;

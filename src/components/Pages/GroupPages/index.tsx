@@ -14,9 +14,6 @@ function Groups() {
     dispatch(getGroups());
   }, []);
 
-  const groupListUi = () => {
-    return <></>;
-  };
   return (
     <div>
       <AddGroup />

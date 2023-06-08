@@ -7,9 +7,6 @@ function DashBoard() {
     <>
       <Navbar />
       {/* <Box className=' h-[100vh] '>asd</Box> */}
-      <br />
-      <br />
-      <br />
       <Groups />
     </>
   );

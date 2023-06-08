@@ -1,14 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { PowerSettingsNew } from "@mui/icons-material";
 import {
   AppBar,
   Avatar,
   Box,
-  Button,
-  CssBaseline,
   Divider,
   Drawer,
-  Grid,
   IconButton,
   List,
   ListItem,
@@ -21,24 +17,26 @@ import {
   Typography,
 } from "@mui/material";
 import { useSnackbar } from "notistack";
-import { useNavigate, useParams } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import AuthService from "../Services/auth";
 import { User } from "@firebase/auth";
 import MenuIcon from "@mui/icons-material/Menu";
 import AvatarImg from "./../../assets/avatar.jpg";
+import useToggle from "../CustomHooks/useToggle";
 interface PropsTypes {
   window?: () => Window;
 }
 
 function Navbar({ window }: PropsTypes) {
   const navigate = useNavigate();
+  const [toggles, toggle] = useToggle({
+    processing: false,
+    isDrawerOpen: false,
+  });
   const [name, setName] = useState<string>("");
-  const [processing, setProcessing] = useState<boolean>(false);
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
-  const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
 
-  const settings = ["Profile", "Logout"];
   const navItems = [
     "Dashboard",
     "Expanse",
@@ -51,7 +49,6 @@ function Navbar({ window }: PropsTypes) {
   useEffect(() => {
     if (typeof AuthService.getProfile != "boolean") {
       AuthService.getProfile().then((user: User) => {
-
         if (user && user.displayName != null) {
           setName(user.displayName);
         }
@@ -59,9 +56,6 @@ function Navbar({ window }: PropsTypes) {
     }
   }, []);
 
-  const handleDrawerToggle = () => {
-    setIsDrawerOpen((prevState) => !prevState);
-  };
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
   };
@@ -73,20 +67,21 @@ function Navbar({ window }: PropsTypes) {
     window !== undefined ? () => window().document.body : undefined;
   const profile = () => {};
   const logout = async () => {
-    setProcessing(true);
+    toggle("processing");
     try {
       if (typeof AuthService.logout != "boolean") {
         let data: { status: boolean; message: string } =
           await AuthService.logout();
         if (data.status) {
-          setProcessing(false);
+          toggle("processing");
+
           navigate(`/login`);
           enqueueSnackbar(data.message, {
             variant: "success",
             autoHideDuration: 3000,
           });
         } else {
-          setProcessing(false);
+          toggle("processing");
         }
       }
     } catch (e) {
@@ -95,7 +90,7 @@ function Navbar({ window }: PropsTypes) {
           variant: "error",
           autoHideDuration: 3000,
         });
-        setProcessing(false);
+        toggle("processing");
       }
     }
   };
@@ -107,22 +102,25 @@ function Navbar({ window }: PropsTypes) {
             color='inherit'
             aria-label='open drawer'
             edge='start'
-            onClick={handleDrawerToggle}
+            onClick={() => toggle("isDrawerOpen")}
             sx={{ mr: 2, display: { sm: "none" }, color: "white" }}
           >
             <MenuIcon />
           </IconButton>
-          <Typography
-            variant='h6'
-            color='white'
+          <Box
             component='div'
             sx={{
               flexGrow: 1,
               display: { xs: "block", sm: "flex" },
+              cursor: "pointer",
             }}
           >
-            Expanse Tracker
-          </Typography>
+            <NavLink to='/dashboard'>
+              <Typography variant='h6' color='white'>
+                Expanse Tracker
+              </Typography>
+            </NavLink>
+          </Box>
           <Box
             sx={{ flexGrow: 0, backgroundColor: "hsl(263deg 54% 59% / 90%)" }}
           >
@@ -158,8 +156,8 @@ function Navbar({ window }: PropsTypes) {
         <Drawer
           container={container}
           variant='temporary'
-          open={isDrawerOpen}
-          onClose={handleDrawerToggle}
+          open={toggles.isDrawerOpen}
+          onClose={() => toggle("isDrawerOpen")}
           ModalProps={{ keepMounted: true }}
           sx={{
             display: { xs: "block", sm: "none" },
@@ -169,10 +167,19 @@ function Navbar({ window }: PropsTypes) {
             },
           }}
         >
-          <Box onClick={handleDrawerToggle} sx={{ textAlign: "center" }}>
-            <Typography variant='h6' sx={{ my: 2 }} color='primary'>
-              Expanse Tracker
-            </Typography>
+          <Box
+            onClick={() => toggle("isDrawerOpen")}
+            sx={{ textAlign: "center" }}
+          >
+            <NavLink to='/dashboard'>
+              <Typography
+                variant='h6'
+                sx={{ my: 2, cursor: "pointer" }}
+                color='primary'
+              >
+                Expanse Tracker
+              </Typography>
+            </NavLink>
             <Divider />
             <List>
               {navItems.map((item) => (

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense } from "react";
 import "./App.css";
 import { Box, Button, Container, createTheme } from "@mui/material";
 import Login from "./components/Pages/Form";
@@ -9,17 +9,23 @@ import AuthRoutes from "./components/Routes/AuthRoutes";
 import { Provider } from "react-redux";
 import store from "./store/store";
 import Navbar from "./components/Pages/Navbar";
+import ErrorBoundary from "./components/ErrorBoundary";
+const renderLoader = () => <p>Loading</p>;
+
 function App() {
   return (
-    <Provider store={store}>
-      <BrowserRouter>
-        <Routes>
-          
-          {AuthRoutes}
-          {UnAuthRoutes}
-        </Routes>
-      </BrowserRouter>
-    </Provider>
+    <Suspense fallback={renderLoader()}>
+    <ErrorBoundary>
+      <Provider store={store}>
+        <BrowserRouter>
+          <Routes>
+            {AuthRoutes}
+            {UnAuthRoutes}
+          </Routes>
+        </BrowserRouter>
+      </Provider>
+    </ErrorBoundary>
+    </Suspense>
   );
 }
 

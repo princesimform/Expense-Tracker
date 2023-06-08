@@ -4,16 +4,14 @@ import {
   Button,
   Link,
   Box,
-  Slide,
-  Collapse,
   InputAdornment,
   IconButton,
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useSnackbar } from "notistack";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import AuthService from "../Services/auth";
-import { User } from "@firebase/auth";
+import useToggle from "../CustomHooks/useToggle";
 interface PropType {
   toggleSignUp: Function;
 }
@@ -21,10 +19,9 @@ interface formField {
   [key: string]: { value: string };
 }
 function LoginForm({ toggleSignUp }: PropType) {
-  const [passwordVisibility, setPasswordVisibility] = useState(false);
-  const [processing, setProcessing] = useState(false);
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
-  let navigate = useNavigate();
+  const navigate = useNavigate();
+  const [toggles, toggle] = useToggle({ passwordVisibility: false  , processing : false});
   const [form, setForm] = useState<formField>({
     email: { value: "" },
     password: { value: "" },
@@ -40,21 +37,21 @@ function LoginForm({ toggleSignUp }: PropType) {
     e.preventDefault();
 
     if (form.email.value && form.password.value) {
-      setProcessing(true);
+      toggle('processing')
 
       try {
         if (typeof AuthService.login != "boolean") {
           let data: { status: boolean; message: string } =
             await AuthService.login(form.email.value, form.password.value);
           if (data.status) {
-            setProcessing(false);
+            toggle('processing')
             navigate(`/dashboard`);
             enqueueSnackbar(data.message, {
               variant: "success",
               autoHideDuration: 3000,
             });
           } else {
-            setProcessing(false);
+            toggle('processing')
             enqueueSnackbar(data.message, {
               variant: "error",
               autoHideDuration: 3000,
@@ -67,7 +64,7 @@ function LoginForm({ toggleSignUp }: PropType) {
             variant: "error",
             autoHideDuration: 3000,
           });
-          setProcessing(false);
+          toggle('processing')
         }
       }
     } else {
@@ -103,16 +100,16 @@ function LoginForm({ toggleSignUp }: PropType) {
             label='Password'
             name='password'
             variant='outlined'
-            type={passwordVisibility ? "text" : "password"}
+            type={toggles.passwordVisibility ? "text" : "password"}
             InputProps={{
               endAdornment: (
                 <InputAdornment position='end'>
                   <IconButton
                     edge='end'
                     tabIndex={-1}
-                    onClick={(e) => setPasswordVisibility(!passwordVisibility)}
+                    onClick={(e) => toggle("passwordVisibility")}
                   >
-                    {passwordVisibility ? <VisibilityOff /> : <Visibility />}
+                    {toggles.passwordVisibility ? <VisibilityOff /> : <Visibility />}
                   </IconButton>
                 </InputAdornment>
               ),
@@ -125,9 +122,9 @@ function LoginForm({ toggleSignUp }: PropType) {
               type='submit'
               variant='contained'
               sx={{ color: "white", padding: "0.4rem 2rem" }}
-              disabled={processing}
+              disabled={toggles.processing}
             >
-              {processing ? "Processing..." : "Sign In"}
+              {toggles.processing ? "Processing..." : "Sign In"}
             </Button>
             <Box className='my-5 md:my-auto '>
               <Link
