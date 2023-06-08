@@ -1,10 +1,10 @@
 import React from "react";
-import { CircularProgress } from "@mui/material";
+import { Box, CircularProgress } from "@mui/material";
 function Loader() {
   return (
-    <div className='circular-progress-container'>
+    <Box className='circular-progress-container' sx={{ height : 100}}>
       <CircularProgress className='mt-2' color='secondary' />
-    </div>
+    </Box>
   );
 }
 

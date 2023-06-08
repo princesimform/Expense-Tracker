@@ -26,6 +26,8 @@ function AuthGuards({ component }: PropType) {
         let user: User = await AuthService.getProfile(true);
         if (!user) {
           navigate(`/login`);
+        } else {
+          console.log(user);
         }
         setStatus(true);
       }
@@ -37,7 +39,7 @@ function AuthGuards({ component }: PropType) {
   return status ? (
     <React.Fragment>
       <Navbar />
-      <Box sx={{ height : 70}}></Box>
+      <Box sx={{ height: 70 }}></Box>
       {component}
     </React.Fragment>
   ) : (

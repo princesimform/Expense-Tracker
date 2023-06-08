@@ -10,21 +10,22 @@ import { Provider } from "react-redux";
 import store from "./store/store";
 import Navbar from "./components/Pages/Navbar";
 import ErrorBoundary from "./components/ErrorBoundary";
+import Loader from "./components/Loader";
 const renderLoader = () => <p>Loading</p>;
 
 function App() {
   return (
-    <Suspense fallback={renderLoader()}>
-    <ErrorBoundary>
-      <Provider store={store}>
-        <BrowserRouter>
-          <Routes>
-            {AuthRoutes}
-            {UnAuthRoutes}
-          </Routes>
-        </BrowserRouter>
-      </Provider>
-    </ErrorBoundary>
+    <Suspense fallback={<Loader />}>
+      <ErrorBoundary>
+        <Provider store={store}>
+          <BrowserRouter>
+            <Routes>
+              {AuthRoutes}
+              {UnAuthRoutes}
+            </Routes>
+          </BrowserRouter>
+        </Provider>
+      </ErrorBoundary>
     </Suspense>
   );
 }

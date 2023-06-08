@@ -8,7 +8,7 @@ import {
   Auth,
   User,
 } from "firebase/auth";
-
+import storage from "firebase/storage";
 const firebase = initializeApp(FIREBASE_CONFIG);
 interface AuthServiceType {
   [key: string]: Function;
@@ -16,7 +16,12 @@ interface AuthServiceType {
 
 const AuthService: AuthServiceType = {};
 
-AuthService!.register = (name: string, email: string, password: string) => {
+AuthService!.register = (
+  name: string,
+  email: string,
+  password: string,
+  profile: string
+) => {
   const fauth: Auth = getAuth();
 
   return new Promise((resolve, reject) => {
