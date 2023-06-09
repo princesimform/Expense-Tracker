@@ -5,9 +5,9 @@ import { Field, Form, Formik } from "formik";
 import { useSnackbar } from "notistack";
 import React, { FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
-import useToggle from "../CustomHooks/useToggle";
-import AuthService from "../Services/auth";
-import { LoginFormSchema } from "../Services/ValidationSchema";
+import useToggle from "../../customHooks/useToggle";
+import AuthService from "../../libs/services/firebase/auth";
+import { LoginFormSchema } from "../../libs/services/ValidationSchema";
 
 interface PropType {
   toggleSignUp: Function;

@@ -12,14 +12,14 @@ import {
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import { useDispatch } from "react-redux";
-import { getGroups, setData } from "../../../store/groupSlice";
-import AddGroupImg from "./../../../assets/add_group.png";
+import { getGroups, setData } from "../../redux/groupSlice";
+import AddGroupImg from "./../../assets/add_group.png";
 import { Field, Form, Formik } from "formik";
-import { AddGroupSchema } from "../../Services/ValidationSchema";
+import { AddGroupSchema } from "../../libs/services/ValidationSchema";
 import { useSnackbar } from "notistack";
 import { useNavigate } from "react-router-dom";
-import AuthService from "../../Services/auth";
-import useToggle from "../../CustomHooks/useToggle";
+import AuthService from "../../libs/services/firebase/auth";
+import useToggle from "../../customHooks/useToggle";
 const style = {
   position: "absolute" as "absolute",
   top: "50%",
@@ -110,14 +110,14 @@ function AddGroup() {
         onClick={() => toggle("isModleOpen")}
       >
         <AddIcon />
-        <Typography variant="h5" sx={{ mt: 2 }}>
+        <Typography variant='h5' sx={{ mt: 2 }}>
           Add Group
         </Typography>
       </Box>
       <Button onClick={() => toggle("isModleOpen")}>Create Group</Button>
       <Modal
-        aria-labelledby="transition-modal-title"
-        aria-describedby="transition-modal-description"
+        aria-labelledby='transition-modal-title'
+        aria-describedby='transition-modal-description'
         open={toggles.isModleOpen}
         // onClose={handleModleToggle}
         closeAfterTransition
@@ -131,10 +131,10 @@ function AddGroup() {
         <Fade in={toggles.isModleOpen}>
           <Box sx={style}>
             <Typography
-              id="transition-modal-title"
-              variant="h5"
+              id='transition-modal-title'
+              variant='h5'
               sx={{ textAlign: "center", mb: 2 }}
-              component="h2"
+              component='h2'
             >
               Create Group
             </Typography>
@@ -148,15 +148,15 @@ function AddGroup() {
               {({ handleSubmit, errors, isValid, touched, setFieldValue }) => (
                 <Form onSubmit={handleSubmit}>
                   <InputLabel
-                    htmlFor="group-image"
-                    className="m-auto flex w-fit text-center"
+                    htmlFor='group-image'
+                    className='m-auto flex w-fit text-center'
                     sx={{ mb: 2 }}
                   >
                     <Field
                       style={{ display: "none" }}
-                      id="group-image"
-                      name="group_image"
-                      type="file"
+                      id='group-image'
+                      name='group_image'
+                      type='file'
                       value={undefined}
                       onChange={(event: ChangeEvent<HTMLInputElement>) =>
                         handleFileInputChange(event, setFieldValue)
@@ -164,7 +164,7 @@ function AddGroup() {
                     />
 
                     <Avatar
-                      alt="Remy Sharp"
+                      alt='Remy Sharp'
                       src={
                         GroupProfileimage
                           ? JSON.parse(GroupProfileimage)
@@ -179,11 +179,11 @@ function AddGroup() {
                     />
                   </InputLabel>
                   <Field
-                    name="name"
-                    type="text"
-                    variant="outlined"
-                    color="primary"
-                    label="Full Name"
+                    name='name'
+                    type='text'
+                    variant='outlined'
+                    color='primary'
+                    label='Full Name'
                     fullWidth
                     sx={{ mb: 2 }}
                     as={TextField}
@@ -195,15 +195,15 @@ function AddGroup() {
                     sx={{ display: "flex", justifyContent: "space-between" }}
                   >
                     <Button
-                      type="submit"
-                      variant="contained"
+                      type='submit'
+                      variant='contained'
                       disabled={!isValid}
                     >
                       Create Group
                     </Button>
 
                     <Button
-                      variant="contained"
+                      variant='contained'
                       onClick={() => toggle("isModleOpen")}
                     >
                       Cancle

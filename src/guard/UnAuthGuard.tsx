@@ -1,18 +1,13 @@
-import React, {
-  ReactComponentElement,
-  ReactNode,
-  useEffect,
-  useState,
-} from "react";
+import React, { ReactNode, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import AuthService from "../Services/auth";
+import AuthService from "../libs/services/firebase/auth";
 import { User } from "@firebase/auth";
-import Navbar from "../Pages/Navbar";
-import { Box } from "@mui/system";
+
 interface PropType {
   component: ReactNode;
 }
-function AuthGuards({ component }: PropType) {
+
+function UnAuthGuard({ component }: PropType) {
   const [status, setStatus] = useState<boolean>(false);
   const navigate = useNavigate();
 
@@ -23,28 +18,24 @@ function AuthGuards({ component }: PropType) {
   const checkToken = async () => {
     try {
       if (typeof AuthService.getProfile != "boolean") {
-        let user: User = await AuthService.getProfile(true);
+        let user : User= await AuthService.getProfile();
         if (!user) {
-          navigate(`/login`);
+          localStorage.removeItem("token");
         } else {
-          console.log(user);
+          navigate(`/`);
         }
         setStatus(true);
       }
     } catch (error) {
-      navigate(`/login`);
+      navigate(`/`);
     }
   };
 
   return status ? (
-    <React.Fragment>
-      <Navbar />
-      <Box sx={{ height: 70 }}></Box>
-      {component}
-    </React.Fragment>
+    <React.Fragment>{component}</React.Fragment>
   ) : (
     <React.Fragment></React.Fragment>
   );
 }
 
-export default AuthGuards;
+export default UnAuthGuard;

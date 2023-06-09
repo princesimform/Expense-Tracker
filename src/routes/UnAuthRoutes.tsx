@@ -1,9 +1,9 @@
 import React, { lazy, ReactNode } from "react";
 import { Route } from "react-router-dom";
 
-const UnAuthGuard = lazy(() => import("../Guards/UnAuthGuard"));
-const HomePage = lazy(() => import("../Pages/HomePage"));
-const Form = lazy(() => import("../Pages/Form"));
+const UnAuthGuard = lazy(() => import("./../guard/UnAuthGuard"));
+const HomePage = lazy(() => import("./../pages/HomePage"));
+const Form = lazy(() => import("./../pages/Form"));
 
 const UnAuthRoutes: ReactNode[] = [
   <Route

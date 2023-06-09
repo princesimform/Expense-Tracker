@@ -1,16 +1,12 @@
 import React, { Suspense } from "react";
-import "./App.css";
-import { Box, Button, Container, createTheme } from "@mui/material";
-import Login from "./components/Pages/Form";
-// import theme from "./style/theme";
 import { BrowserRouter, Routes } from "react-router-dom";
-import UnAuthRoutes from "./components/Routes/UnAuthRoutes";
-import AuthRoutes from "./components/Routes/AuthRoutes";
+import UnAuthRoutes from "./routes/UnAuthRoutes";
+import AuthRoutes from "./routes/AuthRoutes";
 import { Provider } from "react-redux";
-import store from "./store/store";
-import Navbar from "./components/Pages/Navbar";
+import store from "./redux/store";
 import ErrorBoundary from "./components/ErrorBoundary";
 import Loader from "./components/Loader";
+import "./App.css";
 const renderLoader = () => <p>Loading</p>;
 
 function App() {

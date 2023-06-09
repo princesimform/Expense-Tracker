@@ -1,4 +1,4 @@
-import { FIREBASE_CONFIG } from "../../firebase-config";
+import { FIREBASE_CONFIG } from "../../../firebase-config";
 import { initializeApp } from "@firebase/app";
 import {
   addDoc,

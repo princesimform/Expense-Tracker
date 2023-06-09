@@ -1,9 +1,9 @@
 import React, { lazy, ReactNode } from "react";
 import { Route } from "react-router-dom";
 
-const AuthGuards = lazy(() => import("../Guards/AuthGuard"));
-const DashBoard = lazy(() => import("../Pages/DashBoard"));
-const Groups = lazy(() => import("../Pages/GroupPages"));
+const AuthGuards = lazy(() => import("./../guard/AuthGuard"));
+const DashBoard = lazy(() => import("./../pages/DashBoard"));
+const Groups = lazy(() => import("./../pages/GroupPages"));
 const AuthRoutes: ReactNode[] = [
   <Route
     key='Dashboard'

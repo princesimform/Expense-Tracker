@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { Box, Collapse, Container, Grid, Link } from "@mui/material";
 import Logo from "./../../assets/logo.png";
 import { Language } from "@mui/icons-material";
-import LoginForm from "./LoginForm";
-import RegisterForm from "./RegisterForm";
+import LoginForm from "../components/login/LoginForm";
+import RegisterForm from "../components/registration/RegisterForm";
 import { useNavigate } from "react-router-dom";
 
 interface PropType {

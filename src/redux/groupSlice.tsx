@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import React from "react";
-import FirestoreService from "../components/Services/firestore";
+import FirestoreService from "../libs/services/firebase/firestore";
 
 export const setData: any = createAsyncThunk(
   "firestore/setData",

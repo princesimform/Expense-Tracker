@@ -1,5 +1,5 @@
 import { initializeApp } from "@firebase/app";
-import { FIREBASE_CONFIG } from "../../firebase-config";
+import { FIREBASE_CONFIG } from "../../../firebase-config";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,

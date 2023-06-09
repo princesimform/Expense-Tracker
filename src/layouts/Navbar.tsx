@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import {
   AppBar,
+  AppBarProps,
   Avatar,
   Box,
   Divider,
@@ -12,17 +13,18 @@ import {
   ListItemText,
   Menu,
   MenuItem,
+  styled,
   Toolbar,
   Tooltip,
   Typography,
 } from "@mui/material";
 import { useSnackbar } from "notistack";
 import { NavLink, useNavigate } from "react-router-dom";
-import AuthService from "../Services/auth";
+import AuthService from "../libs/services/firebase/auth";
 import { User } from "@firebase/auth";
 import MenuIcon from "@mui/icons-material/Menu";
-import AvatarImg from "./../../assets/avatar.jpg";
-import useToggle from "../CustomHooks/useToggle";
+import AvatarImg from "./../assets/avatar.jpg";
+import useToggle from "../customHooks/useToggle";
 interface PropsTypes {
   window?: () => Window;
 }
@@ -96,7 +98,7 @@ function Navbar({ window }: PropsTypes) {
   };
   return (
     <Box sx={{ display: "flex" }}>
-      <AppBar component='nav'>
+      <AppBar>
         <Toolbar>
           <IconButton
             color='inherit'

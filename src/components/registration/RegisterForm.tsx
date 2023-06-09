@@ -11,10 +11,10 @@ import {
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import { useSnackbar } from "notistack";
-import AuthService from "../Services/auth";
-import useToggle from "../CustomHooks/useToggle";
+import AuthService from "../../libs/services/firebase/auth";
+import useToggle from "../../customHooks/useToggle";
 import { Field, Form, Formik } from "formik";
-import { RegistrationFormSchema } from "../Services/ValidationSchema";
+import { RegistrationFormSchema } from "../../libs/services/ValidationSchema";
 import AddUserImg from "./../../assets/add_user.png";
 
 interface PropType {
