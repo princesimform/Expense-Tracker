@@ -1,14 +1,15 @@
 /** @type {import('tailwindcss').Config} */
+import neutral from "./src/theme/color";
 export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
       fontFamily: {
         poppins: ["Poppins", "sans-serif"],
-        sans :  ["sans-serif"]
+        sans: ["sans-serif"],
       },
       colors: {
-        primary: "hsl(263deg 54% 59%)",
+        primary: '#8f24bd',
       },
     },
   },

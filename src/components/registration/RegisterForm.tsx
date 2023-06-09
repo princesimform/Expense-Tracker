@@ -25,7 +25,7 @@ interface formFieldType {
   email: string;
   password: string;
   confirm_password: string;
-  profile: string;
+  profile: any;
 }
 
 const formFields: formFieldType = {
@@ -62,17 +62,12 @@ function RegisterForm({ toggleSignUp }: PropType) {
   const handleSubmit = async (values: formFieldType) => {
     if (values.email && values.password) {
       console.log(values);
-      
+
       toggle("processing");
-      if (Object(values.profile).length == undefined) {
-        values.profile = GroupProfileimage;
-      } else {
-        values.profile = "";
-      }
+
       try {
         if (typeof AuthService.register != "boolean") {
-          console.log(values.profile);
-          
+          const reqData = [];
           let data: { status: boolean; message: string } =
             await AuthService.register(
               values.full_name,

@@ -31,7 +31,7 @@ export const RegistrationFormSchema = yup.object({
     .string()
     .oneOf([yup.ref("password"), undefined], "Password must match")
     .required("confirm password require"),
-  profile: yup.string().required("Required Profile"),
+  profile: yup.string(),
 });
 
 export const LoginFormSchema = yup.object({

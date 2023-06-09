@@ -8,29 +8,53 @@ import {
   Auth,
   User,
 } from "firebase/auth";
-import storage from "firebase/storage";
+import storage, {
+  getDownloadURL,
+  getStorage,
+  ref,
+  uploadBytes,
+} from "firebase/storage";
 const firebase = initializeApp(FIREBASE_CONFIG);
 interface AuthServiceType {
   [key: string]: Function;
 }
 
 const AuthService: AuthServiceType = {};
-
-AuthService!.register = (
+AuthService!.uploadFile = async (
+  fauth: Auth,
+  userid: string,
+  profile: Blob
+) => {
+  const storage = getStorage();
+  const storageRef = ref(storage, `profile_images/${fauth.currentUser?.uid}`);
+  await uploadBytes(storageRef, profile).then();
+  const downloadURL = await getDownloadURL(storageRef);
+  return downloadURL;
+};
+AuthService!.register = async (
   name: string,
   email: string,
   password: string,
-  profile: string
+  profile: Blob
 ) => {
   const fauth: Auth = getAuth();
 
   return new Promise((resolve, reject) => {
     createUserWithEmailAndPassword(fauth, email, password)
-      .then((userCredential) => {
+      .then(async (userCredential) => {
         if (fauth.currentUser != null) {
-          updateProfile(fauth.currentUser, {
-            displayName: name,
-          })
+          console.log(profile);
+
+          const UpdateData = { displayName: name, photoURL: "" };
+          if (profile) {
+            UpdateData.photoURL = await AuthService.uploadFile(
+              fauth,
+              fauth.currentUser?.uid,
+              profile
+            );
+          }
+          updateProfile(fauth.currentUser, UpdateData)
+            .then(async () => {})
             .then(() => {
               resolve({ status: true, message: "Register successfully." });
             })

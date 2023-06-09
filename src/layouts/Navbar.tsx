@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import {
+  alpha,
   AppBar,
   AppBarProps,
   Avatar,
@@ -17,6 +18,7 @@ import {
   Toolbar,
   Tooltip,
   Typography,
+  useMediaQuery,
 } from "@mui/material";
 import { useSnackbar } from "notistack";
 import { NavLink, useNavigate } from "react-router-dom";
@@ -25,19 +27,24 @@ import { User } from "@firebase/auth";
 import MenuIcon from "@mui/icons-material/Menu";
 import AvatarImg from "./../assets/avatar.jpg";
 import useToggle from "../customHooks/useToggle";
+import usePopover from "./../customHooks/usePopover";
 interface PropsTypes {
   window?: () => Window;
+  onNavOpen: Function;
 }
-
-function Navbar({ window }: PropsTypes) {
+const SIDE_NAV_WIDTH = 280;
+function Navbar({ window, onNavOpen }: PropsTypes) {
   const navigate = useNavigate();
   const [toggles, toggle] = useToggle({
     processing: false,
     isDrawerOpen: false,
   });
   const [name, setName] = useState<string>("");
+  const [userProfile, setUserProfile] = useState<any>();
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
+  const lgUp = useMediaQuery((theme: any) => theme.breakpoints.up("lg"));
+  const accountPopover = usePopover();
 
   const navItems = [
     "Dashboard",
@@ -52,7 +59,10 @@ function Navbar({ window }: PropsTypes) {
     if (typeof AuthService.getProfile != "boolean") {
       AuthService.getProfile().then((user: User) => {
         if (user && user.displayName != null) {
+          console.log(user);
+
           setName(user.displayName);
+          setUserProfile(user.photoURL);
         }
       });
     }
@@ -98,14 +108,33 @@ function Navbar({ window }: PropsTypes) {
   };
   return (
     <Box sx={{ display: "flex" }}>
-      <AppBar>
+      <AppBar
+        elevation={0}
+        sx={{
+          width: {
+            lg: `calc(100% - ${SIDE_NAV_WIDTH}px)`,
+          },
+          backdropFilter: "blur(6px)",
+          backgroundColor: {
+            lg: "white",
+            sm: (theme) => alpha(theme.palette.background.default, 0.8),
+          },
+
+          zIndex: (theme) => theme.zIndex.appBar,
+        }}
+      >
         <Toolbar>
           <IconButton
-            color='inherit'
+            // color='blur'
             aria-label='open drawer'
             edge='start'
-            onClick={() => toggle("isDrawerOpen")}
-            sx={{ mr: 2, display: { sm: "none" }, color: "white" }}
+            onClick={() => onNavOpen()}
+            // onClick={() => toggle("isDrawerOpen")}
+            sx={{
+              mr: 2,
+              display: { lg: "none" },
+              color: "white",
+            }}
           >
             <MenuIcon />
           </IconButton>
@@ -113,22 +142,22 @@ function Navbar({ window }: PropsTypes) {
             component='div'
             sx={{
               flexGrow: 1,
-              display: { xs: "block", sm: "flex" },
+              display: { sm: "block"  ,lg: "flex" },
               cursor: "pointer",
             }}
           >
-            <NavLink to='/dashboard'>
-              <Typography variant='h6' color='white'>
-                Expanse Tracker
-              </Typography>
-            </NavLink>
+            {!lgUp && (
+              <NavLink to='/dashboard'>
+                <Typography variant='h6' color='white'>
+                  Expanse Tracker
+                </Typography>
+              </NavLink>
+            )}
           </Box>
-          <Box
-            sx={{ flexGrow: 0, backgroundColor: "hsl(263deg 54% 59% / 90%)" }}
-          >
+          <Box sx={{ flexGrow: 0 }}>
             <Tooltip title='open setting'>
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt='User' src={AvatarImg} />
+                <Avatar alt='User' src={userProfile} />
               </IconButton>
             </Tooltip>
             <Menu
