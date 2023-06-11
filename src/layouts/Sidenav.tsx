@@ -7,7 +7,6 @@ import {
 } from "@mui/material";
 import { Box } from "@mui/system";
 import React from "react";
-import { Scrollbar } from "../components/Scrollbar";
 import Logo from "./../assets/logo.png";
 import SidenavItem from "./SidenavItem";
 import { items } from "./config";
@@ -45,7 +44,7 @@ function Sidenav({ onClose, open }: { onClose: Function; open: Boolean }) {
                 width: 32,
               }}
             >
-              <img src={Logo} alt='' />
+              <img src={Logo} alt="" />
             </Box>
             <Box
               sx={{
@@ -61,9 +60,9 @@ function Sidenav({ onClose, open }: { onClose: Function; open: Boolean }) {
             >
               <Box>
                 <Typography
-                  color='inherit'
-                  variant='subtitle1'
-                  textAlign='center'
+                  color="inherit"
+                  variant="subtitle1"
+                  textAlign="center"
                 >
                   Expanse Tracker
                 </Typography>
@@ -72,7 +71,7 @@ function Sidenav({ onClose, open }: { onClose: Function; open: Boolean }) {
           </Box>
           <Divider sx={{ borderColor: "neutral.100" }} />
           <Box
-            component='nav'
+            component="nav"
             sx={{
               flexGrow: 1,
               px: 2,
@@ -80,7 +79,7 @@ function Sidenav({ onClose, open }: { onClose: Function; open: Boolean }) {
             }}
           >
             <Stack
-              component='ul'
+              component="ul"
               spacing={0.5}
               sx={{
                 listStyle: "none",
@@ -112,7 +111,7 @@ function Sidenav({ onClose, open }: { onClose: Function; open: Boolean }) {
   if (lgUp) {
     return (
       <Drawer
-        anchor='left'
+        anchor="left"
         open
         PaperProps={{
           sx: {
@@ -121,7 +120,7 @@ function Sidenav({ onClose, open }: { onClose: Function; open: Boolean }) {
             width: 280,
           },
         }}
-        variant='permanent'
+        variant="permanent"
       >
         {content}
       </Drawer>
@@ -129,7 +128,7 @@ function Sidenav({ onClose, open }: { onClose: Function; open: Boolean }) {
   }
   return (
     <Drawer
-      anchor='left'
+      anchor="left"
       onClose={() => onClose()}
       open={Boolean(open)}
       PaperProps={{
@@ -140,7 +139,7 @@ function Sidenav({ onClose, open }: { onClose: Function; open: Boolean }) {
         },
       }}
       sx={{ zIndex: (theme) => theme.zIndex.appBar + 100 }}
-      variant='temporary'
+      variant="temporary"
     >
       {content}
     </Drawer>

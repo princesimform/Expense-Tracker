@@ -7,36 +7,20 @@ function SidenavItem(props: any) {
   const { active, disabled, external, icon, path, title } = props;
   console.log(path);
   const navigate = useNavigate();
+
+  // const activeButton = document.getElementsByClassName()
   return (
     <ButtonBase
+      className={active ? "active nav-btn" : "nav-btn"}
       sx={{
-        alignItems: "center",
-        borderRadius: 2,
-        display: "flex",
-        justifyContent: "flex-start",
-        pl: "16px",
-        pr: "16px",
-        py: "6px",
-        textAlign: "left",
-        width: "100%",
-        // backgroundColor: "rgba(255, 255, 255, 0.04)",
-        ...(active && {
-          background: "rgba(255, 255, 255, 0.9)",
-        }),
-        "&:hover": {
-          backgroundColor: "rgba(255, 255, 255, 0.04)",
-        },
+        
       }}
       onClick={() => navigate(`${String(path)}`)}
     >
       <Box
+        className={active ? "active nav-btn-icon " : "nav-btn-icon "}
         component='span'
         sx={{
-          alignItems: "center",
-          color: "neutral.50",
-          display: "inline-flex",
-          justifyContent: "center",
-          mr: 2,
           ...(active && {
             color: "primary.main",
           }),

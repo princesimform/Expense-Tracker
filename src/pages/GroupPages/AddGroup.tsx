@@ -7,6 +7,7 @@ import {
   Fade,
   InputLabel,
   Modal,
+  Paper,
   TextField,
   Typography,
 } from "@mui/material";
@@ -96,17 +97,8 @@ function AddGroup() {
   return (
     <>
       <Box
-        sx={{
-          display: "block",
-          borderStyle: "dashed",
-          borderWidth: 2,
-          borderColor: "black",
-          width: "fit-content",
-          margin: "10px  auto",
-          padding: 2,
-          borderRadius: 2,
-          cursor: "pointer",
-        }}
+      component={Paper}
+        className="add-group"
         onClick={() => toggle("isModleOpen")}
       >
         <AddIcon />
