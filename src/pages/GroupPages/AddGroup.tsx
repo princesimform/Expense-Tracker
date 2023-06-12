@@ -64,17 +64,13 @@ function AddGroup() {
   };
 
   const handleSubmit = async (values: formDataType) => {
-    if (Object(values.group_image).length == undefined) {
-      values.group_image = GroupProfileimage;
-    } else {
-      values.group_image = "";
-    }
     const userData = await AuthService.getProfile();
     const createdAtTime =
       date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
     const req_data = {
       ...values,
       admin_user_id: userData.uid,
+      admin_user_name: userData.displayName,
       created_at: createdAtTime,
     };
     try {
@@ -96,16 +92,6 @@ function AddGroup() {
 
   return (
     <>
-      <Box
-      component={Paper}
-        className="add-group"
-        onClick={() => toggle("isModleOpen")}
-      >
-        <AddIcon />
-        <Typography variant='h5' sx={{ mt: 2 }}>
-          Add Group
-        </Typography>
-      </Box>
       <Button onClick={() => toggle("isModleOpen")}>Create Group</Button>
       <Modal
         aria-labelledby='transition-modal-title'

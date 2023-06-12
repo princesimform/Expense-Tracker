@@ -11,6 +11,9 @@ const withAlphas = (color: any) => {
   };
 };
 
+export const gradient = {
+  900: "linear-gradient(to right top, #bd55bd, #b257c2, #a559c7, #985ccb, #895ecf)",
+} 
 export const neutral = {
   50: "#ffffff",
   100: "hsl(263deg 54% 59% / 10%)",

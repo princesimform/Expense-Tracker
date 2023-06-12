@@ -6,7 +6,7 @@ import Groups from "./GroupPages";
 function DashBoard() {
   return (
     <>
-      <Container maxWidth='xl'>
+      <Container className="dashboard-container" maxWidth='xl' >
         <Grid container spacing={3}>
           <Grid item xs={12} sm={6} lg={3}>
             <OverviewOfGroups sx={{ height: "100%" }} />

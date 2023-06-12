@@ -77,7 +77,6 @@ function Navbar({ window, onNavOpen }: PropsTypes) {
 
   const container =
     window !== undefined ? () => window().document.body : undefined;
-  const profile = () => {};
   const logout = async () => {
     toggle("processing");
     try {
@@ -142,7 +141,7 @@ function Navbar({ window, onNavOpen }: PropsTypes) {
             component='div'
             sx={{
               flexGrow: 1,
-              display: { sm: "block"  ,lg: "flex" },
+              display: { sm: "block", lg: "flex" },
               cursor: "pointer",
             }}
           >
@@ -173,7 +172,7 @@ function Navbar({ window, onNavOpen }: PropsTypes) {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              <MenuItem key='profile' onClick={profile}>
+              <MenuItem key='profile' onClick={() => navigate("/profile")}>
                 <Typography textAlign='center'>Profile</Typography>
               </MenuItem>
               <MenuItem key='logout' onClick={logout}>

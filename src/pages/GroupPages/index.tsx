@@ -34,17 +34,36 @@ function Groups() {
   }, []);
 
   return (
-    <div className="dashboard-groups">
-      {groupList.length >= 0 ? (
-        groupList.map((group) => <p key={group.created_at}>{group.name}</p>)
-        ) : (
-          <p>No data avaliable</p>
+    <div>
+      <Stack
+        display='flex'
+        alignItems='flex-start'
+        direction='row'
+        className='groups-page-heading'
+      >
+        <Typography className='groups-page-title' variant='h4' textAlign='left'>
+          Your Groups
+        </Typography>
+        <AddGroup />
+      </Stack>
+      <Divider className='group-title-divider' />
+      <Container maxWidth='xl'>
+        <Grid container spacing={3}>
+          {groupList.length >= 0 ? (
+            groupList.map((group) => (
+              <>
+                <Grid item xs={12} sm={6} lg={4} key={group.data.created_at}>
+                  <GroupCard groupItem={group} />
+                </Grid>
+                {/* <p key={group.created_at}>{group.name}</p>{" "} */}
+              </>
+            ))
+          ) : (
+            <p>No data avaliable</p>
           )}
 
-      <Container maxWidth="xl">
-        <Grid container spacing={3}>
           <Grid item xs={12} sm={6} lg={4}>
-            <GroupCard />
+            {/* <GroupCard /> */}
           </Grid>
           <Grid item xs={12} sm={6} lg={4}>
             <AddGroup />

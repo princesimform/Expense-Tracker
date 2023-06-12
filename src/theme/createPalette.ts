@@ -1,10 +1,13 @@
 import { common } from "@mui/material/colors";
 import { alpha } from "@mui/material";
-import { balcony, neutral, buttonColor } from "./color";
+import { balcony, neutral, buttonColor, gradient } from "./color";
 const createPalette = () => {
   return {
     primary: {
       main: neutral[900],
+      gradient: {
+        main: gradient[900],
+      },
     },
     secondary: {
       main: balcony[900],
@@ -16,13 +19,14 @@ const createPalette = () => {
       active: neutral[900],
     },
     neutral,
-    button:{
-      main:buttonColor[900],
+    button: {
+      main: buttonColor[900],
+      error: { main: "red" },
     },
-    white:{
-      main:neutral[50],
-    }
+    white: {
+      main: neutral[50],
+    },
   };
-}
+};
 
 export default createPalette;

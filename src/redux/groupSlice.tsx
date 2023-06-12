@@ -6,6 +6,9 @@ export const setData: any = createAsyncThunk(
   "firestore/setData",
   async (data) => {
     const docId = await FirestoreService.addDataToFirestore(data, "groups");
+    console.log("docId");
+    console.log(docId);
+
     return { docId };
   }
 );
@@ -23,9 +26,10 @@ export interface groupDataType {
   group_image: string;
   created_at: string;
   admin_user_id: string;
+  admin_user_name: string;
 }
 export interface groupStateType {
-  groupList: groupDataType[] | [];
+  groupList: { data: groupDataType; id: string }[] | [];
 }
 const initalGroupState: groupStateType = { groupList: [] };
 
@@ -33,8 +37,7 @@ export const groupSlice = createSlice({
   name: "groupSlice",
   initialState: initalGroupState,
   reducers: {
-    getGroupList(state, action) {
-    },
+    getGroupList(state, action) {},
   },
   extraReducers: (builder) => {
     builder.addCase(setData.fulfilled, (state, action) => {

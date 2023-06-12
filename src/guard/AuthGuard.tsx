@@ -30,7 +30,7 @@ function AuthGuards({ component }: PropType) {
     display: "flex",
     flex: "1 1 auto",
     maxWidth: "100%",
-    paddingTop: 110,
+    paddingTop: '60px',
     [theme.breakpoints.up("lg")]: {
       paddingLeft: SIDE_NAV_WIDTH,
     },

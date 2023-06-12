@@ -104,6 +104,7 @@ AuthService.getProfile = () => {
   });
 };
 
+
 AuthService.logout = async () => {
   return new Promise((resolve) => {
     const fauth: Auth = getAuth();
