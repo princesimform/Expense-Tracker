@@ -150,11 +150,11 @@ function GroupDetails() {
 
   return (
     <>
-      <Stack className='group-detail-page'>
-        <Stack
+      <Box className='group-detail-page' padding="16px">
+        <Box
           display='flex'
-          alignItems='flex-start'
-          direction='row'
+          alignItems='center'
+          justifyContent='space-between'
           className='groups-page-heading'
         >
           <Typography
@@ -165,7 +165,7 @@ function GroupDetails() {
             Group Name
           </Typography>
           <AddExpense />
-        </Stack>
+        </Box>
         <Divider className='group-title-divider' />
         <Stack>
           <Grid container spacing={3}>
@@ -490,7 +490,7 @@ function GroupDetails() {
             </Grid>
           </Grid>
         </Stack>
-      </Stack>
+      </Box>
     </>
   );
 }

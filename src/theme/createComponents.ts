@@ -141,27 +141,17 @@ const createComponents = (config: any) => {
         },
       },
     },
-    MuiStack: {
-      styleOverrides: {
-        root: {
-          "&.groups-page-heading": {
-            display: "flex",
-            marginRight: "16px",
-            justifyContent: "space-between",
-            alignItems: "center",
-          },
-          "&.group-detail-page": {
-            padding: "16px",
-          },
-        },
-      },
-    },
     MuiBox: {
       styleOverrides: {
         root: {
           "&.group-tab-box": {
             borderBottom: 1,
             borderColor: `${primaryColor}`,
+          },
+          "&.groups-page-heading": {
+            marginRight: "16px",
+          },
+          "&.group-detail-page": {
           },
         },
       },

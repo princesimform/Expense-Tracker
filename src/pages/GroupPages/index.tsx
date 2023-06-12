@@ -3,6 +3,7 @@ import {
   alpha,
   Avatar,
   AvatarGroup,
+  Box,
   Button,
   Card,
   CardActions,
@@ -35,17 +36,17 @@ function Groups() {
 
   return (
     <div>
-      <Stack
+      <Box
         display='flex'
-        alignItems='flex-start'
-        direction='row'
+        alignItems='center'
+        justifyContent='space-between'
         className='groups-page-heading'
       >
         <Typography className='groups-page-title' variant='h4' textAlign='left'>
           Your Groups
         </Typography>
         <AddGroup />
-      </Stack>
+      </Box>
       <Divider className='group-title-divider' />
       <Container maxWidth='xl'>
         <Grid container spacing={3}>
