@@ -74,34 +74,40 @@ FirestoreService!.updateDataToFirestore = async (
 };
 
 FirestoreService!.deleteDataToFirestore = async (
-  doc: any,
+  docData: groupDataType,
   collectionName: string
 ) => {
-  if (doc.group_image != '') {
-    const storage = getStorage();
-    const fileRef = ref(storage, doc.group_image);
-    deleteObject(fileRef)
-      .then(() => {
-        deleteDoc(doc(firestore, collectionName, doc.id))
-          .then(() => {
-            throw new Error("We are Success");
-          })
-          .catch(() => {
-            throw new Error("Data Not completed");
-          });
-      })
-      .catch(() => {
-        throw new Error("File Not Deleted");
-      });
-  } else {
-    deleteDoc(doc(firestore, collectionName, doc.id))
-      .then(() => {
-        throw new Error("We are Success");
-      })
-      .catch(() => {
-        throw new Error("Data Not completed");
-      });
-  }
+  const storage = getStorage();
+
+  return new Promise((resolve, reject) => {
+    const fileRef = ref(storage, docData.group_image);
+    const docRef = doc(firestore, collectionName, docData.id);
+    if (docData.group_image != "") {
+      deleteObject(fileRef)
+        .then(() => {
+          deleteDoc(docRef)
+            .then(() => {
+              resolve({ status: true, message: "Deleted Successfully" });
+            })
+            .catch((error) => {
+              resolve({ status: true, message: "Something Went Wrong" });
+            });
+        })
+        .catch(() => {
+          resolve({ status: true, message: "Something Went Wrong" });
+        });
+    } else {
+      console.log("i am From ele deprt");
+      
+      deleteDoc(docRef)
+        .then(() => {
+          resolve({ status: true, message: "Deleted Successfully" });
+        })
+        .catch((error) => {
+          resolve({ status: true, message: "Something Went Wrong" });
+        });
+    }
+  });
 };
 FirestoreService!.getGroups = async () => {
   const user = await AuthService.getProfile();
@@ -127,5 +133,4 @@ FirestoreService!.getGroups = async () => {
 
   return data;
 };
-
 export default FirestoreService;

@@ -1,10 +1,16 @@
 import { Box, Button, ButtonBase } from "@mui/material";
-import React from "react";
+import React, { ReactNode } from "react";
 import BarChartIcon from "@mui/icons-material/BarChart";
 import { useNavigate } from "react-router-dom";
 
-function SidenavItem(props: any) {
-  const { active, disabled, external, icon, path, title } = props;
+function SidenavItem(props: {
+  icon: ReactNode;
+  key: string;
+  path: string;
+  title: string;
+  active: boolean;
+}) {
+  const { active, icon, path, title } = props;
   console.log(path);
   const navigate = useNavigate();
 
@@ -12,14 +18,12 @@ function SidenavItem(props: any) {
   return (
     <ButtonBase
       className={active ? "active nav-btn" : "nav-btn"}
-      sx={{
-        
-      }}
+      sx={{}}
       onClick={() => navigate(`${String(path)}`)}
     >
       <Box
         className={active ? "active nav-btn-icon " : "nav-btn-icon "}
-        component='span'
+        component="span"
         sx={{
           ...(active && {
             color: "primary.main",
@@ -29,7 +33,7 @@ function SidenavItem(props: any) {
         {icon}
       </Box>
       <Box
-        component='span'
+        component="span"
         sx={{
           color: "neutral.50",
           flexGrow: 1,

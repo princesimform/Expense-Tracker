@@ -12,23 +12,23 @@ import {
 } from "@mui/material";
 import React from "react";
 
-function OverviewOfGroups({ sx }: any) {
+function OverviewOfGroups({ sx }: { sx: { height: string } }) {
   return (
     <>
       <Card sx={sx}>
         <CardContent>
           <Stack
-            display='flex'
-            alignItems='flex-start'
-            direction='row'
-            justifyContent='space-between'
+            display="flex"
+            alignItems="flex-start"
+            direction="row"
+            justifyContent="space-between"
             spacing={3}
           >
             <Stack spacing={1}>
-              <Typography color='text.secondary' variant='overline'>
+              <Typography color="text.secondary" variant="overline">
                 Groups
               </Typography>
-              <Typography variant='h4'>10</Typography>
+              <Typography variant="h4">10</Typography>
             </Stack>
             <Avatar
               sx={{

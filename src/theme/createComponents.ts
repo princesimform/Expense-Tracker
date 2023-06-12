@@ -3,7 +3,7 @@ import { createTheme } from "@mui/material";
 import createPalette from "./createPalette";
 const muiTheme = createTheme();
 
-const createComponents = (config: any) => {
+const createComponents = () => {
   // const { palette } = config;
   const primaryColor = createPalette().primary.main;
   const secondaryColor = createPalette().secondary.main;

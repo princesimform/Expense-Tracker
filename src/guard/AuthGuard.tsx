@@ -11,6 +11,8 @@ import Navbar from "../layouts/Navbar";
 import { Box } from "@mui/system";
 import { styled } from "@mui/material";
 import Sidenav from "../layouts/Sidenav";
+import { useDispatch } from "react-redux";
+import { getGroups } from "../redux/groupSlice";
 interface PropType {
   component: ReactNode;
 }
@@ -18,10 +20,14 @@ interface PropType {
 function AuthGuards({ component }: PropType) {
   const [status, setStatus] = useState<boolean>(false);
   const navigate = useNavigate();
-
+  const dispatch = useDispatch();
+  async function getAllGroups() {
+    await dispatch(getGroups());
+  }
   useEffect(() => {
     const userData = checkToken();
     console.log(userData);
+    getAllGroups();
   }, [component]);
 
   const SIDE_NAV_WIDTH = 280;
@@ -30,7 +36,7 @@ function AuthGuards({ component }: PropType) {
     display: "flex",
     flex: "1 1 auto",
     maxWidth: "100%",
-    paddingTop: '60px',
+    paddingTop: "60px",
     [theme.breakpoints.up("lg")]: {
       paddingLeft: SIDE_NAV_WIDTH,
     },
@@ -61,7 +67,7 @@ function AuthGuards({ component }: PropType) {
 
   return status ? (
     <React.Fragment>
-      <Box className='my-container'>
+      <Box className="my-container">
         <Box>
           <Sidenav onClose={() => setOpenNav(false)} open={openNav} />
           <Navbar onNavOpen={() => setOpenNav(true)} />

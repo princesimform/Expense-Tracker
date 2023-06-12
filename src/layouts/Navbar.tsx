@@ -15,6 +15,7 @@ import {
   Menu,
   MenuItem,
   styled,
+  Theme,
   Toolbar,
   Tooltip,
   Typography,
@@ -40,10 +41,10 @@ function Navbar({ window, onNavOpen }: PropsTypes) {
     isDrawerOpen: false,
   });
   const [name, setName] = useState<string>("");
-  const [userProfile, setUserProfile] = useState<any>();
+  const [userProfile, setUserProfile] = useState<string | null>();
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
-  const lgUp = useMediaQuery((theme: any) => theme.breakpoints.up("lg"));
+  const lgUp = useMediaQuery((theme : Theme) => theme.breakpoints.up("lg"));
   const accountPopover = usePopover();
 
   const navItems = [
@@ -156,7 +157,7 @@ function Navbar({ window, onNavOpen }: PropsTypes) {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title='open setting'>
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt='User' src={userProfile} />
+                <Avatar alt='User' src={userProfile!} />
               </IconButton>
             </Tooltip>
             <Menu

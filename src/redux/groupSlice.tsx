@@ -1,10 +1,15 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import {
+  AsyncThunkAction,
+  createAsyncThunk,
+  createSlice,
+} from "@reduxjs/toolkit";
 import React from "react";
 import FirestoreService from "../libs/services/firebase/firestore";
+import { Rootstate } from "./store";
 
 export const setData: any = createAsyncThunk(
   "firestore/setData",
-  async (data) => {
+  async (data: groupDataType) => {
     const docId = await FirestoreService.addDataToFirestore(data, "groups");
     return { docId };
   }

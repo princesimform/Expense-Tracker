@@ -25,7 +25,7 @@ interface formFieldType {
   email: string;
   password: string;
   confirm_password: string;
-  profile: any;
+  profile: string;
 }
 
 const formFields: formFieldType = {

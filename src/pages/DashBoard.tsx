@@ -1,7 +1,6 @@
 import { Box, Container, Grid } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import OverviewOfGroups from "../components/group/OverviewOfGroups";
-import Navbar from "../layouts/Navbar";
 import Groups from "./GroupPages";
 function DashBoard() {
   return (

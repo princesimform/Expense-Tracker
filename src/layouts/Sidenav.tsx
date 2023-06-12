@@ -2,6 +2,7 @@ import {
   Divider,
   Drawer,
   Stack,
+  Theme,
   Typography,
   useMediaQuery,
 } from "@mui/material";
@@ -9,10 +10,10 @@ import { Box } from "@mui/system";
 import React from "react";
 import Logo from "./../assets/logo.png";
 import SidenavItem from "./SidenavItem";
-import { items } from "./config";
+import { items, itemsType } from "./config";
 import { useLocation, useNavigate } from "react-router-dom";
 function Sidenav({ onClose, open }: { onClose: Function; open: Boolean }) {
-  const lgUp = useMediaQuery((theme: any) => theme.breakpoints.up("lg"));
+  const lgUp = useMediaQuery((theme : Theme) => theme.breakpoints.up("lg"));
   const path = useLocation();
   const pathname = path.pathname;
   const navigate = useNavigate();
@@ -87,14 +88,14 @@ function Sidenav({ onClose, open }: { onClose: Function; open: Boolean }) {
                 m: 0,
               }}
             >
-              {items.map((item: any) => {
+              {items.map((item: itemsType) => {
                 const active = pathname == item.path ? true : false;
 
                 return (
                   <SidenavItem
                     active={active}
-                    disabled={item.disabled}
-                    external={item.external}
+                    // disabled={item.disabled}
+                    // external={item.external}
                     icon={item.icon}
                     key={item.title}
                     path={item.path}

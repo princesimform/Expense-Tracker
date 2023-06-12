@@ -4,7 +4,7 @@ import ShoppingCartCheckoutIcon from "@mui/icons-material/ShoppingCartCheckout";
 import { ReactNode } from "react";
 import { ReactJSXElement } from "@emotion/react/types/jsx-namespace";
 import { Group } from "@mui/icons-material";
-interface itemsType {
+export interface itemsType {
   title: string;
   path: string;
   icon: JSX.Element;
