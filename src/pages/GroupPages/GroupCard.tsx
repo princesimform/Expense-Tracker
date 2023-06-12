@@ -22,7 +22,7 @@ import { useNavigate } from "react-router-dom";
 function GroupCard({
   groupItem,
 }: {
-  groupItem: { data: groupDataType; id: string };
+  groupItem: groupDataType;
 }) {
   const nevagite = useNavigate();
   console.log(groupItem);
@@ -36,13 +36,13 @@ function GroupCard({
       >
         <CardContent>
           <Stack display='flex' alignItems='flex-start' direction='row'>
-            <Avatar src={groupItem.data.group_image} alt='GroupImage' />
+            <Avatar src={groupItem.group_image} alt='GroupImage' />
             <Stack sx={{ textAlign: "left", ml: 2 }}>
               <Typography fontWeight={"bolder"}>
-                {groupItem.data.name}
+                {groupItem.name}
               </Typography>
               <Typography variant='caption'>
-                Created By : {groupItem.data.admin_user_name}
+                Created By : {groupItem.admin_user_name}
               </Typography>
             </Stack>
           </Stack>

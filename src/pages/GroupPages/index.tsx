@@ -21,9 +21,9 @@ import UserImg from "./../../assets/avatar.jpg";
 import { AsyncThunkAction, Dispatch } from "@reduxjs/toolkit";
 import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getGroups, groupActions, setData } from "../../redux/groupSlice";
+import { getGroups, groupActions, groupDataType, setData } from "../../redux/groupSlice";
 import { Rootstate } from "../../redux/store";
-import AddGroup from "./AddGroup";
+import GroupForm from "./GroupForm";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import GroupCard from "./GroupCard";
 function Groups() {
@@ -45,15 +45,15 @@ function Groups() {
         <Typography className='groups-page-title' variant='h4' textAlign='left'>
           Your Groups
         </Typography>
-        <AddGroup />
+        <GroupForm />
       </Box>
       <Divider className='group-title-divider' />
       <Container maxWidth='xl'>
         <Grid container spacing={3}>
           {groupList.length >= 0 ? (
-            groupList.map((group) => (
+            groupList.map((group : groupDataType) => (
               <>
-                <Grid item xs={12} sm={6} lg={4} key={group.data.created_at}>
+                <Grid item xs={12} sm={6} lg={4} key={group.created_at}>
                   <GroupCard groupItem={group} />
                 </Grid>
                 {/* <p key={group.created_at}>{group.name}</p>{" "} */}
@@ -67,7 +67,7 @@ function Groups() {
             {/* <GroupCard /> */}
           </Grid>
           <Grid item xs={12} sm={6} lg={4}>
-            <AddGroup />
+            <GroupForm />
           </Grid>
         </Grid>
       </Container>

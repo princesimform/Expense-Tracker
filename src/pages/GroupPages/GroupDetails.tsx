@@ -1,6 +1,12 @@
 import {
+  Avatar,
   Box,
   Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
   Divider,
   Grid,
   Paper,
@@ -19,12 +25,16 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import AddExpense from "../expanse/AddExpense";
 import GroupExpense from "./GroupExpense";
-import AddGroup from "./AddGroup";
-import { DeleteForeverOutlined, ForkRight } from "@mui/icons-material";
+import GroupForm from "./GroupForm";
+import { DeleteForeverOutlined, Edit, ForkRight } from "@mui/icons-material";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import { useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { Rootstate } from "../../redux/store";
+import { DeleteData, groupDataType } from "../../redux/groupSlice";
 interface TabPanelProps {
   children?: React.ReactNode;
   index: number;
@@ -130,13 +140,25 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 function GroupDetails() {
   const [tabNumber, setTabNumber] = useState(0);
+  const [openDialog, setOpenDialog] = useState(false);
+  const { id } = useParams();
+  const groupData: groupDataType = useSelector((state: Rootstate) => {
+    console.log("data");
+    const data = state.groupReducer;
+    const Newdata = data.groupList.filter(
+      (group: groupDataType) => group.id == id
+    );
+    return Newdata[0];
+  });
+
   const handleTab = (event: React.SyntheticEvent, newValue: number) => {
     setTabNumber(newValue);
   };
+  useEffect(() => {}, []);
 
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
-
+  const dispatch = useDispatch();
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
   };
@@ -147,24 +169,33 @@ function GroupDetails() {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
-
+  const deleteGroup = (groupData: groupDataType) => {
+    console.log(groupData);
+    dispatch(DeleteData(groupData));
+  };
   return (
     <>
-      <Box className='group-detail-page' padding="16px">
+      <Box className='group-detail-page' padding='16px'>
         <Box
           display='flex'
           alignItems='center'
           justifyContent='space-between'
           className='groups-page-heading'
         >
-          <Typography
-            className='groups-page-title'
-            variant='h4'
-            textAlign='left'
-          >
-            Group Name
-          </Typography>
-          <AddExpense />
+          <Box display='flex' alignItems='center'>
+            <Avatar alt='sdf' src={groupData.group_image} />
+            <Typography
+              className='groups-page-title'
+              variant='h4'
+              textAlign='left'
+            >
+              {groupData.name}
+            </Typography>
+          </Box>
+          <Box>
+            <AddExpense />
+            <GroupForm groupData={groupData} />
+          </Box>
         </Box>
         <Divider className='group-title-divider' />
         <Stack>
@@ -482,9 +513,38 @@ function GroupDetails() {
                   Danger Zone
                 </Typography>
                 <Box margin={1}>
-                  <Button fullWidth color='error'>
+                  <Button
+                    fullWidth
+                    color='error'
+                    onClick={() => setOpenDialog(true)}
+                  >
                     Delete Group
                   </Button>
+
+                  <Dialog
+                    open={openDialog}
+                    onClose={() => setOpenDialog(false)}
+                    aria-labelledby='alert-dialog-title'
+                    aria-describedby='alert-dialog-description'
+                  >
+                    <DialogTitle id='alert-dialog-title'>
+                      {"Are You Sure?"}
+                    </DialogTitle>
+                    <DialogContent>
+                      <DialogContentText id='alert-dialog-description'>
+                        We Are Delete Your all transaction which are done in
+                        this group
+                      </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                      <Button onClick={() => setOpenDialog(false)}>
+                        Disagree
+                      </Button>
+                      <Button onClick={() => deleteGroup(groupData)} autoFocus>
+                        Agree
+                      </Button>
+                    </DialogActions>
+                  </Dialog>
                 </Box>
               </Box>
             </Grid>

@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import {
   Avatar,
   Backdrop,
@@ -13,7 +13,12 @@ import {
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import { useDispatch } from "react-redux";
-import { getGroups, setData } from "../../redux/groupSlice";
+import {
+  getGroups,
+  groupDataType,
+  setData,
+  updateData,
+} from "../../redux/groupSlice";
 import AddGroupImg from "./../../assets/add_group.png";
 import { Field, Form, Formik } from "formik";
 import { AddGroupSchema } from "../../libs/services/ValidationSchema";
@@ -36,19 +41,35 @@ interface formDataType {
   group_image: string;
 }
 
-const initalValues: formDataType = {
-  name: "",
-  group_image: "",
-};
-
-function AddGroup() {
+function GroupForm({ groupData }: { groupData?: groupDataType }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const reader = new FileReader();
   const date = new Date();
-  const [toggles, toggle] = useToggle({ isModleOpen: false });
+  const [toggles, toggle] = useToggle({
+    isModleOpen: false,
+  });
+  const [hasOldIamge, setHasOldIamge] = useState<boolean>(
+    groupData ? true : false
+  );
+  const buttonValue = groupData ? "Update" : "Create";
   const [GroupProfileimage, setgroupProfileimage] = useState<string>("");
+  const [initalValues, setInitalValues] = useState({
+    name: "",
+    group_image: "",
+  });
+
+  useEffect(() => {
+    if (groupData) {
+      setInitalValues({
+        name: groupData.name,
+        group_image: "",
+      }),
+        setgroupProfileimage(groupData.group_image);
+      // initalValues.group_image = groupData.group_image;
+    }
+  }, []);
 
   const handleFileInputChange = (
     e: ChangeEvent<HTMLInputElement>,
@@ -56,6 +77,8 @@ function AddGroup() {
   ) => {
     if (e.target.files && e.target.files[0]) {
       reader.addEventListener("load", function (event) {
+        console.log(reader.result);
+        setHasOldIamge(false);
         setgroupProfileimage(JSON.stringify(reader.result));
       });
       reader.readAsDataURL(e.target.files[0]);
@@ -64,35 +87,51 @@ function AddGroup() {
   };
 
   const handleSubmit = async (values: formDataType) => {
-    const userData = await AuthService.getProfile();
-    const createdAtTime =
-      date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
-    const req_data = {
-      ...values,
-      admin_user_id: userData.uid,
-      admin_user_name: userData.displayName,
-      created_at: createdAtTime,
-    };
-    try {
-      const dataId = await dispatch(setData(req_data));
-      enqueueSnackbar(`Group Created successfully ${dataId.payload.docId}`, {
-        variant: "success",
-        autoHideDuration: 3000,
-      });
-      toggle("isModleOpen");
-      dispatch(getGroups());
-      navigate(`/group`);
-    } catch (error) {
-      enqueueSnackbar(`Something Went Wrong`, {
-        variant: "error",
-        autoHideDuration: 3000,
-      });
+    if (groupData) {
+      const NewData = JSON.parse(JSON.stringify(groupData));
+      NewData.name = values.name;
+      NewData.group_image = values.group_image;
+      console.log(NewData);
+      try {
+        const dataId = await dispatch(updateData(NewData));
+        enqueueSnackbar(`Group Updated successfully ${dataId.payload.docId}`, {
+          variant: "success",
+          autoHideDuration: 3000,
+        });
+        toggle("isModleOpen");
+        dispatch(getGroups());
+      } catch (error) {}
+    } else {
+      const userData = await AuthService.getProfile();
+      const createdAtTime =
+        date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
+      const req_data = {
+        ...values,
+        admin_user_id: userData.uid,
+        admin_user_name: userData.displayName,
+        created_at: createdAtTime,
+      };
+      try {
+        const dataId = await dispatch(setData(req_data));
+        enqueueSnackbar(`Group Created successfully ${dataId.payload.docId}`, {
+          variant: "success",
+          autoHideDuration: 3000,
+        });
+        toggle("isModleOpen");
+        dispatch(getGroups());
+        navigate(`/group`);
+      } catch (error) {
+        enqueueSnackbar(`Something Went Wrong`, {
+          variant: "error",
+          autoHideDuration: 3000,
+        });
+      }
     }
   };
 
   return (
     <>
-      <Button onClick={() => toggle("isModleOpen")}>Create Group</Button>
+      <Button onClick={() => toggle("isModleOpen")}>{buttonValue}</Button>
       <Modal
         aria-labelledby='transition-modal-title'
         aria-describedby='transition-modal-description'
@@ -114,7 +153,7 @@ function AddGroup() {
               sx={{ textAlign: "center", mb: 2 }}
               component='h2'
             >
-              Create Group
+              {groupData ? "Update Group" : "Create Group"}
             </Typography>
 
             <Formik
@@ -140,12 +179,13 @@ function AddGroup() {
                         handleFileInputChange(event, setFieldValue)
                       }
                     />
-
                     <Avatar
                       alt='Remy Sharp'
                       src={
                         GroupProfileimage
-                          ? JSON.parse(GroupProfileimage)
+                          ? hasOldIamge
+                            ? GroupProfileimage
+                            : JSON.parse(GroupProfileimage)
                           : AddGroupImg
                       }
                       sx={{
@@ -172,13 +212,23 @@ function AddGroup() {
                   <Box
                     sx={{ display: "flex", justifyContent: "space-between" }}
                   >
-                    <Button
-                      type='submit'
-                      variant='contained'
-                      disabled={!isValid}
-                    >
-                      Create Group
-                    </Button>
+                    {groupData ? (
+                      <Button
+                        type='submit'
+                        variant='contained'
+                        disabled={!isValid}
+                      >
+                        {buttonValue}
+                      </Button>
+                    ) : (
+                      <Button
+                        type='submit'
+                        variant='contained'
+                        disabled={!isValid}
+                      >
+                        Create Group
+                      </Button>
+                    )}
 
                     <Button
                       variant='contained'
@@ -197,4 +247,4 @@ function AddGroup() {
   );
 }
 
-export default AddGroup;
+export default GroupForm;

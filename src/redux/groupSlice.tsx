@@ -6,9 +6,22 @@ export const setData: any = createAsyncThunk(
   "firestore/setData",
   async (data) => {
     const docId = await FirestoreService.addDataToFirestore(data, "groups");
-    console.log("docId");
-    console.log(docId);
+    return { docId };
+  }
+);
 
+export const updateData: any = createAsyncThunk(
+  "firestore/setData",
+  async (data) => {
+    const docId = await FirestoreService.updateDataToFirestore(data, "groups");
+    return { docId };
+  }
+);
+
+export const DeleteData: any = createAsyncThunk(
+  "firestore/setData",
+  async (data) => {
+    const docId = await FirestoreService.deleteDataToFirestore(data, "groups");
     return { docId };
   }
 );
@@ -16,12 +29,13 @@ export const setData: any = createAsyncThunk(
 export const getGroups: any = createAsyncThunk(
   "firestore/getData",
   async () => {
-    const groupList = await FirestoreService.getGroups();
+    const groupList: groupDataType[] = await FirestoreService.getGroups();
     return { groupList };
   }
 );
 
 export interface groupDataType {
+  id: string;
   name: string;
   group_image: string;
   created_at: string;
@@ -29,7 +43,7 @@ export interface groupDataType {
   admin_user_name: string;
 }
 export interface groupStateType {
-  groupList: { data: groupDataType; id: string }[] | [];
+  groupList: groupDataType[];
 }
 const initalGroupState: groupStateType = { groupList: [] };
 
@@ -51,6 +65,7 @@ export const groupSlice = createSlice({
     });
     builder.addCase(getGroups.fulfilled, (state, action) => {
       const { groupList } = action.payload;
+      console.log(action.payload);
       state.groupList = groupList;
     });
     builder.addCase(getGroups.rejected, (state, action) => {
