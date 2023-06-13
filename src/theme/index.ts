@@ -3,7 +3,7 @@ import  createComponents from "./createComponents";
 import createPalette  from "./createPalette";
 export function createTheme() {
   const palette = createPalette();
-  const components = createComponents({ palette });
+  const components = createComponents();
   return createMuiTheme({
     palette,
     components,
