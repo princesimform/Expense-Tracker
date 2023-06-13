@@ -1,5 +1,7 @@
 import React, {
+  ComponentType,
   ReactComponentElement,
+  ReactElement,
   ReactNode,
   useEffect,
   useState,
@@ -13,12 +15,14 @@ import { styled } from "@mui/material";
 import Sidenav from "../layouts/Sidenav";
 import { useDispatch } from "react-redux";
 import { getGroups } from "../redux/groupSlice";
+import { GeneralPropType } from "../routes/AuthRoutes";
 interface PropType {
-  component: ReactNode;
+  component: React.ComponentType;
 }
 
 function AuthGuards({ component }: PropType) {
   const [status, setStatus] = useState<boolean>(false);
+  const [userData, setUserData] = useState<User>();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   async function getAllGroups() {
@@ -51,22 +55,23 @@ function AuthGuards({ component }: PropType) {
 
   const checkToken = async () => {
     console.log("i am checking your token");
-    
+
     try {
       if (typeof AuthService.getProfile != "boolean") {
         const user: User = await AuthService.getProfile(true);
         if (!user) {
           navigate(`/login`);
         } else {
+          setStatus(true);
+          setUserData(user);
         }
-        setStatus(true);
       }
     } catch (error) {
       navigate(`/login`);
     }
   };
   const [openNav, setOpenNav] = useState(false);
-
+  const Component: ComponentType<GeneralPropType> = component;
   return status ? (
     <React.Fragment>
       <Box className="my-container">
@@ -75,7 +80,9 @@ function AuthGuards({ component }: PropType) {
           <Navbar onNavOpen={() => setOpenNav(true)} />
         </Box>
         <LayoutRoot>
-          <LayoutContainer>{component}</LayoutContainer>
+          <LayoutContainer>
+            {userData && <Component userData={userData} />}
+          </LayoutContainer>
         </LayoutRoot>
       </Box>
     </React.Fragment>

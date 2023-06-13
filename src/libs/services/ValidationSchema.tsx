@@ -51,3 +51,12 @@ export const AddMemberFormSchema = yup.object({
     .required("Email is required")
     .email("Enter valid email address"),
 });
+
+export const AddExpenseFormSchema = yup.object({
+  select_friends: yup.string().required("reduired"),
+  expense_file: yup.string(),
+  expense_description: yup.string(),
+  expense_amount: yup.number().required("reduired"),
+  currency_type: yup.string().required("reduired"),
+  paid_by: yup.string().required("reduired"),
+});

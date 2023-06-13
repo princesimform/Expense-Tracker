@@ -39,6 +39,7 @@ import { Field, Formik } from "formik";
 import { AddMemberFormSchema } from "../../libs/services/ValidationSchema";
 import * as yup from "yup";
 import AddExpenseForm from "../expanse/AddExpanseForm";
+import { GeneralPropType } from "../../routes/AuthRoutes";
 interface TabPanelProps {
   children?: React.ReactNode;
   index: number;
@@ -145,8 +146,8 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 interface formFieldType {
   new_member: string;
 }
-
-function GroupDetails() {
+interface PropType extends GeneralPropType {}
+function GroupDetails({ userData }: PropType) {
   const [tabNumber, setTabNumber] = useState(0);
   const [openDialog, setOpenDialog] = useState(false);
   const { id } = useParams();
@@ -168,7 +169,7 @@ function GroupDetails() {
     return Newdata[0];
   });
 
-  const [groupMembers, setGroupMember] = useState<string[]>(
+  const [groupMembers, setGroupMembers] = useState<string[]>(
     groupData.member_list
   );
   const handleTab = (event: React.SyntheticEvent, newValue: number) => {
@@ -204,7 +205,7 @@ function GroupDetails() {
     const reqData: groupDataType = JSON.parse(JSON.stringify(groupData));
     reqData.member_list = [...groupMembers, values.new_member];
     await dispatch(updateData(reqData));
-    setGroupMember((prev) => [...prev, values.new_member]);
+    setGroupMembers((prev) => [...prev, values.new_member]);
     values.new_member = "";
   };
 
@@ -220,54 +221,54 @@ function GroupDetails() {
     console.log(reqData.member_list);
 
     await dispatch(updateData(reqData));
-    setGroupMember(new_member_list);
+    setGroupMembers(new_member_list);
   };
   return (
     <>
-      <Box className='group-detail-page' padding='16px'>
+      <Box className="group-detail-page" padding="16px">
         <Box
-          display='flex'
-          alignItems='center'
-          justifyContent='space-between'
-          className='groups-page-heading'
+          display="flex"
+          alignItems="center"
+          justifyContent="space-between"
+          className="groups-page-heading"
         >
-          <Box display='flex' alignItems='center'>
-            <Avatar alt='sdf' src={groupData.group_image} />
+          <Box display="flex" alignItems="center">
+            <Avatar alt="sdf" src={groupData.group_image} />
             <Typography
-              className='groups-page-title'
-              variant='h4'
-              textAlign='left'
+              className="groups-page-title"
+              variant="h4"
+              textAlign="left"
             >
               {groupData.name}
             </Typography>
           </Box>
           <Box>
-            <AddExpenseForm FriendsList={groupData.member_list} />
+            <AddExpenseForm FriendsList={groupMembers} />
             <GroupForm groupData={groupData} />
           </Box>
         </Box>
-        <Divider className='group-title-divider' />
+        <Divider className="group-title-divider" />
         <Stack>
           <Grid container spacing={3}>
             <Grid item xs={12} sm={12} lg={6}>
-              <Typography className='group-expense-heading' variant='h6'>
+              <Typography className="group-expense-heading" variant="h6">
                 Expenses
               </Typography>
 
-              <Box className='group-tab-box'>
+              <Box className="group-tab-box">
                 <Tabs
                   value={tabNumber}
                   onChange={handleTab}
-                  aria-label='basic tabs example'
+                  aria-label="basic tabs example"
                 >
-                  <Tab label='Active' {...a11yProps(0)} />
-                  <Tab label='Settled' {...a11yProps(1)} />
+                  <Tab label="Active" {...a11yProps(0)} />
+                  <Tab label="Settled" {...a11yProps(1)} />
                 </Tabs>
               </Box>
               <GroupExpense value={tabNumber} index={0}>
                 <Paper sx={{ width: "100%", overflow: "hidden" }}>
                   <TableContainer sx={{ maxHeight: 440 }}>
-                    <Table stickyHeader aria-label='sticky table'>
+                    <Table stickyHeader aria-label="sticky table">
                       <TableBody>
                         {/* {rows
                           .slice(
@@ -276,7 +277,7 @@ function GroupDetails() {
                           )
                           .map((row) => {
                             return ( */}
-                        <TableRow hover role='checkbox' tabIndex={-1} key={1}>
+                        <TableRow hover role="checkbox" tabIndex={-1} key={1}>
                           <TableCell
                             key={1}
                             // align={column.align}
@@ -287,12 +288,12 @@ function GroupDetails() {
                                         : value} */}
                             <Box>
                               <Typography
-                                variant='h6'
-                                fontWeight='bold'
-                                className='group-expanse-name'
+                                variant="h6"
+                                fontWeight="bold"
+                                className="group-expanse-name"
                               >
                                 Rent
-                                <Typography className='group-expanse-amount'>
+                                <Typography className="group-expanse-amount">
                                   $999.00
                                 </Typography>
                               </Typography>
@@ -300,12 +301,12 @@ function GroupDetails() {
                           </TableCell>
                           <TableCell key={2}>
                             <Box>
-                              <Typography fontWeight='bold'>
-                                <span className='text-slate-500'>Paid by </span>
+                              <Typography fontWeight="bold">
+                                <span className="text-slate-500">Paid by </span>
                                 Demo3
                               </Typography>
                               <Typography>
-                                <span className='text-slate-500 font-bold'>
+                                <span className="text-slate-500 font-bold">
                                   on{" "}
                                 </span>
                                 Sun, 19 Jun 2022
@@ -313,9 +314,9 @@ function GroupDetails() {
                             </Box>
                           </TableCell>
                           <TableCell key={3}>
-                            <Box color='red'>
+                            <Box color="red">
                               <Typography>You Owe</Typography>
-                              <Typography fontWeight='bold'>$333.00</Typography>
+                              <Typography fontWeight="bold">$333.00</Typography>
                             </Box>
                           </TableCell>
                           <TableCell key={4}>
@@ -331,7 +332,7 @@ function GroupDetails() {
                                   );
                                 })} */}
                         </TableRow>
-                        <TableRow hover role='checkbox' tabIndex={-1} key={2}>
+                        <TableRow hover role="checkbox" tabIndex={-1} key={2}>
                           <TableCell
                             key={1}
                             // align={column.align}
@@ -342,12 +343,12 @@ function GroupDetails() {
                                         : value} */}
                             <Box>
                               <Typography
-                                variant='h6'
-                                fontWeight='bold'
-                                className='group-expanse-name'
+                                variant="h6"
+                                fontWeight="bold"
+                                className="group-expanse-name"
                               >
                                 Rent
-                                <Typography className='group-expanse-amount'>
+                                <Typography className="group-expanse-amount">
                                   $999.00
                                 </Typography>
                               </Typography>
@@ -355,12 +356,12 @@ function GroupDetails() {
                           </TableCell>
                           <TableCell key={2}>
                             <Box>
-                              <Typography fontWeight='bold'>
-                                <span className='text-slate-500'>Paid by </span>
+                              <Typography fontWeight="bold">
+                                <span className="text-slate-500">Paid by </span>
                                 Demo3
                               </Typography>
                               <Typography>
-                                <span className='text-slate-500 font-bold'>
+                                <span className="text-slate-500 font-bold">
                                   on{" "}
                                 </span>
                                 Sun, 19 Jun 2022
@@ -368,9 +369,9 @@ function GroupDetails() {
                             </Box>
                           </TableCell>
                           <TableCell key={3}>
-                            <Box color='green'>
+                            <Box color="green">
                               <Typography>You Owe</Typography>
-                              <Typography fontWeight='bold'>$333.00</Typography>
+                              <Typography fontWeight="bold">$333.00</Typography>
                             </Box>
                           </TableCell>
                           <TableCell key={4}>
@@ -425,7 +426,7 @@ function GroupDetails() {
               <GroupExpense value={tabNumber} index={1}>
                 <Paper sx={{ width: "100%", overflow: "hidden" }}>
                   <TableContainer sx={{ maxHeight: 440 }}>
-                    <Table stickyHeader aria-label='sticky table'>
+                    <Table stickyHeader aria-label="sticky table">
                       <TableBody>
                         {/* {rows
                           .slice(
@@ -434,7 +435,7 @@ function GroupDetails() {
                           )
                           .map((row) => {
                             return ( */}
-                        <TableRow hover role='checkbox' tabIndex={-1} key={1}>
+                        <TableRow hover role="checkbox" tabIndex={-1} key={1}>
                           <TableCell
                             key={1}
                             // align={column.align}
@@ -445,12 +446,12 @@ function GroupDetails() {
                                         : value} */}
                             <Box>
                               <Typography
-                                variant='h6'
-                                fontWeight='bold'
-                                className='group-expanse-name'
+                                variant="h6"
+                                fontWeight="bold"
+                                className="group-expanse-name"
                               >
                                 Rent
-                                <Typography className='group-expanse-amount'>
+                                <Typography className="group-expanse-amount">
                                   $999.00
                                 </Typography>
                               </Typography>
@@ -458,12 +459,12 @@ function GroupDetails() {
                           </TableCell>
                           <TableCell key={2}>
                             <Box>
-                              <Typography fontWeight='bold'>
-                                <span className='text-slate-500'>Paid by </span>
+                              <Typography fontWeight="bold">
+                                <span className="text-slate-500">Paid by </span>
                                 Demo3
                               </Typography>
                               <Typography>
-                                <span className='text-slate-500 font-bold'>
+                                <span className="text-slate-500 font-bold">
                                   on{" "}
                                 </span>
                                 Sun, 19 Jun 2022
@@ -471,9 +472,9 @@ function GroupDetails() {
                             </Box>
                           </TableCell>
                           <TableCell key={3}>
-                            <Box color='green'>
+                            <Box color="green">
                               <Typography>You Owe</Typography>
-                              <Typography fontWeight='bold'>$333.00</Typography>
+                              <Typography fontWeight="bold">$333.00</Typography>
                             </Box>
                           </TableCell>
                           <TableCell key={4}>
@@ -509,7 +510,7 @@ function GroupDetails() {
             </Grid>
             <Grid item xs={12} sm={12} lg={6}>
               <Box>
-                <Typography className='group-expense-heading' variant='h6'>
+                <Typography className="group-expense-heading" variant="h6">
                   Add Member
                 </Typography>
                 <Formik
@@ -542,9 +543,9 @@ function GroupDetails() {
                         <Grid item xs={12} sm={9} lg={9}>
                           <Field
                             fullWidth
-                            size='small'
-                            name='new_member'
-                            type='email'
+                            size="small"
+                            name="new_member"
+                            type="email"
                             as={TextField}
                             error={
                               Boolean(errors.new_member) &&
@@ -556,7 +557,7 @@ function GroupDetails() {
                           />
                         </Grid>
                         <Grid item xs={12} sm={3} lg={3}>
-                          <Button type='submit' fullWidth>
+                          <Button type="submit" fullWidth>
                             Add
                           </Button>
                         </Grid>
@@ -568,64 +569,56 @@ function GroupDetails() {
 
               <Paper sx={{ marginTop: 4 }}>
                 <TableContainer component={Paper}>
-                  <Table aria-label='customized table'>
+                  <Table aria-label="customized table">
                     <TableHead>
                       <TableRow>
                         <StyledTableCell>
-                          <Typography variant='h6' fontWeight='bold'>
+                          <Typography variant="h6" fontWeight="bold">
                             Members
                           </Typography>
                         </StyledTableCell>
                       </TableRow>
                     </TableHead>
                     <TableBody>
-                      {groupMembers.length > 0 ? (
+                      {groupMembers &&
+                        groupMembers.length > 0 &&
                         groupMembers.map((member, index) => (
                           <StyledTableRow key={index}>
-                            <StyledTableCell component='th' scope='row'>
+                            <StyledTableCell component="th" scope="row">
                               <Stack
-                                display='flex'
-                                flexDirection='row'
-                                justifyContent='space-between'
+                                display="flex"
+                                flexDirection="row"
+                                justifyContent="space-between"
                               >
                                 <Typography>{member}</Typography>
-                                <Box
-                                  color='red'
-                                  onClick={() => DeleteMemberFromList(index)}
-                                >
-                                  <DeleteForeverOutlined />
-                                </Box>
+                                {userData && userData?.email == member ? (
+                                  <></>
+                                ) : (
+                                  <Box
+                                    color="red"
+                                    onClick={() => DeleteMemberFromList(index)}
+                                  >
+                                    <DeleteForeverOutlined />
+                                  </Box>
+                                )}
                               </Stack>
                             </StyledTableCell>
                           </StyledTableRow>
-                        ))
-                      ) : (
-                        <StyledTableRow key={"no data"}>
-                          <StyledTableCell component='th' scope='row'>
-                            <Stack
-                              display='flex'
-                              flexDirection='row'
-                              justifyContent='space-between'
-                            >
-                              <Typography>No Data Found</Typography>
-                            </Stack>
-                          </StyledTableCell>
-                        </StyledTableRow>
-                      )}
+                        ))}
                     </TableBody>
                   </Table>
                 </TableContainer>
               </Paper>
             </Grid>
             <Grid item xs={12} sm={12} lg={6}>
-              <Box padding={1} border='2px dashed red'>
-                <Typography variant='h6' fontWeight='bold' textAlign='left'>
+              <Box padding={1} border="2px dashed red">
+                <Typography variant="h6" fontWeight="bold" textAlign="left">
                   Danger Zone
                 </Typography>
                 <Box margin={1}>
                   <Button
                     fullWidth
-                    color='error'
+                    color="error"
                     onClick={() => setOpenDialog(true)}
                   >
                     Delete Group
@@ -634,14 +627,14 @@ function GroupDetails() {
                   <Dialog
                     open={openDialog}
                     onClose={() => setOpenDialog(false)}
-                    aria-labelledby='alert-dialog-title'
-                    aria-describedby='alert-dialog-description'
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description"
                   >
-                    <DialogTitle id='alert-dialog-title'>
+                    <DialogTitle id="alert-dialog-title">
                       {"Are You Sure?"}
                     </DialogTitle>
                     <DialogContent>
-                      <DialogContentText id='alert-dialog-description'>
+                      <DialogContentText id="alert-dialog-description">
                         We Are Delete Your all transaction which are done in
                         this group
                       </DialogContentText>

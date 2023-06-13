@@ -11,16 +11,19 @@ import {
 import UserImg from "./../../assets/avatar.jpg";
 import { groupDataType } from "../../redux/groupSlice";
 import { useNavigate } from "react-router-dom";
-
-function GroupCard({ groupItem }: { groupItem: groupDataType }) {
-  const nevagite = useNavigate();
+import { GeneralPropType } from "../../routes/AuthRoutes";
+interface PropType extends GeneralPropType {
+  groupItem: groupDataType;
+}
+function GroupCard({ groupItem, userData }: PropType) {
+  const navigate = useNavigate();
 
   return (
     <>
       <Card
         className="group-card"
         elevation={3}
-        onClick={() => nevagite(`/group/${groupItem.id}`)}
+        onClick={() => navigate(`/group/${groupItem.id}`)}
       >
         <CardContent>
           <Stack display="flex" alignItems="flex-start" direction="row">

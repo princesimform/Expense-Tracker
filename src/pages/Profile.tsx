@@ -3,8 +3,9 @@ import { Box } from "@mui/system";
 import { Auth, getAuth, User } from "firebase/auth";
 import React, { useEffect, useState } from "react";
 import AuthService from "../libs/services/firebase/auth";
-
-function Profile() {
+import { GeneralPropType } from "../routes/AuthRoutes";
+interface PropType extends GeneralPropType {}
+function Profile({userData} : PropType) {
   const [ProfileData, setProfileData] = useState<User | null>();
 
   const getUserData = async () => {

@@ -26,6 +26,7 @@ import { useSnackbar } from "notistack";
 import { useNavigate } from "react-router-dom";
 import AuthService from "../../libs/services/firebase/auth";
 import useToggle from "../../customHooks/useToggle";
+import { GeneralPropType } from "../../routes/AuthRoutes";
 const style = {
   position: "absolute" as "absolute",
   top: "50%",
@@ -40,8 +41,11 @@ interface formDataType {
   name: string;
   group_image: string;
 }
+interface PropsType extends GeneralPropType {
+  groupData?: groupDataType;
+}
 
-function GroupForm({ groupData }: { groupData?: groupDataType }) {
+function GroupForm({ groupData, userData }: PropsType) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
@@ -112,7 +116,7 @@ function GroupForm({ groupData }: { groupData?: groupDataType }) {
         admin_user_id: userData.uid,
         admin_user_name: userData.displayName,
         created_at: createdAtTime,
-        member_list: [],
+        member_list: [`${userData?.email}`],
       };
       try {
         const dataId = await dispatch(setData(req_data));
@@ -136,8 +140,8 @@ function GroupForm({ groupData }: { groupData?: groupDataType }) {
     <>
       <Button onClick={() => toggle("isModleOpen")}>{buttonValue}</Button>
       <Modal
-        aria-labelledby='transition-modal-title'
-        aria-describedby='transition-modal-description'
+        aria-labelledby="transition-modal-title"
+        aria-describedby="transition-modal-description"
         open={toggles.isModleOpen}
         // onClose={handleModleToggle}
         closeAfterTransition
@@ -151,10 +155,10 @@ function GroupForm({ groupData }: { groupData?: groupDataType }) {
         <Fade in={toggles.isModleOpen}>
           <Box sx={style}>
             <Typography
-              id='transition-modal-title'
-              variant='h5'
+              id="transition-modal-title"
+              variant="h5"
               sx={{ textAlign: "center", mb: 2 }}
-              component='h2'
+              component="h2"
             >
               {groupData ? "Update Group" : "Create Group"}
             </Typography>
@@ -168,22 +172,22 @@ function GroupForm({ groupData }: { groupData?: groupDataType }) {
               {({ handleSubmit, errors, isValid, touched, setFieldValue }) => (
                 <Form onSubmit={handleSubmit}>
                   <InputLabel
-                    htmlFor='group-image'
-                    className='m-auto flex w-fit text-center'
+                    htmlFor="group-image"
+                    className="m-auto flex w-fit text-center"
                     sx={{ mb: 2 }}
                   >
                     <Field
                       style={{ display: "none" }}
-                      id='group-image'
-                      name='group_image'
-                      type='file'
+                      id="group-image"
+                      name="group_image"
+                      type="file"
                       value={undefined}
                       onChange={(event: ChangeEvent<HTMLInputElement>) =>
                         handleFileInputChange(event, setFieldValue)
                       }
                     />
                     <Avatar
-                      alt='Remy Sharp'
+                      alt="Remy Sharp"
                       src={
                         GroupProfileimage
                           ? hasOldIamge
@@ -200,11 +204,11 @@ function GroupForm({ groupData }: { groupData?: groupDataType }) {
                     />
                   </InputLabel>
                   <Field
-                    name='name'
-                    type='text'
-                    variant='outlined'
-                    color='primary'
-                    label='Full Name'
+                    name="name"
+                    type="text"
+                    variant="outlined"
+                    color="primary"
+                    label="Full Name"
                     fullWidth
                     sx={{ mb: 2 }}
                     as={TextField}
@@ -217,16 +221,16 @@ function GroupForm({ groupData }: { groupData?: groupDataType }) {
                   >
                     {groupData ? (
                       <Button
-                        type='submit'
-                        variant='contained'
+                        type="submit"
+                        variant="contained"
                         disabled={!isValid}
                       >
                         {buttonValue}
                       </Button>
                     ) : (
                       <Button
-                        type='submit'
-                        variant='contained'
+                        type="submit"
+                        variant="contained"
                         disabled={!isValid}
                       >
                         Create Group
@@ -234,7 +238,7 @@ function GroupForm({ groupData }: { groupData?: groupDataType }) {
                     )}
 
                     <Button
-                      variant='contained'
+                      variant="contained"
                       onClick={() => toggle("isModleOpen")}
                     >
                       Cancle
