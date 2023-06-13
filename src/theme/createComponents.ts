@@ -151,7 +151,9 @@ const createComponents = () => {
           "&.groups-page-heading": {
             marginRight: "16px",
           },
-          "&.group-detail-page": {
+          "&.group-detail-page": {},
+          "&.page-not-found": {
+            margin: "auto",
           },
         },
       },

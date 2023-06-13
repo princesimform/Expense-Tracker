@@ -1,10 +1,33 @@
-import React from 'react'
+import { Avatar, Typography } from "@mui/material";
+import { Box } from "@mui/system";
+import { Auth, getAuth, User } from "firebase/auth";
+import React, { useEffect, useState } from "react";
+import AuthService from "../libs/services/firebase/auth";
 
 function Profile() {
-  
+  const [ProfileData, setProfileData] = useState<User | null>();
+
+  const getUserData = async () => {
+    const fauth: Auth = await getAuth();
+    setProfileData(fauth.currentUser);
+    return fauth.currentUser;
+  };
+  useEffect(() => {
+    getUserData();
+  }, []);
   return (
-    <div>Profile</div>
-  )
+    <Box>
+      {ProfileData != null ? (
+        <Box>
+          {ProfileData.photoURL ? <img src={ProfileData.photoURL} /> : <></>}
+
+          <Typography>Gata Are Here</Typography>
+        </Box>
+      ) : (
+        <Box>No Data Avaliable</Box>
+      )}
+    </Box>
+  );
 }
 
-export default Profile
+export default Profile;

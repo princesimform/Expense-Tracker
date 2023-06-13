@@ -18,6 +18,8 @@ export const setData: any = createAsyncThunk(
 export const updateData: any = createAsyncThunk(
   "firestore/setData",
   async (data) => {
+    console.log("data with member");
+    console.log(data);
     const docId = await FirestoreService.updateDataToFirestore(data, "groups");
     return { docId };
   }
@@ -46,6 +48,7 @@ export interface groupDataType {
   created_at: string;
   admin_user_id: string;
   admin_user_name: string;
+  member_list: string[] | [];
 }
 export interface groupStateType {
   groupList: groupDataType[];

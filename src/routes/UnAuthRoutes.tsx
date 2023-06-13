@@ -1,5 +1,6 @@
 import React, { lazy, ReactNode } from "react";
 import { Route } from "react-router-dom";
+import PageNotFound from "../pages/PageNotFound";
 
 const UnAuthGuard = lazy(() => import("./../guard/UnAuthGuard"));
 const HomePage = lazy(() => import("./../pages/HomePage"));

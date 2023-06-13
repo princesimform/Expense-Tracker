@@ -50,6 +50,8 @@ function AuthGuards({ component }: PropType) {
   });
 
   const checkToken = async () => {
+    console.log("i am checking your token");
+    
     try {
       if (typeof AuthService.getProfile != "boolean") {
         const user: User = await AuthService.getProfile(true);

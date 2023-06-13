@@ -98,7 +98,7 @@ FirestoreService!.deleteDataToFirestore = async (
         });
     } else {
       console.log("i am From ele deprt");
-      
+
       deleteDoc(docRef)
         .then(() => {
           resolve({ status: true, message: "Deleted Successfully" });
@@ -127,6 +127,7 @@ FirestoreService!.getGroups = async () => {
       created_at: GroupAllData.created_at,
       admin_user_id: GroupAllData.admin_user_id,
       admin_user_name: GroupAllData.admin_user_name,
+      member_list: GroupAllData.member_list,
     };
     data.push(GroupData);
   });

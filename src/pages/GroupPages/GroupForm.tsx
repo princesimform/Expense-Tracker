@@ -105,11 +105,14 @@ function GroupForm({ groupData }: { groupData?: groupDataType }) {
       const userData = await AuthService.getProfile();
       const createdAtTime =
         date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
-      const req_data = {
-        ...values,
+      const req_data: groupDataType = {
+        id: "",
+        name: values.name,
+        group_image: values.group_image,
         admin_user_id: userData.uid,
         admin_user_name: userData.displayName,
         created_at: createdAtTime,
+        member_list: [],
       };
       try {
         const dataId = await dispatch(setData(req_data));

@@ -1,5 +1,5 @@
 import React, { Suspense } from "react";
-import { BrowserRouter, Routes } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import UnAuthRoutes from "./routes/UnAuthRoutes";
 import AuthRoutes from "./routes/AuthRoutes";
 import { Provider } from "react-redux";
@@ -7,6 +7,7 @@ import store from "./redux/store";
 import ErrorBoundary from "./components/ErrorBoundary";
 import Loader from "./components/Loader";
 import "./App.css";
+import PageNotFound from "./pages/PageNotFound";
 const renderLoader = () => <p>Loading</p>;
 
 function App() {
@@ -18,6 +19,8 @@ function App() {
             <Routes>
               {AuthRoutes}
               {UnAuthRoutes}
+              <Route path='/something-went-wrong' element={<PageNotFound />} />
+              <Route path='*' element={<PageNotFound />} />
             </Routes>
           </BrowserRouter>
         </Provider>
