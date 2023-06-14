@@ -53,10 +53,11 @@ export const AddMemberFormSchema = yup.object({
 });
 
 export const AddExpenseFormSchema = yup.object({
-  select_friends: yup.string().required("reduired"),
-  expense_file: yup.string(),
-  expense_description: yup.string(),
-  expense_amount: yup.number().required("reduired"),
-  currency_type: yup.string().required("reduired"),
-  paid_by: yup.string().required("reduired"),
+  // select_friends: yup.object().required("reduired"),
+  // expense_file: yup,
+  // expense_description: yup.string(),
+  // expense_amount: yup.number().required("reduired"),
+  // currency_type: yup.string().required("reduired"),
+  // paid_by: yup.string().required("reduired"),
+  // expense_date: yup.date().required("Please select a date"),
 });

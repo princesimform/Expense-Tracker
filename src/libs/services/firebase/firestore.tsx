@@ -9,6 +9,7 @@ import {
   getDoc,
   getDocs,
   getFirestore,
+  onSnapshot,
   query,
   updateDoc,
   where,
@@ -115,9 +116,9 @@ FirestoreService!.getGroups = async () => {
     collection(firestore, "groups"),
     where("admin_user_id", "==", user.uid)
   );
+  let data: groupDataType[] = [];
 
   const GroupSnap = await getDocs(groupQuery);
-  const data: groupDataType[] = [];
   await GroupSnap.forEach((doc) => {
     const GroupAllData = doc.data();
     const GroupData = {
@@ -132,6 +133,27 @@ FirestoreService!.getGroups = async () => {
     data.push(GroupData);
   });
 
+  // await onSnapshot(groupQuery, (querySnapshot) => {
+  //   const data: groupDataType[] = [];
+  //   querySnapshot.forEach((doc) => {
+  //     const GroupAllData = doc.data();
+
+  //     const GroupData = {
+  //       id: GroupAllData.id,
+  //       name: GroupAllData.name,
+  //       group_image: GroupAllData.group_image,
+  //       created_at: GroupAllData.created_at,
+  //       admin_user_id: GroupAllData.admin_user_id,
+  //       admin_user_name: GroupAllData.admin_user_name,
+  //       member_list: GroupAllData.member_list,
+  //     };
+  //     data.push(GroupData);
+  //   });
+
+  //   Groupdata = data;
+  // });
+
   return data;
+  
 };
 export default FirestoreService;

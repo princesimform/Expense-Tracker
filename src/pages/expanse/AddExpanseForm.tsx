@@ -1,47 +1,42 @@
-import React, { ChangeEvent, ReactNode, useEffect, useState } from "react";
+import React, { ChangeEvent, SyntheticEvent, useEffect, useState } from "react";
 import {
   Autocomplete,
+  AutocompleteChangeDetails,
+  AutocompleteChangeReason,
+  AutocompleteRenderGroupParams,
   Avatar,
   Backdrop,
   Box,
   Button,
-  Chip,
-  Divider,
+  Container,
   Fade,
   FormControl,
   Grid,
   InputLabel,
   MenuItem,
   Modal,
-  OutlinedInput,
-  Paper,
   Select,
   SelectChangeEvent,
-  TextField,
   Theme,
   Typography,
   useTheme,
 } from "@mui/material";
-import AddIcon from "@mui/icons-material/Add";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  getGroups,
-  groupDataType,
-  setData,
-  updateData,
-} from "../../redux/groupSlice";
-import AddGroupImg from "./../../assets/add_group.png";
-import { Field, Form, Formik } from "formik";
-import {
-  AddExpenseFormSchema,
-  AddGroupSchema,
-} from "../../libs/services/ValidationSchema";
-import { useSnackbar } from "notistack";
-import { useNavigate } from "react-router-dom";
-import AuthService from "../../libs/services/firebase/auth";
+import { useSelector } from "react-redux";
+
+import { Field, FieldProps, Form, Formik } from "formik";
+import { AddExpenseFormSchema } from "../../libs/services/ValidationSchema";
 import useToggle from "../../customHooks/useToggle";
 import { Rootstate } from "../../redux/store";
 import { Assignment } from "@mui/icons-material";
+import { GroupHeader, GroupItems } from "../../components/CustomStyled";
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { DemoContainer, DemoItem } from "@mui/x-date-pickers/internals/demo";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import dayjs from "dayjs";
+import { GeneralPropType } from "../../routes/AuthRoutes";
+import TextField from "../../components/FormUI/TextField";
+import TextfieldWrapper from "../../components/FormUI/TextField";
 const style = {
   position: "absolute" as "absolute",
   top: "50%",
@@ -53,93 +48,159 @@ const style = {
   p: 4,
 };
 
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
-const MenuProps = {
-  PaperProps: {
-    style: {
-      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      width: 250,
-    },
-  },
+type ListOptionType = {
+  label: string;
+  value: string;
+  group: string;
 };
 
-function getStyles(
-  name: string,
-  selectedFriends: readonly string[],
-  theme: Theme
-) {
-  return {
-    fontWeight:
-      selectedFriends.indexOf(name) === -1
-        ? theme.typography.fontWeightRegular
-        : theme.typography.fontWeightMedium,
-  };
+interface FormDataType {
+  select_friends: string[] | null;
+  expense_file: File | null;
+  expense_description: string;
+  expense_amount: number;
+  currency_type: string;
+  paid_by: string;
+  expense_date: Date | null;
 }
 
-function AddExpenseForm({ FriendsList }: { FriendsList: string[] }) {
-  const theme = useTheme();
-  const [selectedFriends, setSelectedFriends] = useState<string[]>([]);
+interface PropType extends GeneralPropType {
+  FriendsList: string[];
+}
+function AddExpenseForm({ FriendsList, userData }: PropType) {
   const { groupList } = useSelector((state: Rootstate) => state.groupReducer);
-  const [friendsSelectList, setFriendsSelectList] = useState<string[]>([]);
-  const [toggles, toggle] = useToggle({
-    isModleOpen: false,
-  });
-
-  const [formValues, setFormValues] = useState({
-    select_friends: "",
-    expense_file: "",
+  const [paidByList, setPaidByList] = useState<string[]>([]);
+  const [formValues, setFormValues] = useState<FormDataType>({
+    select_friends: null,
+    expense_file: null,
     expense_description: "",
     expense_amount: 0,
     currency_type: "",
     paid_by: "",
+    expense_date: null,
   });
+  var today = new Date();
+  const dd = String(today.getDate()).padStart(2, "0");
+  const mm = String(today.getMonth() + 1).padStart(2, "0");
+  const year = today.getFullYear();
+  const currentDate = year + "/" + mm + "/" + dd;
+  const [toggles, toggle] = useToggle({
+    isModleOpen: false,
+  });
+  const [listOptions, setListOptions] = useState<ListOptionType[]>([]);
+  let tempFriendsSelectList: ListOptionType[] = [];
+  let tempGroupsList: string[] = [];
+  let tempFriendsList: string[] = [];
+  const buttonValue = "Create";
+  const reader = new FileReader();
 
-  function updateList() {
-    let tempFriendsSelectList = [];
-    tempFriendsSelectList[0] = "No Data";
-    console.log(" i am Updating Your List");
+  const renderGroup = (params: AutocompleteRenderGroupParams) => [
+    <li key={params.key} style={{ marginLeft: "10px" }}>
+      <GroupHeader>{params.group}</GroupHeader>
+      <GroupItems>{params.children}</GroupItems>
+    </li>,
+    ,
+  ];
+
+  function updateListOptions() {
     groupList.map((group) => {
-      tempFriendsSelectList.unshift(group.name);
+      tempGroupsList.push(group.name);
       group.member_list!.map((member) => {
-        tempFriendsSelectList.push(member);
+        tempFriendsList.push(member);
       });
     });
     FriendsList.map((firend) => {
-      tempFriendsSelectList.push(firend);
+      tempFriendsList.push(firend);
     });
-    tempFriendsSelectList = tempFriendsSelectList.filter(
-      (val, id, tempFriendsSelectList) =>
-        tempFriendsSelectList.indexOf(val) == id
+    tempGroupsList = tempGroupsList.filter(
+      (val, id, tempGroupsList) => tempGroupsList.indexOf(val) == id
     );
-    setFriendsSelectList(tempFriendsSelectList);
+    tempFriendsList = tempFriendsList.filter(
+      (val, id, tempFriendsList) => tempFriendsList.indexOf(val) == id
+    );
+    userData?.email &&
+      tempFriendsList.splice(tempFriendsList.indexOf(userData?.email), 1);
+
+    tempGroupsList.map((groupName) => {
+      tempFriendsSelectList.push({
+        label: groupName,
+        value: groupName,
+        group: "group",
+      });
+    });
+    tempFriendsList.map((friendName) => {
+      tempFriendsSelectList.push({
+        label: friendName,
+        value: friendName,
+        group: "friend",
+      });
+    });
+    setListOptions(tempFriendsSelectList);
   }
 
   useEffect(() => {
-    updateList();
-    console.log(" i am Updating");
+    updateListOptions();
   }, [toggles]);
 
-  const buttonValue = "Create";
-
-  const handleChange = (event: SelectChangeEvent<typeof selectedFriends>) => {
-    const {
-      target: { value },
-    } = event;
-    setSelectedFriends(typeof value === "string" ? value.split(",") : value);
+  const onSelectListOptions = async (
+    e: SyntheticEvent<Element, Event>,
+    value: ListOptionType[],
+    reason: AutocompleteChangeReason,
+    setFieldValue: Function,
+    details?: AutocompleteChangeDetails<ListOptionType>
+  ) => {
+    const selectedFriends = await updatePaidByList(value);
+    setFieldValue("select_friends", selectedFriends);
   };
 
-  const handlesubmit = (values: any) => {};
-  const handleFileInputChange = (
+  const updatePaidByList = async (ListData: ListOptionType[]) => {
+    tempFriendsList = [];
+    ListData.map((item) => {
+      if (item.group == "group") {
+        groupList.map((group) => {
+          if (group.name == item.value) {
+            group.member_list.map((member) => {
+              tempFriendsList.push(member);
+            });
+            return;
+          }
+        });
+      } else {
+        tempFriendsList.push(item.value);
+      }
+    });
+    tempFriendsList = tempFriendsList.filter(
+      (val, id, tempFriendsList) => tempFriendsList.indexOf(val) == id
+    );
+
+    userData?.email &&
+      tempFriendsList.indexOf(userData?.email) >= 0 &&
+      tempFriendsList.splice(tempFriendsList.indexOf(userData?.email), 1);
+    setPaidByList(tempFriendsList);
+
+    return tempFriendsList;
+  };
+  const handlesubmit = (values: FormDataType) => {
+    console.log(values);
+  };
+  const handleInputChange = (
     e: ChangeEvent<HTMLInputElement>,
     setFieldValue: Function
-  ) => {};
+  ) => {
+    if (e.target.files != null && e.target.files[0]) {
+      setFormValues((perv) => ({ ...perv, expense_file: e.target.files![0] }));
+      setFieldValue("expense_file", e.target.files[0]);
+    } else {
+      setFieldValue(e.target.name, Number(e.target.value));
+    }
+  };
+
   return (
     <>
       <Button onClick={() => toggle("isModleOpen")}>{buttonValue}</Button>
       <Modal
-        aria-labelledby="transition-modal-title"
-        aria-describedby="transition-modal-description"
+        aria-labelledby='transition-modal-title'
+        aria-describedby='transition-modal-description'
         open={toggles.isModleOpen}
         // onClose={handleModleToggle}
         closeAfterTransition
@@ -153,10 +214,10 @@ function AddExpenseForm({ FriendsList }: { FriendsList: string[] }) {
         <Fade in={toggles.isModleOpen}>
           <Box sx={style}>
             <Typography
-              id="transition-modal-title"
-              variant="h5"
+              id='transition-modal-title'
+              variant='h5'
               sx={{ textAlign: "center", mb: 2 }}
-              component="h2"
+              component='h2'
             >
               Create Expanse
             </Typography>
@@ -175,48 +236,22 @@ function AddExpenseForm({ FriendsList }: { FriendsList: string[] }) {
                   setFieldValue,
                 }) => (
                   <Form onSubmit={handleSubmit}>
-                    <Autocomplete
-                      multiple
-                      id="select-friends"
-                      options={friendsSelectList}
-                      getOptionLabel={(friendsSelectList) => friendsSelectList}
-                      renderInput={(params: any) => (
-                        <Field
-                          name="select_friends"
-                          as={TextField}
-                          {...params}
-                          variant="standard"
-                          sx={{ mb: 2 }}
-                          label="With You And"
-                          color="primary"
-                          placeholder="Friend of Group"
-                          error={
-                            Boolean(errors.select_friends) &&
-                            Boolean(touched.select_friends)
-                          }
-                          helperText={
-                            Boolean(touched.select_friends) &&
-                            errors.select_friends
-                          }
-                        />
-                      )}
-                      aria-required
-                    />
-                    <Grid container spacing={1}>
+                   
+                   <Grid container spacing={1}>
                       <Grid item xs={2} sm={2} lg={2}>
                         <InputLabel
-                          htmlFor="bill-image"
-                          className="m-auto flex w-fit text-center"
+                          htmlFor='bill-image'
+                          className='m-auto flex w-fit text-center'
                           sx={{ mb: 2 }}
                         >
                           <Field
                             style={{ display: "none" }}
-                            id="bill-image"
-                            name="expense_file"
-                            type="file"
+                            id='bill-image'
+                            name='expense_file'
+                            type='file'
                             value={undefined}
                             onChange={(event: ChangeEvent<HTMLInputElement>) =>
-                              handleFileInputChange(event, setFieldValue)
+                              handleInputChange(event, setFieldValue)
                             }
                             error={
                               Boolean(errors.expense_file) &&
@@ -227,149 +262,46 @@ function AddExpenseForm({ FriendsList }: { FriendsList: string[] }) {
                               errors.expense_file
                             }
                           />
-                          <Avatar sx={{ bgcolor: "primary" }}>
+                          <Avatar
+                            sx={{
+                              bgcolor: `${
+                                formValues.expense_file != null
+                                  ? "green"
+                                  : "primary"
+                              }`,
+                            }}
+                          >
                             <Assignment />
                           </Avatar>
-                          {/* <Avatar
-                        alt="Remy Sharp"
-                        // src={
-                        //   GroupProfileimage
-                        //     ? hasOldIamge
-                        //       ? GroupProfileimage
-                        //       : JSON.parse(GroupProfileimage)
-                        //     : AddGroupImg
-                        // }
-                        sx={{
-                          width: 100,
-                          height: 100,
-                          borderWidth: 2,
-                          borderColor: "primary",
-                        }}
-                      /> */}
                         </InputLabel>
                       </Grid>
                       <Grid item xs={10} sm={10} lg={10}>
-                        <Field
-                          name="expense_description"
-                          type="text"
-                          variant="outlined"
-                          color="primary"
-                          label="Description"
-                          fullWidth
-                          sx={{ mb: 2 }}
-                          as={TextField}
-                          size="small"
-                          error={
-                            Boolean(errors.expense_description) &&
-                            Boolean(touched.expense_description)
-                          }
-                          helperText={
-                            Boolean(touched.expense_description) &&
-                            errors.expense_description
-                          }
-                        />
+                            <TextfieldWrapper name="expense_description" size="small" />
                       </Grid>
                     </Grid>
-                    <Grid container spacing={1}>
-                      <Grid item xs={2} sm={2} lg={2}>
-                        <Field
-                          as={Select}
-                          labelId="demo-simple-select-label"
-                          id="demo-simple-select"
-                          label="Age"
-                          name="currency_type"
-                          size="small"
-                          error={
-                            Boolean(errors.currency_type) &&
-                            Boolean(touched.currency_type)
-                          }
-                          helperText={
-                            Boolean(touched.currency_type) &&
-                            errors.currency_type
-                          }
-                        >
-                          <MenuItem value={10}>Ten</MenuItem>
-                          <MenuItem value={20}>Twenty</MenuItem>
-                          <MenuItem value={30}>Thirty</MenuItem>
-                        </Field>
-                      </Grid>
-                      <Grid item xs={10} sm={10} lg={10}>
-                        <Field
-                          name="expense_amount"
-                          type="number"
-                          variant="outlined"
-                          color="primary"
-                          label="Amount"
-                          fullWidth
-                          sx={{ mb: 2 }}
-                          as={TextField}
-                          size="small"
-                          error={
-                            Boolean(errors.expense_amount) &&
-                            Boolean(touched.expense_amount)
-                          }
-                          helperText={
-                            Boolean(touched.expense_amount) &&
-                            errors.expense_amount
-                          }
-                        />
-                      </Grid>
-                    </Grid>
-
-                    <FormControl variant="standard" fullWidth sx={{ mb: 2 }}>
-                      <InputLabel id="demo-simple-select-filled-label">
-                        Paid by
-                      </InputLabel>
-                      <Field
-                        as={Select}
-                        labelId="demo-simple-select-label"
-                        id="demo-simple-select"
-                        label="Paid By"
-                        name="paid_by"
-                        size="small"
-                        error={
-                          Boolean(errors.paid_by) && Boolean(touched.paid_by)
-                        }
-                        helperText={Boolean(touched.paid_by) && errors.paid_by}
+                    <Box
+                      sx={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                      }}
+                    >
+                      <Button
+                        variant='contained'
+                        onClick={() => toggle("isModleOpen")}
                       >
-                        <MenuItem value={10}>Ten</MenuItem>
-                        <MenuItem value={20}>Twenty</MenuItem>
-                        <MenuItem value={30}>Thirty</MenuItem>
-                      </Field>
-                    </FormControl>
+                        Cancle
+                      </Button>
+                      <Button
+                        type='submit'
+                        variant='contained'
+                        disabled={!isValid}
+                      >
+                        Create Expense
+                      </Button>
+                    </Box>
                   </Form>
                 )}
               </Formik>
-              {/* <Autocomplete
-                multiple
-                id="select-friends"
-                options={friendsSelectList}
-                getOptionLabel={(friendsSelectList) => friendsSelectList}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    variant="standard"
-                    label="With You And"
-                    placeholder="Friend of Group"
-                  />
-                )}
-              /> */}
-
-              <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-                <Button
-                  variant="contained"
-                  onClick={() => toggle("isModleOpen")}
-                >
-                  Cancle
-                </Button>
-                <Button
-                  type="submit"
-                  variant="contained"
-                  // disabled={!isValid}
-                >
-                  Create Expense
-                </Button>
-              </Box>
             </Box>
           </Box>
         </Fade>
@@ -377,5 +309,4 @@ function AddExpenseForm({ FriendsList }: { FriendsList: string[] }) {
     </>
   );
 }
-
 export default AddExpenseForm;
