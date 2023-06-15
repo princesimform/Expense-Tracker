@@ -40,6 +40,7 @@ import { AddMemberFormSchema } from "../../libs/services/ValidationSchema";
 import * as yup from "yup";
 import AddExpenseForm from "../expanse/AddExpanseForm";
 import { GeneralPropType } from "../../routes/AuthRoutes";
+import { expenseDataType } from "../../redux/expanseSlice";
 interface TabPanelProps {
   children?: React.ReactNode;
   index: number;
@@ -147,7 +148,11 @@ interface formFieldType {
   new_member: string;
 }
 interface PropType extends GeneralPropType {}
-function GroupDetails({userData} : PropType) {
+function GroupDetails({ userData }: PropType) {
+  const { expenseList } = useSelector(
+    (state: Rootstate) => state.expenseReducer
+  );
+  const [groupExpense, setGroupExpense] = useState<expenseDataType[]>([]);
   const [tabNumber, setTabNumber] = useState(0);
   const [openDialog, setOpenDialog] = useState(false);
   const { id } = useParams();
@@ -168,6 +173,19 @@ function GroupDetails({userData} : PropType) {
 
     return Newdata[0];
   });
+
+  useEffect(() => {
+    expenseList.forEach((expense) => {
+      if (
+        groupData.member_list.every((element) =>
+          expense.member_list?.includes(element)
+        )
+      ) {
+        console.log("it is my Expanse");
+        
+      }
+    });
+  }, []);
 
   const [groupMembers, setGroupMember] = useState<string[]>(
     groupData.member_list
@@ -243,7 +261,10 @@ function GroupDetails({userData} : PropType) {
             </Typography>
           </Box>
           <Box>
-            <AddExpenseForm FriendsList={groupData.member_list}  userData={userData}/>
+            <AddExpenseForm
+              FriendsList={groupData.member_list}
+              userData={userData}
+            />
             <GroupForm groupData={groupData} />
           </Box>
         </Box>
@@ -590,12 +611,14 @@ function GroupDetails({userData} : PropType) {
                                 justifyContent='space-between'
                               >
                                 <Typography>{member}</Typography>
-                                <Box
-                                  color='red'
-                                  onClick={() => DeleteMemberFromList(index)}
-                                >
-                                  <DeleteForeverOutlined />
-                                </Box>
+                                {userData?.email != member && (
+                                  <Box
+                                    color='red'
+                                    onClick={() => DeleteMemberFromList(index)}
+                                  >
+                                    <DeleteForeverOutlined />
+                                  </Box>
+                                )}
                               </Stack>
                             </StyledTableCell>
                           </StyledTableRow>

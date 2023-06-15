@@ -16,6 +16,7 @@ import Sidenav from "../layouts/Sidenav";
 import { useDispatch } from "react-redux";
 import { getGroups } from "../redux/groupSlice";
 import { GeneralPropType } from "../routes/AuthRoutes";
+import { getExpenses } from "../redux/expanseSlice";
 interface PropType {
   component: React.ComponentType;
 }
@@ -25,13 +26,17 @@ function AuthGuards({ component }: PropType) {
   const [userData, setUserData] = useState<User>();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  async function getAllGroups() {
-    await dispatch(getGroups());
+  async function getAllGroups(email: string) {
+    await dispatch(getGroups(email));
+  }
+  async function getAllExpenseList(email: string) {
+    await dispatch(getExpenses(email));
   }
   useEffect(() => {
-    const userData = checkToken();
-    console.log(userData);
-    getAllGroups();
+    checkToken().then((res) => {
+      getAllGroups(String(res?.email));
+      getAllExpenseList(String(res?.email));
+    });
   }, [component]);
 
   const SIDE_NAV_WIDTH = 280;
@@ -54,8 +59,6 @@ function AuthGuards({ component }: PropType) {
   });
 
   const checkToken = async () => {
-    console.log("i am checking your token");
-
     try {
       if (typeof AuthService.getProfile != "boolean") {
         const user: User = await AuthService.getProfile(true);
@@ -64,6 +67,7 @@ function AuthGuards({ component }: PropType) {
         } else {
           setStatus(true);
           setUserData(user);
+          return user;
         }
       }
     } catch (error) {
@@ -74,7 +78,7 @@ function AuthGuards({ component }: PropType) {
   const Component: ComponentType<GeneralPropType> = component;
   return status ? (
     <React.Fragment>
-      <Box className="my-container">
+      <Box className='my-container'>
         <Box>
           <Sidenav onClose={() => setOpenNav(false)} open={openNav} />
           <Navbar onNavOpen={() => setOpenNav(true)} />

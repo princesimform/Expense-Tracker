@@ -5,7 +5,7 @@ import React, { useEffect, useState } from "react";
 import AuthService from "../libs/services/firebase/auth";
 import { GeneralPropType } from "../routes/AuthRoutes";
 interface PropType extends GeneralPropType {}
-function Profile({userData} : PropType) {
+function Profile({ userData }: PropType) {
   const [ProfileData, setProfileData] = useState<User | null>();
 
   const getUserData = async () => {

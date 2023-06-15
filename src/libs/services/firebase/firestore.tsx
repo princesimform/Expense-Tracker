@@ -24,9 +24,9 @@ import {
   uploadBytes,
 } from "firebase/storage";
 const firebase = initializeApp(FIREBASE_CONFIG);
-const firestore = getFirestore(firebase);
+export const firestore = getFirestore(firebase);
 
-interface FirestoreServiceType {
+export  interface FirestoreServiceType {
   [key: string]: Function;
 }
 

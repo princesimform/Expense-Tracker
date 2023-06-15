@@ -38,7 +38,7 @@ function Groups({ userData }: PropType) {
 
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(getGroups());
+    dispatch(getGroups(userData?.email));
   }, []);
 
   return (

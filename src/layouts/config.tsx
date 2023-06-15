@@ -21,8 +21,9 @@ export const items: itemsType[] = [
     icon: <Group />,
   },
   {
-    title: "Expanse",
-    path: "/expanse",
+    title: "Expense",
+    path: "/expense",
     icon: <ShoppingCartCheckoutIcon />,
   },
+  
 ];

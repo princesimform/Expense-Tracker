@@ -4,6 +4,9 @@ import { TextField, TextFieldProps } from "@mui/material";
 
 interface TextfieldWrapperProps {
   name: string;
+  label?: string;
+  size?: string;
+  type?: string;
 }
 
 const TextfieldWrapper: React.FC<TextfieldWrapperProps> = ({

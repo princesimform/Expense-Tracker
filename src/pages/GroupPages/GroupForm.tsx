@@ -103,35 +103,39 @@ function GroupForm({ groupData, userData }: PropsType) {
           autoHideDuration: 3000,
         });
         toggle("isModleOpen");
-        dispatch(getGroups());
+        dispatch(getGroups(userData?.email));
       } catch (error) {}
     } else {
-      const userData = await AuthService.getProfile();
       const createdAtTime =
         date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
-      const req_data: groupDataType = {
-        id: "",
-        name: values.name,
-        group_image: values.group_image,
-        admin_user_id: userData.uid,
-        admin_user_name: userData.displayName,
-        created_at: createdAtTime,
-        member_list: [`${userData?.email}`],
-      };
-      try {
-        const dataId = await dispatch(setData(req_data));
-        enqueueSnackbar(`Group Created successfully ${dataId.payload.docId}`, {
-          variant: "success",
-          autoHideDuration: 3000,
-        });
-        toggle("isModleOpen");
-        dispatch(getGroups());
-        navigate(`/group`);
-      } catch (error) {
-        enqueueSnackbar(`Something Went Wrong`, {
-          variant: "error",
-          autoHideDuration: 3000,
-        });
+      if (userData != undefined) {
+        const req_data: groupDataType = {
+          id: "",
+          name: values.name,
+          group_image: values.group_image,
+          admin_user_id: userData?.uid,
+          admin_user_name: userData?.displayName,
+          created_at: createdAtTime,
+          member_list: [`${userData?.email}`],
+        };
+        try {
+          const dataId = await dispatch(setData(req_data));
+          enqueueSnackbar(
+            `Group Created successfully ${dataId.payload.docId}`,
+            {
+              variant: "success",
+              autoHideDuration: 3000,
+            }
+          );
+          toggle("isModleOpen");
+          dispatch(getGroups(userData?.email));
+          navigate(`/group`);
+        } catch (error) {
+          enqueueSnackbar(`Something Went Wrong`, {
+            variant: "error",
+            autoHideDuration: 3000,
+          });
+        }
       }
     }
   };
@@ -140,8 +144,8 @@ function GroupForm({ groupData, userData }: PropsType) {
     <>
       <Button onClick={() => toggle("isModleOpen")}>{buttonValue}</Button>
       <Modal
-        aria-labelledby="transition-modal-title"
-        aria-describedby="transition-modal-description"
+        aria-labelledby='transition-modal-title'
+        aria-describedby='transition-modal-description'
         open={toggles.isModleOpen}
         // onClose={handleModleToggle}
         closeAfterTransition
@@ -155,10 +159,10 @@ function GroupForm({ groupData, userData }: PropsType) {
         <Fade in={toggles.isModleOpen}>
           <Box sx={style}>
             <Typography
-              id="transition-modal-title"
-              variant="h5"
+              id='transition-modal-title'
+              variant='h5'
               sx={{ textAlign: "center", mb: 2 }}
-              component="h2"
+              component='h2'
             >
               {groupData ? "Update Group" : "Create Group"}
             </Typography>
@@ -172,22 +176,22 @@ function GroupForm({ groupData, userData }: PropsType) {
               {({ handleSubmit, errors, isValid, touched, setFieldValue }) => (
                 <Form onSubmit={handleSubmit}>
                   <InputLabel
-                    htmlFor="group-image"
-                    className="m-auto flex w-fit text-center"
+                    htmlFor='group-image'
+                    className='m-auto flex w-fit text-center'
                     sx={{ mb: 2 }}
                   >
                     <Field
                       style={{ display: "none" }}
-                      id="group-image"
-                      name="group_image"
-                      type="file"
+                      id='group-image'
+                      name='group_image'
+                      type='file'
                       value={undefined}
                       onChange={(event: ChangeEvent<HTMLInputElement>) =>
                         handleFileInputChange(event, setFieldValue)
                       }
                     />
                     <Avatar
-                      alt="Remy Sharp"
+                      alt='Remy Sharp'
                       src={
                         GroupProfileimage
                           ? hasOldIamge
@@ -204,11 +208,11 @@ function GroupForm({ groupData, userData }: PropsType) {
                     />
                   </InputLabel>
                   <Field
-                    name="name"
-                    type="text"
-                    variant="outlined"
-                    color="primary"
-                    label="Full Name"
+                    name='name'
+                    type='text'
+                    variant='outlined'
+                    color='primary'
+                    label='Full Name'
                     fullWidth
                     sx={{ mb: 2 }}
                     as={TextField}
@@ -221,16 +225,16 @@ function GroupForm({ groupData, userData }: PropsType) {
                   >
                     {groupData ? (
                       <Button
-                        type="submit"
-                        variant="contained"
+                        type='submit'
+                        variant='contained'
                         disabled={!isValid}
                       >
                         {buttonValue}
                       </Button>
                     ) : (
                       <Button
-                        type="submit"
-                        variant="contained"
+                        type='submit'
+                        variant='contained'
                         disabled={!isValid}
                       >
                         Create Group
@@ -238,7 +242,7 @@ function GroupForm({ groupData, userData }: PropsType) {
                     )}
 
                     <Button
-                      variant="contained"
+                      variant='contained'
                       onClick={() => toggle("isModleOpen")}
                     >
                       Cancle

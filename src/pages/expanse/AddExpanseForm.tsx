@@ -17,11 +17,12 @@ import {
   Modal,
   Select,
   SelectChangeEvent,
+  TextFieldProps,
   Theme,
   Typography,
   useTheme,
 } from "@mui/material";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import { Field, FieldProps, Form, Formik } from "formik";
 import { AddExpenseFormSchema } from "../../libs/services/ValidationSchema";
@@ -37,6 +38,14 @@ import dayjs from "dayjs";
 import { GeneralPropType } from "../../routes/AuthRoutes";
 import TextField from "../../components/FormUI/TextField";
 import TextfieldWrapper from "../../components/FormUI/TextField";
+import SelectWrapper from "../../components/FormUI/Select";
+import DateTimePicker from "../../components/FormUI/DatePicker";
+import {
+  expenseDataType,
+  getExpenses,
+  setExpense,
+} from "../../redux/expanseSlice";
+import ExpenseFirestoreService from "../../libs/services/firebase/expenseFirestore";
 const style = {
   position: "absolute" as "absolute",
   top: "50%",
@@ -54,36 +63,31 @@ type ListOptionType = {
   group: string;
 };
 
-interface FormDataType {
-  select_friends: string[] | null;
-  expense_file: File | null;
-  expense_description: string;
-  expense_amount: number;
-  currency_type: string;
-  paid_by: string;
-  expense_date: Date | null;
-}
-
 interface PropType extends GeneralPropType {
   FriendsList: string[];
 }
 function AddExpenseForm({ FriendsList, userData }: PropType) {
+  const dispatch = useDispatch();
   const { groupList } = useSelector((state: Rootstate) => state.groupReducer);
-  const [paidByList, setPaidByList] = useState<string[]>([]);
-  const [formValues, setFormValues] = useState<FormDataType>({
-    select_friends: null,
-    expense_file: null,
-    expense_description: "",
-    expense_amount: 0,
-    currency_type: "",
-    paid_by: "",
-    expense_date: null,
-  });
   var today = new Date();
   const dd = String(today.getDate()).padStart(2, "0");
   const mm = String(today.getMonth() + 1).padStart(2, "0");
   const year = today.getFullYear();
   const currentDate = year + "/" + mm + "/" + dd;
+  const [paidByList, setPaidByList] = useState<string[]>();
+  const [formValues, setFormValues] = useState<expenseDataType>({
+    expense_description: "",
+    member_list: null,
+    expense_file_url: "",
+    expense_amount: 0,
+    paid_by: "",
+    currency_type: "",
+    expense_date: today.toISOString(),
+    created_at: today.toISOString(),
+    isSettle: false,
+    expense_file: null,
+  });
+
   const [toggles, toggle] = useToggle({
     isModleOpen: false,
   });
@@ -92,7 +96,6 @@ function AddExpenseForm({ FriendsList, userData }: PropType) {
   let tempGroupsList: string[] = [];
   let tempFriendsList: string[] = [];
   const buttonValue = "Create";
-  const reader = new FileReader();
 
   const renderGroup = (params: AutocompleteRenderGroupParams) => [
     <li key={params.key} style={{ marginLeft: "10px" }}>
@@ -137,7 +140,11 @@ function AddExpenseForm({ FriendsList, userData }: PropType) {
     });
     setListOptions(tempFriendsSelectList);
   }
-
+  useEffect(() => {
+    if (userData?.email) {
+      setPaidByList([userData?.email]);
+    }
+  }, []);
   useEffect(() => {
     updateListOptions();
   }, [toggles]);
@@ -149,8 +156,8 @@ function AddExpenseForm({ FriendsList, userData }: PropType) {
     setFieldValue: Function,
     details?: AutocompleteChangeDetails<ListOptionType>
   ) => {
-    const selectedFriends = await updatePaidByList(value);
-    setFieldValue("select_friends", selectedFriends);
+    setFieldValue("member_list", value);
+    updatePaidByList(value);
   };
 
   const updatePaidByList = async (ListData: ListOptionType[]) => {
@@ -173,15 +180,47 @@ function AddExpenseForm({ FriendsList, userData }: PropType) {
       (val, id, tempFriendsList) => tempFriendsList.indexOf(val) == id
     );
 
-    userData?.email &&
-      tempFriendsList.indexOf(userData?.email) >= 0 &&
-      tempFriendsList.splice(tempFriendsList.indexOf(userData?.email), 1);
-    setPaidByList(tempFriendsList);
+    if (tempFriendsList.length > 0) {
+      setPaidByList(tempFriendsList);
+    } else {
+      if (userData?.email) {
+        setPaidByList([userData.email]);
+      }
+    }
 
     return tempFriendsList;
   };
-  const handlesubmit = (values: FormDataType) => {
-    console.log(values);
+  const handlesubmit = async (values: expenseDataType, resetForm: Function) => {
+    if (paidByList != undefined) {
+      values.member_list = paidByList;
+    }
+    if (values.expense_file != null) {
+      var min = 10000;
+      var max = 99999;
+      var randomNum = Math.floor(Math.random() * (max - min + 1)) + min;
+
+      const FileResponse = await ExpenseFirestoreService.addFile(
+        values.expense_file,
+        "expense_images",
+        `${randomNum}expense`
+      );
+      if (FileResponse.status) {
+        values.expense_file_url = FileResponse.downloadUrl;
+        values.expense_file = null;
+      }
+    }
+    try {
+      console.log(values);
+      const response = await dispatch(setExpense(values));
+      if (response.payload.docData.status) {
+        resetForm({ values: "" });
+        await dispatch(getExpenses(userData?.email));
+        toggle("isModleOpen");
+      }
+      console.log(response.payload.docData.status);
+    } catch (error) {
+      console.log(error);
+    }
   };
   const handleInputChange = (
     e: ChangeEvent<HTMLInputElement>,
@@ -194,7 +233,7 @@ function AddExpenseForm({ FriendsList, userData }: PropType) {
       setFieldValue(e.target.name, Number(e.target.value));
     }
   };
-
+  const currencyOptions = { ASD: "USD", INR: "INR" };
   return (
     <>
       <Button onClick={() => toggle("isModleOpen")}>{buttonValue}</Button>
@@ -226,7 +265,9 @@ function AddExpenseForm({ FriendsList, userData }: PropType) {
                 initialValues={formValues}
                 validationSchema={AddExpenseFormSchema}
                 validateOnMount
-                onSubmit={handlesubmit}
+                onSubmit={(values, { resetForm }) =>
+                  handlesubmit(values, resetForm)
+                }
               >
                 {({
                   handleSubmit,
@@ -236,8 +277,50 @@ function AddExpenseForm({ FriendsList, userData }: PropType) {
                   setFieldValue,
                 }) => (
                   <Form onSubmit={handleSubmit}>
-                   
-                   <Grid container spacing={1}>
+                    <Autocomplete
+                      isOptionEqualToValue={(
+                        option: ListOptionType,
+                        value: ListOptionType
+                      ) => option.value === value.value}
+                      options={listOptions}
+                      groupBy={(option: ListOptionType) => option.group}
+                      renderGroup={renderGroup}
+                      multiple
+                      id='select-friends'
+                      renderInput={(params: any) => (
+                        <Field
+                          name='member_list'
+                          as={TextField}
+                          {...params}
+                          variant='standard'
+                          sx={{ mb: 2 }}
+                          label='With You And'
+                          color='primary'
+                          placeholder='Friend of Group'
+                          error={
+                            Boolean(errors.member_list) &&
+                            Boolean(touched.member_list)
+                          }
+                        />
+                      )}
+                      aria-required
+                      onChange={(
+                        e: SyntheticEvent<Element, Event>,
+                        value: ListOptionType[],
+                        reason: AutocompleteChangeReason,
+                        details?: AutocompleteChangeDetails<ListOptionType>
+                      ) =>
+                        onSelectListOptions(
+                          e,
+                          value,
+                          reason,
+                          setFieldValue,
+                          details
+                        )
+                      }
+                    />
+
+                    <Grid container spacing={1}>
                       <Grid item xs={2} sm={2} lg={2}>
                         <InputLabel
                           htmlFor='bill-image'
@@ -257,10 +340,6 @@ function AddExpenseForm({ FriendsList, userData }: PropType) {
                               Boolean(errors.expense_file) &&
                               Boolean(touched.expense_file)
                             }
-                            helperText={
-                              Boolean(touched.expense_file) &&
-                              errors.expense_file
-                            }
                           />
                           <Avatar
                             sx={{
@@ -276,9 +355,68 @@ function AddExpenseForm({ FriendsList, userData }: PropType) {
                         </InputLabel>
                       </Grid>
                       <Grid item xs={10} sm={10} lg={10}>
-                            <TextfieldWrapper name="expense_description" size="small" />
+                        <TextfieldWrapper
+                          name='expense_description'
+                          label='Description'
+                          size='small'
+                        />
                       </Grid>
                     </Grid>
+                    <Grid container spacing={1}>
+                      <Grid item xs={2} sm={2} lg={2}>
+                        <SelectWrapper
+                          name='currency_type'
+                          options={currencyOptions}
+                        />
+                        {/* <Select
+                          labelId='demo-simple-select-label'
+                          id='demo-simple-select'
+                          label='Age'
+                          name='currency_type'
+                          size='small'
+                          defaultValue='USD'
+                        >
+                          <MenuItem value={"USD"}>USD</MenuItem>
+                        </Select> */}
+                      </Grid>
+                      <Grid item xs={10} sm={10} lg={10}>
+                        <TextfieldWrapper
+                          name='expense_amount'
+                          label='Amoount'
+                          type='number'
+                          size='small'
+                        />
+                      </Grid>
+                    </Grid>
+                    {/* <DateTimePicker name="expense_date" label="Expense Data"  /> */}
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                      <DemoContainer components={[]}>
+                        <DemoItem label='Expanse Date'>
+                          <DatePicker
+                            defaultValue={dayjs(currentDate)}
+                            slotProps={{ textField: { size: "small" } }}
+                            maxDate={dayjs(currentDate + 1)}
+                            onChange={(date) => {
+                              const newDate = new Date(String(date));
+                              setFieldValue("expense_date", newDate);
+                            }}
+                          />
+                        </DemoItem>
+                      </DemoContainer>
+                    </LocalizationProvider>
+
+                    <SelectWrapper
+                      name='paid_by'
+                      options={
+                        paidByList != undefined
+                          ? paidByList?.reduce((a, v) => ({ ...a, [v]: v }), {})
+                          : []
+                      }
+                      defaultValue={
+                        userData?.email != undefined ? userData.email : ""
+                      }
+                      lable='Paid By'
+                    />
                     <Box
                       sx={{
                         display: "flex",

@@ -35,8 +35,8 @@ export const DeleteData: any = createAsyncThunk(
 
 export const getGroups: any = createAsyncThunk(
   "firestore/getData",
-  async () => {
-    const groupList: groupDataType[] = await FirestoreService.getGroups();
+  async (email : string) => {
+    const groupList: groupDataType[] = await FirestoreService.getGroups(email);
     return { groupList };
   }
 );
@@ -47,7 +47,7 @@ export interface groupDataType {
   group_image: string;
   created_at: string;
   admin_user_id: string;
-  admin_user_name: string;
+  admin_user_name: string | null;
   member_list: string[] | [];
 }
 export interface groupStateType {
