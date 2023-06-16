@@ -74,7 +74,7 @@ const createComponents = () => {
     MuiButton: {
       variants: [
         {
-          props: { variant: "rounded" },
+          props: { variant: "rounded" as const },
           style: {
             borderRadius: "16px",
             width: "16px",
@@ -86,7 +86,7 @@ const createComponents = () => {
           },
         },
         {
-          props: { color: "primary" },
+          props: { color: "primary" as const },
           style: {
             color: "white",
           },
