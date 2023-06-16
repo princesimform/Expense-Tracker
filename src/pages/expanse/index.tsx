@@ -118,7 +118,7 @@ function ExpenseList({ userData }: PropType) {
                     <TableCell scope='row'>{row.title}</TableCell>
                     <TableCell>{row.paid_by}</TableCell>
                     <TableCell>{row.expense_amount}</TableCell>
-                    <TableCell>
+                    <TableCell style={{ minWidth: 170 }}>
                       <Button
                         sx={{
                           borderRadius: "16px",
@@ -126,6 +126,7 @@ function ExpenseList({ userData }: PropType) {
                           margin: "4px",
                           minWidth: "16px",
                           height: "32px",
+                          color: "rgba(189,85,189,0.9)",
                         }}
                         variant='outlined'
                         color='secondary'
@@ -140,6 +141,7 @@ function ExpenseList({ userData }: PropType) {
                           margin: "4px",
                           minWidth: "16px",
                           height: "32px",
+                          color: "rgba(189,85,189,0.9)",
                         }}
                         variant='outlined'
                         color='secondary'
@@ -153,6 +155,7 @@ function ExpenseList({ userData }: PropType) {
                           width: "32px",
                           margin: "4px",
                           minWidth: "16px",
+                          color: "rgba(189,85,189,0.9)",
                           height: "32px",
                         }}
                         variant='outlined'
@@ -163,7 +166,7 @@ function ExpenseList({ userData }: PropType) {
                       </Button>
                     </TableCell>
                     <TableCell>{row.expense_amount}</TableCell>
-                    <TableCell align='right'>
+                    <TableCell style={{ minWidth: 150 }} align='right'>
                       <Button
                         variant='contained'
                         color='secondary'
