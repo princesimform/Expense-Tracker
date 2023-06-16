@@ -240,7 +240,13 @@ function AddExpenseForm({ FriendsList, userData }: PropType) {
   const currencyOptions = { ASD: "USD", INR: "INR" };
   return (
     <>
-      <Button onClick={() => toggle("isModleOpen")}>{buttonValue}</Button>
+      <Button
+        variant='contained'
+        color='secondary'
+        onClick={() => toggle("isModleOpen")}
+      >
+        {buttonValue} Expense
+      </Button>
       <Modal
         aria-labelledby='transition-modal-title'
         aria-describedby='transition-modal-description'
@@ -422,7 +428,6 @@ function AddExpenseForm({ FriendsList, userData }: PropType) {
                         userData?.email != undefined ? userData.email : ""
                       }
                       lable='Paid By'
-                      
                     />
                     <Box
                       sx={{
@@ -432,6 +437,7 @@ function AddExpenseForm({ FriendsList, userData }: PropType) {
                     >
                       <Button
                         variant='contained'
+                        color='warning'
                         onClick={() => toggle("isModleOpen")}
                       >
                         Cancle
@@ -439,6 +445,7 @@ function AddExpenseForm({ FriendsList, userData }: PropType) {
                       <Button
                         type='submit'
                         variant='contained'
+                        color='secondary'
                         disabled={!isValid}
                       >
                         Create Expense

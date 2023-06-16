@@ -72,13 +72,34 @@ const createComponents = () => {
       },
     },
     MuiButton: {
-      styleOverrides: {
-        root: {
-          backgroundColor: `${buttonColor}`,
-          color: `${white}`,
+      variants: [
+        {
+          props: { variant: "rounded" },
+          style: {
+            borderRadius: "16px",
+            width: "16px",
+            margin: "4px",
+            minWidth: "16px",
+            height: "32px",
+            color: `${secondaryColor}`,
+            border: `1px solid ${secondaryColor}}`,
+          },
         },
-      },
+        {
+          props: { color: "primary" },
+          style: {
+            color: "white",
+          },
+        },
+      ],
+      // styleOverrides: {
+      //   root: {
+      //     backgroundColor: `${buttonColor}`,
+      //     color: `${white}`,
+      //   },
+      // },
     },
+
     MuiPaper: {
       styleOverrides: {
         root: {

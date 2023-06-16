@@ -1,6 +1,7 @@
 import {
   Avatar,
   Box,
+  Button,
   Container,
   Divider,
   Grid,
@@ -25,6 +26,9 @@ import { GeneralPropType } from "../../routes/AuthRoutes";
 import { StyledTableCell } from "../GroupPages/GroupDetails";
 import AddExpenseForm from "./AddExpanseForm";
 import ExpenseCard from "./ExpenseCard";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
 interface PropType extends GeneralPropType {}
 
 interface DataTableProps {
@@ -91,13 +95,16 @@ function ExpenseList({ userData }: PropType) {
           }
           <TableContainer component={Paper}>
             <Table sx={{ minWidth: 500 }} aria-label='custom pagination table'>
-            <TableHead>
-          <TableRow>
-            <StyledTableCell>Dessert (100g serving)</StyledTableCell>
-            <StyledTableCell align="right">Carbs&nbsp;(g)</StyledTableCell>
-            <StyledTableCell align="right">Protein&nbsp;(g)</StyledTableCell>
-          </TableRow>
-        </TableHead>
+              <TableHead>
+                <TableRow>
+                  <StyledTableCell>Title</StyledTableCell>
+                  <StyledTableCell>Paid by</StyledTableCell>
+                  <StyledTableCell>Amount</StyledTableCell>
+                  <StyledTableCell>Owes</StyledTableCell>
+                  <StyledTableCell>Actions</StyledTableCell>
+                  <StyledTableCell align='right'>Settle Up</StyledTableCell>
+                </TableRow>
+              </TableHead>
 
               <TableBody>
                 {(rowsPerPage > 0
@@ -108,14 +115,25 @@ function ExpenseList({ userData }: PropType) {
                   : expenseList
                 ).map((row, index) => (
                   <TableRow key={index}>
-                    <TableCell component='th' scope='row'>
-                      {row.expense_description}
+                    <TableCell scope='row'>{row.title}</TableCell>
+                    <TableCell>{row.paid_by}</TableCell>
+                    <TableCell>{row.expense_amount}</TableCell>
+                    <TableCell>
+                      <Button variant='rounded' color='secondary' size='small'>
+                        <EditIcon />
+                      </Button>
+                      <Button variant='rounded' color='secondary' size='small'>
+                        <DeleteIcon />
+                      </Button>
+                      <Button variant='rounded' color='secondary' size='small'>
+                        <VisibilityIcon />
+                      </Button>
                     </TableCell>
-                    <TableCell style={{ width: 160 }} align='right'>
-                      {row.expense_amount}
-                    </TableCell>
-                    <TableCell style={{ width: 160 }} align='right'>
-                      {row.paid_by}
+                    <TableCell>{row.expense_amount}</TableCell>
+                    <TableCell align='right'>
+                      <Button variant='contained' color='secondary' size='small'>
+                        Settle Up
+                      </Button>
                     </TableCell>
                   </TableRow>
                 ))}
@@ -135,7 +153,7 @@ function ExpenseList({ userData }: PropType) {
                       25,
                       { label: "All", value: -1 },
                     ]}
-                    colSpan={3}
+                    colSpan={6}
                     count={expenseList.length}
                     rowsPerPage={rowsPerPage}
                     page={page}

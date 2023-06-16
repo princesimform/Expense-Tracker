@@ -21,16 +21,16 @@ function GroupCard({ groupItem, userData }: PropType) {
   return (
     <>
       <Card
-        className="group-card"
+        className='group-card'
         elevation={3}
         onClick={() => navigate(`/group/${groupItem.id}`)}
       >
         <CardContent>
-          <Stack display="flex" alignItems="flex-start" direction="row">
-            <Avatar src={groupItem.group_image} alt="GroupImage" />
+          <Stack display='flex' alignItems='flex-start' direction='row'>
+            <Avatar src={groupItem.group_image} alt='GroupImage' />
             <Stack sx={{ textAlign: "left", ml: 2 }}>
               <Typography fontWeight={"bolder"}>{groupItem.name}</Typography>
-              <Typography variant="caption">
+              <Typography variant='caption'>
                 Created By : {groupItem.admin_user_name}
               </Typography>
             </Stack>
@@ -44,21 +44,23 @@ function GroupCard({ groupItem, userData }: PropType) {
             </Typography>
           </Stack>
           <Stack
-            display="flex"
-            alignItems="flex-start"
-            direction="row"
-            justifyContent="space-between"
+            display='flex'
+            alignItems='flex-start'
+            direction='row'
+            justifyContent='space-between'
           >
-            <Stack alignContent="center">
-              <Button className="leave-btn">Leave Group</Button>
+            <Stack alignContent='center'>
+              <Button variant='contained' color='secondary'>
+                Leave Group
+              </Button>
             </Stack>
             <Stack>
               <AvatarGroup max={3}>
-                <Avatar alt="Remy Sharp" src={UserImg} />
-                <Avatar alt="Travis Howard" src={UserImg} />
-                <Avatar alt="Cindy Baker" src={UserImg} />
-                <Avatar alt="Agnes Walker" src={UserImg} />
-                <Avatar alt="Trevor Henderson" src={UserImg} />
+                <Avatar alt='Remy Sharp' src={UserImg} />
+                <Avatar alt='Travis Howard' src={UserImg} />
+                <Avatar alt='Cindy Baker' src={UserImg} />
+                <Avatar alt='Agnes Walker' src={UserImg} />
+                <Avatar alt='Trevor Henderson' src={UserImg} />
               </AvatarGroup>
             </Stack>
           </Stack>

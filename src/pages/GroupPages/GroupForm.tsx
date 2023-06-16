@@ -107,7 +107,7 @@ function GroupForm({ groupData, userData }: PropsType) {
       } catch (error) {}
     } else {
       const createdAtTime =
-      date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
+        date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
       console.log(userData);
       if (userData != undefined) {
         const req_data: groupDataType = {
@@ -120,7 +120,6 @@ function GroupForm({ groupData, userData }: PropsType) {
           member_list: [`${userData?.email}`],
         };
         try {
-          
           const dataId = await dispatch(setData(req_data));
           enqueueSnackbar(
             `Group Created successfully ${dataId.payload.docId}`,
@@ -144,7 +143,13 @@ function GroupForm({ groupData, userData }: PropsType) {
 
   return (
     <>
-      <Button onClick={() => toggle("isModleOpen")}>{buttonValue}</Button>
+      <Button
+        variant='contained'
+        color='secondary'
+        onClick={() => toggle("isModleOpen")}
+      >
+         {buttonValue} Group
+      </Button>
       <Modal
         aria-labelledby='transition-modal-title'
         aria-describedby='transition-modal-description'
@@ -225,6 +230,14 @@ function GroupForm({ groupData, userData }: PropsType) {
                   <Box
                     sx={{ display: "flex", justifyContent: "space-between" }}
                   >
+                    <Button
+                      variant='contained'
+                      color='warning'
+                      onClick={() => toggle("isModleOpen")}
+                    >
+                      Cancle
+                    </Button>
+
                     {groupData ? (
                       <Button
                         type='submit'
@@ -242,13 +255,6 @@ function GroupForm({ groupData, userData }: PropsType) {
                         Create Group
                       </Button>
                     )}
-
-                    <Button
-                      variant='contained'
-                      onClick={() => toggle("isModleOpen")}
-                    >
-                      Cancle
-                    </Button>
                   </Box>
                 </Form>
               )}

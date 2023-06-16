@@ -12,6 +12,9 @@ const createPalette = () => {
     secondary: {
       main: balcony[900],
     },
+    orange: {
+      main: balcony[900],
+    },
     background: {
       // default: "hsl(263deg 54% 59% / 90%)",
     },

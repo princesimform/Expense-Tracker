@@ -457,7 +457,7 @@ function GroupDetails({ userData }: PropType) {
                           />
                         </Grid>
                         <Grid item xs={12} sm={3} lg={3}>
-                          <Button type='submit' fullWidth>
+                          <Button variant='contained' color='primary' type='submit' fullWidth>
                             Add
                           </Button>
                         </Grid>
