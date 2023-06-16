@@ -107,7 +107,8 @@ function GroupForm({ groupData, userData }: PropsType) {
       } catch (error) {}
     } else {
       const createdAtTime =
-        date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
+      date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
+      console.log(userData);
       if (userData != undefined) {
         const req_data: groupDataType = {
           id: "",
@@ -119,6 +120,7 @@ function GroupForm({ groupData, userData }: PropsType) {
           member_list: [`${userData?.email}`],
         };
         try {
+          
           const dataId = await dispatch(setData(req_data));
           enqueueSnackbar(
             `Group Created successfully ${dataId.payload.docId}`,

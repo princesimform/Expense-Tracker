@@ -52,7 +52,7 @@ function Groups({ userData }: PropType) {
         <Typography className="groups-page-title" variant="h4" textAlign="left">
           Your Groups
         </Typography>
-        <GroupForm />
+        <GroupForm userData={userData}/>
       </Box>
       <Divider className="group-title-divider" />
       <Container maxWidth="xl">
@@ -74,7 +74,7 @@ function Groups({ userData }: PropType) {
             {/* <GroupCard /> */}
           </Grid>
           <Grid item xs={12} sm={6} lg={4}>
-            <GroupForm />
+            <GroupForm userData={userData}/>
           </Grid>
         </Grid>
       </Container>

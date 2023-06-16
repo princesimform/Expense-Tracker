@@ -149,6 +149,8 @@ interface formFieldType {
 }
 interface PropType extends GeneralPropType {}
 function GroupDetails({ userData }: PropType) {
+  // throw new Error("Stop here");
+  
   const { expenseList } = useSelector(
     (state: Rootstate) => state.expenseReducer
   );
@@ -185,11 +187,10 @@ function GroupDetails({ userData }: PropType) {
         
       }
     });
+    setGroupMember(groupData.member_list)
   }, []);
 
-  const [groupMembers, setGroupMember] = useState<string[]>(
-    groupData.member_list
-  );
+  const [groupMembers, setGroupMember] = useState<string[]>([]);
   const handleTab = (event: React.SyntheticEvent, newValue: number) => {
     setTabNumber(newValue);
   };
@@ -251,7 +252,7 @@ function GroupDetails({ userData }: PropType) {
           className='groups-page-heading'
         >
           <Box display='flex' alignItems='center'>
-            <Avatar alt='sdf' src={groupData.group_image} />
+          {groupData.group_image != undefined && <Avatar alt='sdf' src={groupData.group_image} />} 
             <Typography
               className='groups-page-title'
               variant='h4'
@@ -265,7 +266,7 @@ function GroupDetails({ userData }: PropType) {
               FriendsList={groupData.member_list}
               userData={userData}
             />
-            <GroupForm groupData={groupData} />
+            <GroupForm groupData={groupData} userData={userData}/>
           </Box>
         </Box>
         <Divider className='group-title-divider' />

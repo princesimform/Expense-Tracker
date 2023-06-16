@@ -24,7 +24,7 @@ function DashBoard({ userData }: PropType) {
         </Grid>
       </Container>
 
-      <Groups />
+      <Groups userData={userData}/>
     </>
   );
 }

@@ -9,7 +9,7 @@ import FirestoreService from "../libs/services/firebase/firestore";
 import { Rootstate } from "./store";
 
 export const setExpense: any = createAsyncThunk(
-  "firestore/setData",
+  "firestore/setExpense",
   async (data) => {
     const docData = await ExpenseFirestoreService.addExpenseToFirestore(
       data,
