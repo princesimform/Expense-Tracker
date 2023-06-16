@@ -8,23 +8,15 @@ import {
   Backdrop,
   Box,
   Button,
-  Container,
   Fade,
-  FormControl,
   Grid,
   InputLabel,
-  MenuItem,
   Modal,
-  Select,
-  SelectChangeEvent,
-  TextFieldProps,
-  Theme,
   Typography,
-  useTheme,
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 
-import { Field, FieldProps, Form, Formik } from "formik";
+import { Field, Form, Formik } from "formik";
 import { AddExpenseFormSchema } from "../../libs/services/ValidationSchema";
 import useToggle from "../../customHooks/useToggle";
 import { Rootstate } from "../../redux/store";
@@ -39,7 +31,6 @@ import { GeneralPropType } from "../../routes/AuthRoutes";
 import TextField from "../../components/FormUI/TextField";
 import TextfieldWrapper from "../../components/FormUI/TextField";
 import SelectWrapper from "../../components/FormUI/Select";
-import DateTimePicker from "../../components/FormUI/DatePicker";
 import {
   expenseDataType,
   getExpenses,
@@ -76,6 +67,7 @@ function AddExpenseForm({ FriendsList, userData }: PropType) {
   const currentDate = year + "/" + mm + "/" + dd;
   const [paidByList, setPaidByList] = useState<string[]>();
   const [formValues, setFormValues] = useState<expenseDataType>({
+    title: "",
     expense_description: "",
     member_list: null,
     expense_file_url: "",
@@ -289,7 +281,9 @@ function AddExpenseForm({ FriendsList, userData }: PropType) {
                   setFieldValue,
                 }) => (
                   <Form onSubmit={handleSubmit}>
+                    <TextfieldWrapper name='title' label='Title' size='small' />
                     <Autocomplete
+                      sx={{ mt: 2 }}
                       isOptionEqualToValue={(
                         option: ListOptionType,
                         value: ListOptionType
@@ -428,6 +422,7 @@ function AddExpenseForm({ FriendsList, userData }: PropType) {
                         userData?.email != undefined ? userData.email : ""
                       }
                       lable='Paid By'
+                      
                     />
                     <Box
                       sx={{

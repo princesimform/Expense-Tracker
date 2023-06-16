@@ -33,6 +33,7 @@ export const getExpenses: any = createAsyncThunk(
 );
 
 export interface expenseDataType {
+  title : string;
   expense_description: string;
   member_list: string[] | null;
   expense_file_url: string;

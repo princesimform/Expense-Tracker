@@ -99,6 +99,7 @@ ExpenseFirestoreService!.getExpensesFromFirestore = async (
         res.forEach((doc) => {
           const ExpensesData = doc.data();
           const ExpenseData = {
+            title : ExpensesData.title,
             expense_description: ExpensesData.expense_description,
             member_list: ExpensesData.member_list,
             expense_file_url: ExpensesData.expense_file_url,

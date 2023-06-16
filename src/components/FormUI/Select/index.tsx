@@ -7,6 +7,7 @@ interface SelectWrapperProps {
   name: string;
   options: Record<string, string>;
   lable?: string;
+  size?: string;
   defaultValue?: string;
 }
 
@@ -14,6 +15,7 @@ const SelectWrapper: React.FC<SelectWrapperProps> = ({
   name,
   options,
   lable,
+  size,
   defaultValue,
   ...otherProps
 }) => {
@@ -32,6 +34,7 @@ const SelectWrapper: React.FC<SelectWrapperProps> = ({
     variant: "outlined",
     fullWidth: true,
     label: lable,
+    size: "small",
     defaultValue: defaultValue,
     onChange: handleChange,
   };

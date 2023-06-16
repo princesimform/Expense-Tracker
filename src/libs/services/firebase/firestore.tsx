@@ -114,7 +114,7 @@ FirestoreService!.getGroups = async () => {
   const user = await AuthService.getProfile();
   const groupQuery = query(
     collection(firestore, "groups"),
-    where("admin_user_id", "==", user.uid)
+    where("member_list","array-contains", user.email)
   );
   let data: groupDataType[] = [];
 

@@ -53,6 +53,7 @@ export const AddMemberFormSchema = yup.object({
 });
 
 export const AddExpenseFormSchema = yup.object({
+  title: yup.string().required("reduired"),
   expense_description: yup.string().required("reduired"),
   member_list: yup
     .array()
