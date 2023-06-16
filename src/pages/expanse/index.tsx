@@ -119,19 +119,56 @@ function ExpenseList({ userData }: PropType) {
                     <TableCell>{row.paid_by}</TableCell>
                     <TableCell>{row.expense_amount}</TableCell>
                     <TableCell>
-                      <Button variant='rounded' color='secondary' size='small'>
+                      <Button
+                        sx={{
+                          borderRadius: "16px",
+                          width: "32px",
+                          margin: "4px",
+                          minWidth: "16px",
+                          height: "32px",
+                        }}
+                        variant='outlined'
+                        color='secondary'
+                        size='small'
+                      >
                         <EditIcon />
                       </Button>
-                      <Button variant='rounded' color='secondary' size='small'>
+                      <Button
+                        sx={{
+                          borderRadius: "16px",
+                          width: "32px",
+                          margin: "4px",
+                          minWidth: "16px",
+                          height: "32px",
+                        }}
+                        variant='outlined'
+                        color='secondary'
+                        size='small'
+                      >
                         <DeleteIcon />
                       </Button>
-                      <Button variant='rounded' color='secondary' size='small'>
+                      <Button
+                        sx={{
+                          borderRadius: "16px",
+                          width: "32px",
+                          margin: "4px",
+                          minWidth: "16px",
+                          height: "32px",
+                        }}
+                        variant='outlined'
+                        color='secondary'
+                        size='small'
+                      >
                         <VisibilityIcon />
                       </Button>
                     </TableCell>
                     <TableCell>{row.expense_amount}</TableCell>
                     <TableCell align='right'>
-                      <Button variant='contained' color='secondary' size='small'>
+                      <Button
+                        variant='contained'
+                        color='secondary'
+                        size='small'
+                      >
                         Settle Up
                       </Button>
                     </TableCell>
