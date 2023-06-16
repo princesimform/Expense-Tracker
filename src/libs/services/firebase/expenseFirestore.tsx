@@ -86,7 +86,7 @@ ExpenseFirestoreService!.getExpensesFromFirestore = async (
 ) => {
   return new Promise((resolve, reject) => {
     console.log(email);
-    
+
     const getExpenseQuery = query(
       collection(firestore, collectionName),
       where("member_list", "array-contains", email)
@@ -109,6 +109,7 @@ ExpenseFirestoreService!.getExpensesFromFirestore = async (
             created_at: ExpensesData.created_at,
             isSettle: ExpensesData.isSettle,
             expense_file: ExpensesData.expense_file,
+            group_list: ExpensesData.group_list,
           };
 
           data.push(ExpenseData);

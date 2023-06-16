@@ -54,76 +54,6 @@ function a11yProps(index: number) {
   };
 }
 
-interface Column {
-  id: "name" | "code" | "population" | "size" | "density";
-  label: string;
-  minWidth?: number;
-  align?: "right";
-  format?: (value: number) => string;
-}
-
-// const columns: readonly Column[] = [
-//   { id: "name", label: "Name", minWidth: 170 },
-//   { id: "code", label: "ISO\u00a0Code", minWidth: 100 },
-//   {
-//     id: "population",
-//     label: "Population",
-//     minWidth: 170,
-//     align: "right",
-//     format: (value: number) => value.toLocaleString("en-US"),
-//   },
-//   {
-//     id: "size",
-//     label: "Size\u00a0(km\u00b2)",
-//     minWidth: 170,
-//     align: "right",
-//     format: (value: number) => value.toLocaleString("en-US"),
-//   },
-//   {
-//     id: "density",
-//     label: "Density",
-//     minWidth: 170,
-//     align: "right",
-//     format: (value: number) => value.toFixed(2),
-//   },
-// ];
-
-// interface Data {
-//   name: string;
-//   code: string;
-//   population: number;
-//   size: number;
-//   density: number;
-// }
-
-// function createData(
-//   name: string,
-//   code: string,
-//   population: number,
-//   size: number
-// ): Data {
-//   const density = population / size;
-//   return { name, code, population, size, density };
-// }
-
-// const rows = [
-//   createData("India", "IN", 1324171354, 3287263),
-//   createData("China", "CN", 1403500365, 9596961),
-//   createData("Italy", "IT", 60483973, 301340),
-//   createData("United States", "US", 327167434, 9833520),
-//   createData("Canada", "CA", 37602103, 9984670),
-//   createData("Australia", "AU", 25475400, 7692024),
-//   createData("Germany", "DE", 83019200, 357578),
-//   createData("Ireland", "IE", 4857000, 70273),
-//   createData("Mexico", "MX", 126577691, 1972550),
-//   createData("Japan", "JP", 126317000, 377973),
-//   createData("France", "FR", 67022000, 640679),
-//   createData("United Kingdom", "GB", 67545757, 242495),
-//   createData("Russia", "RU", 146793744, 17098246),
-//   createData("Nigeria", "NG", 200962417, 923768),
-//   createData("Brazil", "BR", 210147125, 8515767),
-// ];
-
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
     backgroundColor: theme.palette.common.black,
@@ -150,7 +80,7 @@ interface formFieldType {
 interface PropType extends GeneralPropType {}
 function GroupDetails({ userData }: PropType) {
   // throw new Error("Stop here");
-  
+
   const { expenseList } = useSelector(
     (state: Rootstate) => state.expenseReducer
   );
@@ -177,18 +107,16 @@ function GroupDetails({ userData }: PropType) {
   });
 
   useEffect(() => {
+    const groupExpenseList: expenseDataType[] = [];
     expenseList.forEach((expense) => {
-      if (
-        groupData.member_list.every((element) =>
-          expense.member_list?.includes(element)
-        )
-      ) {
-        console.log("it is my Expanse");
-        
+      if (expense.group_list?.indexOf(groupData.name) >= 0) {
+        groupExpenseList.push(expense);
       }
     });
-    setGroupMember(groupData.member_list)
-  }, []);
+    console.log(groupExpenseList);
+    setGroupExpense(groupExpenseList);
+    setGroupMember(groupData.member_list);
+  }, [expenseList]);
 
   const [groupMembers, setGroupMember] = useState<string[]>([]);
   const handleTab = (event: React.SyntheticEvent, newValue: number) => {
@@ -252,7 +180,9 @@ function GroupDetails({ userData }: PropType) {
           className='groups-page-heading'
         >
           <Box display='flex' alignItems='center'>
-          {groupData.group_image != undefined && <Avatar alt='sdf' src={groupData.group_image} />} 
+            {groupData.group_image && (
+              <Avatar alt='sdf' src={groupData.group_image} />
+            )}
             <Typography
               className='groups-page-title'
               variant='h4'
@@ -266,7 +196,7 @@ function GroupDetails({ userData }: PropType) {
               FriendsList={groupData.member_list}
               userData={userData}
             />
-            <GroupForm groupData={groupData} userData={userData}/>
+            <GroupForm groupData={groupData} userData={userData} />
           </Box>
         </Box>
         <Divider className='group-title-divider' />
@@ -292,241 +222,189 @@ function GroupDetails({ userData }: PropType) {
                   <TableContainer sx={{ maxHeight: 440 }}>
                     <Table stickyHeader aria-label='sticky table'>
                       <TableBody>
-                        {/* {rows
-                          .slice(
-                            page * rowsPerPage,
-                            page * rowsPerPage + rowsPerPage
-                          )
-                          .map((row) => {
-                            return ( */}
-                        <TableRow hover role='checkbox' tabIndex={-1} key={1}>
-                          <TableCell
-                            key={1}
-                            // align={column.align}
-                          >
-                            {/* {column.format &&
+                        {groupExpense.length > 0 ? (
+                          groupExpense.map((expanse) => (
+                            <TableRow
+                              hover
+                              role='checkbox'
+                              tabIndex={-1}
+                              key={2}
+                            >
+                              <TableCell
+                                key={1}
+                                // align={column.align}
+                              >
+                                {/* {column.format &&
                                       typeof value === "number"
                                         ? column.format(value)
                                         : value} */}
-                            <Box>
-                              <Typography
-                                variant='h6'
-                                fontWeight='bold'
-                                className='group-expanse-name'
-                              >
-                                Rent
-                                <Typography className='group-expanse-amount'>
-                                  $999.00
+                                <Box>
+                                  <Typography
+                                    variant='h6'
+                                    fontWeight='bold'
+                                    className='group-expanse-name'
+                                  >
+                                    {expanse.expense_description}
+                                    <Typography className='group-expanse-amount'>
+                                      $999.00
+                                    </Typography>
+                                  </Typography>
+                                </Box>
+                              </TableCell>
+                              <TableCell key={2}>
+                                <Box>
+                                  <Typography fontWeight='bold'>
+                                    <span className='text-slate-500'>
+                                      Paid by{" "}
+                                    </span>
+                                    Demo3
+                                  </Typography>
+                                  <Typography>
+                                    <span className='text-slate-500 font-bold'>
+                                      on{" "}
+                                    </span>
+                                    Sun, 19 Jun 2022
+                                  </Typography>
+                                </Box>
+                              </TableCell>
+                              <TableCell key={3}>
+                                <Box color='red'>
+                                  <Typography>You Owe</Typography>
+                                  <Typography fontWeight='bold'>
+                                    $333.00
+                                  </Typography>
+                                </Box>
+                              </TableCell>
+                              <TableCell key={4}>
+                                <Box>
+                                  <ChevronRightIcon />
+                                </Box>
+                              </TableCell>
+                            </TableRow>
+                          ))
+                        ) : (
+                          <TableRow role='checkbox' tabIndex={-1} key={2}>
+                            <TableCell
+                              key={1}
+                              // align={column.align}
+                            >
+                              {/* {column.format &&
+                                  typeof value === "number"
+                                    ? column.format(value)
+                                    : value} */}
+                              <Box>
+                                <Typography
+                                  variant='h6'
+                                  fontWeight='bold'
+                                  className='group-expanse-name'
+                                >
+                                  No Expense Ramain
+                                  {/* <Typography className='group-expanse-amount'>
+                                    $999.00
+                                  </Typography> */}
                                 </Typography>
-                              </Typography>
-                            </Box>
-                          </TableCell>
-                          <TableCell key={2}>
-                            <Box>
-                              <Typography fontWeight='bold'>
-                                <span className='text-slate-500'>Paid by </span>
-                                Demo3
-                              </Typography>
-                              <Typography>
-                                <span className='text-slate-500 font-bold'>
-                                  on{" "}
-                                </span>
-                                Sun, 19 Jun 2022
-                              </Typography>
-                            </Box>
-                          </TableCell>
-                          <TableCell key={3}>
-                            <Box color='red'>
-                              <Typography>You Owe</Typography>
-                              <Typography fontWeight='bold'>$333.00</Typography>
-                            </Box>
-                          </TableCell>
-                          <TableCell key={4}>
-                            <Box>
-                              <ChevronRightIcon />
-                            </Box>
-                          </TableCell>
-
-                          {/* {
-                                columns.map((column) => {
-                                  const value = row[column.id];
-                                  return (
-                                  );
-                                })} */}
-                        </TableRow>
-                        <TableRow hover role='checkbox' tabIndex={-1} key={2}>
-                          <TableCell
-                            key={1}
-                            // align={column.align}
-                          >
-                            {/* {column.format &&
-                                      typeof value === "number"
-                                        ? column.format(value)
-                                        : value} */}
-                            <Box>
-                              <Typography
-                                variant='h6'
-                                fontWeight='bold'
-                                className='group-expanse-name'
-                              >
-                                Rent
-                                <Typography className='group-expanse-amount'>
-                                  $999.00
-                                </Typography>
-                              </Typography>
-                            </Box>
-                          </TableCell>
-                          <TableCell key={2}>
-                            <Box>
-                              <Typography fontWeight='bold'>
-                                <span className='text-slate-500'>Paid by </span>
-                                Demo3
-                              </Typography>
-                              <Typography>
-                                <span className='text-slate-500 font-bold'>
-                                  on{" "}
-                                </span>
-                                Sun, 19 Jun 2022
-                              </Typography>
-                            </Box>
-                          </TableCell>
-                          <TableCell key={3}>
-                            <Box color='green'>
-                              <Typography>You Owe</Typography>
-                              <Typography fontWeight='bold'>$333.00</Typography>
-                            </Box>
-                          </TableCell>
-                          <TableCell key={4}>
-                            <Box>
-                              <ChevronRightIcon />
-                            </Box>
-                          </TableCell>
-
-                          {/* {
-                                columns.map((column) => {
-                                  const value = row[column.id];
-                                  return (
-                                  );
-                                })} */}
-                        </TableRow>
-
-                        {/* );
-                          })} */}
+                              </Box>
+                            </TableCell>
+                          </TableRow>
+                        )}
                       </TableBody>
                     </Table>
                   </TableContainer>
-                  {/* <TablePagination
-                    rowsPerPageOptions={[10, 25, 100]}
-                    component='div'
-                    count={rows.length}
-                    rowsPerPage={rowsPerPage}
-                    page={page}
-                    onPageChange={handleChangePage}
-                    onRowsPerPageChange={handleChangeRowsPerPage}
-                  /> */}
                 </Paper>
-                {/* <Box>
-                  <Box display='flex' textAlign='left'>
-                    <Box>
-                      <Typography>Rent</Typography>
-                      <Typography>$900.00</Typography>
-                    </Box>
-                    <Box>
-                      <Typography>Paid By Username</Typography>
-                      <Typography>on Sun,19 Jun 2022</Typography>
-                    </Box>
-                    <Box>
-                      <Typography>You Owe</Typography>
-                      <Typography>$ 333.00</Typography>
-                    </Box>
-                    <Box>
-                      <ChevronRightIcon />
-                    </Box>
-                  </Box>
-                </Box> */}
               </GroupExpense>
               <GroupExpense value={tabNumber} index={1}>
                 <Paper sx={{ width: "100%", overflow: "hidden" }}>
                   <TableContainer sx={{ maxHeight: 440 }}>
                     <Table stickyHeader aria-label='sticky table'>
                       <TableBody>
-                        {/* {rows
-                          .slice(
-                            page * rowsPerPage,
-                            page * rowsPerPage + rowsPerPage
-                          )
-                          .map((row) => {
-                            return ( */}
-                        <TableRow hover role='checkbox' tabIndex={-1} key={1}>
-                          <TableCell
-                            key={1}
-                            // align={column.align}
-                          >
-                            {/* {column.format &&
+                        {groupExpense.length > 0 ? (
+                          groupExpense.map((expanse) => (
+                            <TableRow
+                              hover
+                              role='checkbox'
+                              tabIndex={-1}
+                              key={2}
+                            >
+                              <TableCell
+                                key={1}
+                                // align={column.align}
+                              >
+                                {/* {column.format &&
                                       typeof value === "number"
                                         ? column.format(value)
                                         : value} */}
-                            <Box>
-                              <Typography
-                                variant='h6'
-                                fontWeight='bold'
-                                className='group-expanse-name'
-                              >
-                                Rent
-                                <Typography className='group-expanse-amount'>
-                                  $999.00
+                                <Box>
+                                  <Typography
+                                    variant='h6'
+                                    fontWeight='bold'
+                                    className='group-expanse-name'
+                                  >
+                                    {expanse.expense_description}
+                                    <Typography className='group-expanse-amount'>
+                                      $999.00
+                                    </Typography>
+                                  </Typography>
+                                </Box>
+                              </TableCell>
+                              <TableCell key={2}>
+                                <Box>
+                                  <Typography fontWeight='bold'>
+                                    <span className='text-slate-500'>
+                                      Paid by{" "}
+                                    </span>
+                                    Demo3
+                                  </Typography>
+                                  <Typography>
+                                    <span className='text-slate-500 font-bold'>
+                                      on{" "}
+                                    </span>
+                                    Sun, 19 Jun 2022
+                                  </Typography>
+                                </Box>
+                              </TableCell>
+                              <TableCell key={3}>
+                                <Box color='red'>
+                                  <Typography>You Owe</Typography>
+                                  <Typography fontWeight='bold'>
+                                    $333.00
+                                  </Typography>
+                                </Box>
+                              </TableCell>
+                              <TableCell key={4}>
+                                <Box>
+                                  <ChevronRightIcon />
+                                </Box>
+                              </TableCell>
+                            </TableRow>
+                          ))
+                        ) : (
+                          <TableRow role='checkbox' tabIndex={-1} key={2}>
+                            <TableCell
+                              key={1}
+                              // align={column.align}
+                            >
+                              {/* {column.format &&
+                                  typeof value === "number"
+                                    ? column.format(value)
+                                    : value} */}
+                              <Box>
+                                <Typography
+                                  variant='h6'
+                                  fontWeight='bold'
+                                  className='group-expanse-name'
+                                >
+                                  No Expense Ramain
+                                  {/* <Typography className='group-expanse-amount'>
+                                    $999.00
+                                  </Typography> */}
                                 </Typography>
-                              </Typography>
-                            </Box>
-                          </TableCell>
-                          <TableCell key={2}>
-                            <Box>
-                              <Typography fontWeight='bold'>
-                                <span className='text-slate-500'>Paid by </span>
-                                Demo3
-                              </Typography>
-                              <Typography>
-                                <span className='text-slate-500 font-bold'>
-                                  on{" "}
-                                </span>
-                                Sun, 19 Jun 2022
-                              </Typography>
-                            </Box>
-                          </TableCell>
-                          <TableCell key={3}>
-                            <Box color='green'>
-                              <Typography>You Owe</Typography>
-                              <Typography fontWeight='bold'>$333.00</Typography>
-                            </Box>
-                          </TableCell>
-                          <TableCell key={4}>
-                            <Box>
-                              <ChevronRightIcon />
-                            </Box>
-                          </TableCell>
-
-                          {/* {
-                                columns.map((column) => {
-                                  const value = row[column.id];
-                                  return (
-                                  );
-                                })} */}
-                        </TableRow>
-
-                        {/* );
-                          })} */}
+                              </Box>
+                            </TableCell>
+                          </TableRow>
+                        )}
                       </TableBody>
                     </Table>
                   </TableContainer>
-                  {/* <TablePagination
-                    rowsPerPageOptions={[10, 25, 100]}
-                    component='div'
-                    count={rows.length}
-                    rowsPerPage={rowsPerPage}
-                    page={page}
-                    onPageChange={handleChangePage}
-                    onRowsPerPageChange={handleChangeRowsPerPage}
-                  /> */}
                 </Paper>
               </GroupExpense>
             </Grid>

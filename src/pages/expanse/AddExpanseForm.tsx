@@ -86,6 +86,7 @@ function AddExpenseForm({ FriendsList, userData }: PropType) {
     created_at: today.toISOString(),
     isSettle: false,
     expense_file: null,
+    group_list: [],
   });
 
   const [toggles, toggle] = useToggle({
@@ -157,13 +158,18 @@ function AddExpenseForm({ FriendsList, userData }: PropType) {
     details?: AutocompleteChangeDetails<ListOptionType>
   ) => {
     setFieldValue("member_list", value);
-    updatePaidByList(value);
+    updatePaidByList(value, setFieldValue);
   };
 
-  const updatePaidByList = async (ListData: ListOptionType[]) => {
+  const updatePaidByList = async (
+    ListData: ListOptionType[],
+    setFieldValue: Function
+  ) => {
+    tempGroupsList = [];
     tempFriendsList = [];
     ListData.map((item) => {
       if (item.group == "group") {
+        tempGroupsList.push(item.value);
         groupList.map((group) => {
           if (group.name == item.value) {
             group.member_list.map((member) => {
@@ -179,7 +185,11 @@ function AddExpenseForm({ FriendsList, userData }: PropType) {
     tempFriendsList = tempFriendsList.filter(
       (val, id, tempFriendsList) => tempFriendsList.indexOf(val) == id
     );
-
+    tempGroupsList = tempGroupsList.filter(
+      (val, id, tempGroupsList) => tempGroupsList.indexOf(val) == id
+    );
+    console.log(tempGroupsList);
+    setFieldValue("group_list", tempGroupsList);
     if (tempFriendsList.length > 0) {
       setPaidByList(tempFriendsList);
     } else {
@@ -194,10 +204,12 @@ function AddExpenseForm({ FriendsList, userData }: PropType) {
     if (paidByList != undefined) {
       values.member_list = paidByList;
     }
+
     if (values.expense_file != null) {
       var min = 10000;
       var max = 99999;
       var randomNum = Math.floor(Math.random() * (max - min + 1)) + min;
+      console.log(values);
 
       const FileResponse = await ExpenseFirestoreService.addFile(
         values.expense_file,
