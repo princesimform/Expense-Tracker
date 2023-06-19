@@ -61,8 +61,6 @@ function RegisterForm({ toggleSignUp }: PropType) {
 
   const handleSubmit = async (values: formFieldType) => {
     if (values.email && values.password) {
-      console.log(values);
-
       toggle("processing");
 
       try {

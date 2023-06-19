@@ -53,6 +53,7 @@ function GroupForm({ groupData, userData }: PropsType) {
   const date = new Date();
   const [toggles, toggle] = useToggle({
     isModleOpen: false,
+    processing: false,
   });
   const [hasOldIamge, setHasOldIamge] = useState<boolean>(
     groupData ? true : false
@@ -81,7 +82,6 @@ function GroupForm({ groupData, userData }: PropsType) {
   ) => {
     if (e.target.files && e.target.files[0]) {
       reader.addEventListener("load", function (event) {
-        console.log(reader.result);
         setHasOldIamge(false);
         setgroupProfileimage(JSON.stringify(reader.result));
       });
@@ -89,55 +89,65 @@ function GroupForm({ groupData, userData }: PropsType) {
       setFieldValue("group_image", e.target.files[0]);
     }
   };
-
   const handleSubmit = async (values: formDataType) => {
+    toggle("processing");
     if (groupData) {
-      const NewData = JSON.parse(JSON.stringify(groupData));
-      NewData.name = values.name;
-      NewData.group_image = values.group_image;
-      console.log(NewData);
+      handleUpdateSubmit(values);
+    } else {
+      handleAddSubmit(values);
+    }
+  };
+  const handleAddSubmit = async (values: formDataType) => {
+    const createdAtTime =
+      date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
+    if (userData != undefined) {
+      const req_data: groupDataType = {
+        id: "",
+        name: values.name,
+        group_image: values.group_image,
+        admin_user_id: userData?.uid,
+        admin_user_name: userData?.displayName,
+        created_at: createdAtTime,
+        member_list: [`${userData?.email}`],
+      };
       try {
-        const dataId = await dispatch(updateData(NewData));
-        enqueueSnackbar(`Group Updated successfully ${dataId.payload.docId}`, {
+        const dataId = await dispatch(setData(req_data));
+        console.log(dataId.payload);
+        enqueueSnackbar(`Group Created successfully `, {
           variant: "success",
           autoHideDuration: 3000,
         });
+
+        toggle("processing");
         toggle("isModleOpen");
         dispatch(getGroups(userData?.email));
-      } catch (error) {}
-    } else {
-      const createdAtTime =
-        date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
-      console.log(userData);
-      if (userData != undefined) {
-        const req_data: groupDataType = {
-          id: "",
-          name: values.name,
-          group_image: values.group_image,
-          admin_user_id: userData?.uid,
-          admin_user_name: userData?.displayName,
-          created_at: createdAtTime,
-          member_list: [`${userData?.email}`],
-        };
-        try {
-          const dataId = await dispatch(setData(req_data));
-          enqueueSnackbar(
-            `Group Created successfully ${dataId.payload.docId}`,
-            {
-              variant: "success",
-              autoHideDuration: 3000,
-            }
-          );
-          toggle("isModleOpen");
-          dispatch(getGroups(userData?.email));
-          navigate(`/group`);
-        } catch (error) {
-          enqueueSnackbar(`Something Went Wrong`, {
-            variant: "error",
-            autoHideDuration: 3000,
-          });
-        }
+        navigate(`/group`);
+      } catch (error) {
+        enqueueSnackbar(`Something Went Wrong`, {
+          variant: "error",
+          autoHideDuration: 3000,
+        });
       }
+    }
+  };
+  const handleUpdateSubmit = async (values: formDataType) => {
+    const NewData = JSON.parse(JSON.stringify(groupData));
+    NewData.name = values.name;
+    NewData.group_image = values.group_image;
+    try {
+      const dataId = await dispatch(updateData(NewData));
+      console.log(dataId.payload);
+      enqueueSnackbar(`Group Updated successfully`, {
+        variant: "success",
+        autoHideDuration: 3000,
+      });
+      toggle("isModleOpen");
+      dispatch(getGroups(userData?.email));
+    } catch (error) {
+      enqueueSnackbar(`Group Updated successfully `, {
+        variant: "error",
+        autoHideDuration: 3000,
+      });
     }
   };
 
@@ -148,7 +158,7 @@ function GroupForm({ groupData, userData }: PropsType) {
         color='secondary'
         onClick={() => toggle("isModleOpen")}
       >
-         {buttonValue} Group
+        {buttonValue} Group
       </Button>
       <Modal
         aria-labelledby='transition-modal-title'
@@ -238,23 +248,19 @@ function GroupForm({ groupData, userData }: PropsType) {
                       Cancle
                     </Button>
 
-                    {groupData ? (
-                      <Button
-                        type='submit'
-                        variant='contained'
-                        disabled={!isValid}
-                      >
-                        {buttonValue}
-                      </Button>
-                    ) : (
-                      <Button
-                        type='submit'
-                        variant='contained'
-                        disabled={!isValid}
-                      >
-                        Create Group
-                      </Button>
-                    )}
+                    <Button
+                      type='submit'
+                      variant='contained'
+                      disabled={!isValid}
+                    >
+                      {groupData
+                        ? toggles.processing
+                          ? "Processing ..."
+                          : buttonValue
+                        : toggles.processing
+                        ? "Processing ..."
+                        : "Create Group"}
+                    </Button>
                   </Box>
                 </Form>
               )}

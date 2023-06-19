@@ -62,7 +62,6 @@ function ExpenseList({ userData }: PropType) {
 
   return (
     <>
-      {console.log("expense")}
       <Box
         display='flex'
         alignItems='center'

@@ -11,7 +11,6 @@ function SidenavItem(props: {
   active: boolean;
 }) {
   const { active, icon, path, title } = props;
-  console.log(path);
   const navigate = useNavigate();
 
   // const activeButton = document.getElementsByClassName()

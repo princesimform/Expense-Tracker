@@ -7,7 +7,6 @@ interface PropType extends GeneralPropType {
 }
 
 function ExpenseCard({ expanse }: PropType) {
-  console.log(expanse);
   return <div>ExpenseCard</div>;
 }
 

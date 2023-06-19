@@ -18,10 +18,11 @@ export const setData: any = createAsyncThunk(
 export const updateData: any = createAsyncThunk(
   "firestore/setData",
   async (data) => {
-    console.log("data with member");
-    console.log(data);
-    const docId = await FirestoreService.updateDataToFirestore(data, "groups");
-    return { docId };
+    const response = await FirestoreService.updateDataToFirestore(
+      data,
+      "groups"
+    );
+    return response;
   }
 );
 
@@ -35,7 +36,7 @@ export const DeleteData: any = createAsyncThunk(
 
 export const getGroups: any = createAsyncThunk(
   "firestore/getData",
-  async (email : string) => {
+  async (email: string) => {
     const groupList: groupDataType[] = await FirestoreService.getGroups(email);
     return { groupList };
   }
@@ -64,20 +65,15 @@ export const groupSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(setData.fulfilled, (state, action) => {
       const { docId } = action.payload;
-      console.log("you are from thunk");
-      console.log(docId);
     });
     builder.addCase(setData.rejected, (state, action) => {
-      console.log("you are rejected");
       throw new Error("are you here ");
     });
     builder.addCase(getGroups.fulfilled, (state, action) => {
       const { groupList } = action.payload;
-      console.log(action.payload);
       state.groupList = groupList;
     });
     builder.addCase(getGroups.rejected, (state, action) => {
-      console.log("you are rejected");
       throw new Error("are you here ");
     });
   },

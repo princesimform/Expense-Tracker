@@ -26,8 +26,6 @@ export const getExpenses: any = createAsyncThunk(
       email,
       "expenses"
     );
-    console.log("i am from doc data");
-    console.log(docData);
     return { docData };
   }
 );
@@ -63,18 +61,13 @@ export const expenseSlice = createSlice({
       const { docData } = action.payload;
       if (docData.status) {
       }
-      console.log("you are from thunk");
-      console.log(docData);
     });
     builder.addCase(getExpenses.fulfilled, (state, action) => {
       const { docData } = action.payload;
-      console.log(docData);
 
       if (docData.status) {
         state.expenseList = docData.data;
       }
-      console.log("you are from thunk");
-      console.log(docData);
     });
   },
 });

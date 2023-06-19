@@ -180,7 +180,6 @@ function AddExpenseForm({ FriendsList, userData }: PropType) {
     tempGroupsList = tempGroupsList.filter(
       (val, id, tempGroupsList) => tempGroupsList.indexOf(val) == id
     );
-    console.log(tempGroupsList);
     setFieldValue("group_list", tempGroupsList);
     if (tempFriendsList.length > 0) {
       setPaidByList(tempFriendsList);
@@ -201,8 +200,6 @@ function AddExpenseForm({ FriendsList, userData }: PropType) {
       var min = 10000;
       var max = 99999;
       var randomNum = Math.floor(Math.random() * (max - min + 1)) + min;
-      console.log(values);
-
       const FileResponse = await ExpenseFirestoreService.addFile(
         values.expense_file,
         "expense_images",
@@ -214,14 +211,12 @@ function AddExpenseForm({ FriendsList, userData }: PropType) {
       }
     }
     try {
-      console.log(values);
       const response = await dispatch(setExpense(values));
       if (response.payload.docData.status) {
         resetForm({ values: "" });
         await dispatch(getExpenses(userData?.email));
         toggle("isModleOpen");
       }
-      console.log(response.payload.docData.status);
     } catch (error) {
       console.log(error);
     }

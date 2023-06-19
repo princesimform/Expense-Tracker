@@ -43,8 +43,6 @@ AuthService!.register = async (
     createUserWithEmailAndPassword(fauth, email, password)
       .then(async (userCredential) => {
         if (fauth.currentUser != null) {
-          console.log(profile);
-
           const UpdateData = { displayName: name, photoURL: "" };
           if (profile) {
             UpdateData.photoURL = await AuthService.uploadFile(
