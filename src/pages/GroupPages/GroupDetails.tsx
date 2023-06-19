@@ -41,6 +41,7 @@ import * as yup from "yup";
 import AddExpenseForm from "../expanse/AddExpanseForm";
 import { GeneralPropType } from "../../routes/AuthRoutes";
 import { expenseDataType } from "../../redux/expanseSlice";
+import Loader from "../../components/Loader";
 interface TabPanelProps {
   children?: React.ReactNode;
   index: number;
@@ -98,7 +99,7 @@ function GroupDetails({ userData }: PropType) {
   const groupData: groupDataType = useSelector((state: Rootstate) => {
     console.log("data");
     const data = state.groupReducer;
-    console.log(data);
+    console.log(">>>>>>", data);
     const Newdata = data.groupList.filter(
       (group: groupDataType) => group.id == id
     );
@@ -107,15 +108,17 @@ function GroupDetails({ userData }: PropType) {
   });
 
   useEffect(() => {
-    const groupExpenseList: expenseDataType[] = [];
-    expenseList.forEach((expense) => {
-      if (expense.group_list?.indexOf(groupData.name) >= 0) {
-        groupExpenseList.push(expense);
-      }
-    });
-    console.log(groupExpenseList);
-    setGroupExpense(groupExpenseList);
-    setGroupMember(groupData.member_list);
+    if (groupData != undefined) {
+      const groupExpenseList: expenseDataType[] = [];
+      expenseList.forEach((expense) => {
+        if (expense.group_list?.indexOf(groupData.name) >= 0) {
+          groupExpenseList.push(expense);
+        }
+      });
+      console.log(groupExpenseList);
+      setGroupExpense(groupExpenseList);
+      setGroupMember(groupData.member_list);
+    }
   }, [expenseList]);
 
   const [groupMembers, setGroupMember] = useState<string[]>([]);
@@ -170,402 +173,414 @@ function GroupDetails({ userData }: PropType) {
     await dispatch(updateData(reqData));
     setGroupMember(new_member_list);
   };
-  return (
-    <>
-      <Box className='group-detail-page' padding='16px'>
-        <Box
-          display='flex'
-          alignItems='center'
-          justifyContent='space-between'
-          className='groups-page-heading'
-        >
-          <Box display='flex' alignItems='center'>
-            {groupData.group_image && (
-              <Avatar alt='sdf' src={groupData.group_image} />
-            )}
-            <Typography
-              className='groups-page-title'
-              variant='h4'
-              textAlign='left'
-            >
-              {groupData.name}
-            </Typography>
-          </Box>
-          <Box>
-            <AddExpenseForm
-              FriendsList={groupData.member_list}
-              userData={userData}
-            />
-            <GroupForm groupData={groupData} userData={userData} />
-          </Box>
-        </Box>
-        <Divider className='group-title-divider' />
-        <Stack>
-          <Grid container spacing={3}>
-            <Grid item xs={12} sm={12} lg={6}>
-              <Typography className='group-expense-heading' variant='h6'>
-                Expenses
+  if (groupData != undefined)
+    return (
+      <>
+        <Box className='group-detail-page' padding='16px'>
+          <Box
+            display='flex'
+            alignItems='center'
+            justifyContent='space-between'
+            className='groups-page-heading'
+          >
+            <Box display='flex' alignItems='center'>
+              {groupData?.group_image && (
+                <Avatar alt='sdf' src={groupData.group_image} />
+              )}
+              <Typography
+                className='groups-page-title'
+                variant='h4'
+                textAlign='left'
+              >
+                {groupData.name}
               </Typography>
-
-              <Box className='group-tab-box'>
-                <Tabs
-                  value={tabNumber}
-                  onChange={handleTab}
-                  aria-label='basic tabs example'
-                >
-                  <Tab label='Active' {...a11yProps(0)} />
-                  <Tab label='Settled' {...a11yProps(1)} />
-                </Tabs>
-              </Box>
-              <GroupExpense value={tabNumber} index={0}>
-                <Paper sx={{ width: "100%", overflow: "hidden" }}>
-                  <TableContainer sx={{ maxHeight: 440 }}>
-                    <Table stickyHeader aria-label='sticky table'>
-                      <TableBody>
-                        {groupExpense.length > 0 ? (
-                          groupExpense.map((expanse) => (
-                            <TableRow
-                              hover
-                              role='checkbox'
-                              tabIndex={-1}
-                              key={2}
-                            >
-                              <TableCell
-                                key={1}
-                                // align={column.align}
-                              >
-                                {/* {column.format &&
-                                      typeof value === "number"
-                                        ? column.format(value)
-                                        : value} */}
-                                <Box>
-                                  <Typography
-                                    variant='h6'
-                                    fontWeight='bold'
-                                    className='group-expanse-name'
-                                  >
-                                    {expanse.expense_description}
-                                    <Typography className='group-expanse-amount'>
-                                      $999.00
-                                    </Typography>
-                                  </Typography>
-                                </Box>
-                              </TableCell>
-                              <TableCell key={2}>
-                                <Box>
-                                  <Typography fontWeight='bold'>
-                                    <span className='text-slate-500'>
-                                      Paid by{" "}
-                                    </span>
-                                    Demo3
-                                  </Typography>
-                                  <Typography>
-                                    <span className='text-slate-500 font-bold'>
-                                      on{" "}
-                                    </span>
-                                    Sun, 19 Jun 2022
-                                  </Typography>
-                                </Box>
-                              </TableCell>
-                              <TableCell key={3}>
-                                <Box color='red'>
-                                  <Typography>You Owe</Typography>
-                                  <Typography fontWeight='bold'>
-                                    $333.00
-                                  </Typography>
-                                </Box>
-                              </TableCell>
-                              <TableCell key={4}>
-                                <Box>
-                                  <ChevronRightIcon />
-                                </Box>
-                              </TableCell>
-                            </TableRow>
-                          ))
-                        ) : (
-                          <TableRow role='checkbox' tabIndex={-1} key={2}>
-                            <TableCell
-                              key={1}
-                              // align={column.align}
-                            >
-                              {/* {column.format &&
-                                  typeof value === "number"
-                                    ? column.format(value)
-                                    : value} */}
-                              <Box>
-                                <Typography
-                                  variant='h6'
-                                  fontWeight='bold'
-                                  className='group-expanse-name'
-                                >
-                                  No Expense Ramain
-                                  {/* <Typography className='group-expanse-amount'>
-                                    $999.00
-                                  </Typography> */}
-                                </Typography>
-                              </Box>
-                            </TableCell>
-                          </TableRow>
-                        )}
-                      </TableBody>
-                    </Table>
-                  </TableContainer>
-                </Paper>
-              </GroupExpense>
-              <GroupExpense value={tabNumber} index={1}>
-                <Paper sx={{ width: "100%", overflow: "hidden" }}>
-                  <TableContainer sx={{ maxHeight: 440 }}>
-                    <Table stickyHeader aria-label='sticky table'>
-                      <TableBody>
-                        {groupExpense.length > 0 ? (
-                          groupExpense.map((expanse) => (
-                            <TableRow
-                              hover
-                              role='checkbox'
-                              tabIndex={-1}
-                              key={2}
-                            >
-                              <TableCell
-                                key={1}
-                                // align={column.align}
-                              >
-                                {/* {column.format &&
-                                      typeof value === "number"
-                                        ? column.format(value)
-                                        : value} */}
-                                <Box>
-                                  <Typography
-                                    variant='h6'
-                                    fontWeight='bold'
-                                    className='group-expanse-name'
-                                  >
-                                    {expanse.expense_description}
-                                    <Typography className='group-expanse-amount'>
-                                      $999.00
-                                    </Typography>
-                                  </Typography>
-                                </Box>
-                              </TableCell>
-                              <TableCell key={2}>
-                                <Box>
-                                  <Typography fontWeight='bold'>
-                                    <span className='text-slate-500'>
-                                      Paid by{" "}
-                                    </span>
-                                    Demo3
-                                  </Typography>
-                                  <Typography>
-                                    <span className='text-slate-500 font-bold'>
-                                      on{" "}
-                                    </span>
-                                    Sun, 19 Jun 2022
-                                  </Typography>
-                                </Box>
-                              </TableCell>
-                              <TableCell key={3}>
-                                <Box color='red'>
-                                  <Typography>You Owe</Typography>
-                                  <Typography fontWeight='bold'>
-                                    $333.00
-                                  </Typography>
-                                </Box>
-                              </TableCell>
-                              <TableCell key={4}>
-                                <Box>
-                                  <ChevronRightIcon />
-                                </Box>
-                              </TableCell>
-                            </TableRow>
-                          ))
-                        ) : (
-                          <TableRow role='checkbox' tabIndex={-1} key={2}>
-                            <TableCell
-                              key={1}
-                              // align={column.align}
-                            >
-                              {/* {column.format &&
-                                  typeof value === "number"
-                                    ? column.format(value)
-                                    : value} */}
-                              <Box>
-                                <Typography
-                                  variant='h6'
-                                  fontWeight='bold'
-                                  className='group-expanse-name'
-                                >
-                                  No Expense Ramain
-                                  {/* <Typography className='group-expanse-amount'>
-                                    $999.00
-                                  </Typography> */}
-                                </Typography>
-                              </Box>
-                            </TableCell>
-                          </TableRow>
-                        )}
-                      </TableBody>
-                    </Table>
-                  </TableContainer>
-                </Paper>
-              </GroupExpense>
-            </Grid>
-            <Grid item xs={12} sm={12} lg={6}>
-              <Box>
+            </Box>
+            <Box>
+              <AddExpenseForm
+                FriendsList={groupData.member_list}
+                userData={userData}
+              />
+              <GroupForm groupData={groupData} userData={userData} />
+            </Box>
+          </Box>
+          <Divider className='group-title-divider' />
+          <Stack>
+            <Grid container spacing={3}>
+              <Grid item xs={12} sm={12} lg={6}>
                 <Typography className='group-expense-heading' variant='h6'>
-                  Add Member
+                  Expenses
                 </Typography>
-                <Formik
-                  initialValues={formFields}
-                  validationSchema={yup.object({
-                    new_member: yup
-                      .string()
-                      .required("Email is required")
-                      .email("Enter valid email address")
-                      .test(
-                        "unique",
-                        "Member already exists",
-                        function (value) {
-                          return !groupMembers.includes(value);
-                        }
-                      ),
-                  })}
-                  onSubmit={handleSubmit}
-                  validateOnMount
-                >
-                  {({
-                    handleSubmit,
-                    errors,
-                    isValid,
-                    touched,
-                    setFieldValue,
-                  }) => (
-                    <form onSubmit={handleSubmit}>
-                      <Grid container spacing={1}>
-                        <Grid item xs={12} sm={9} lg={9}>
-                          <Field
-                            fullWidth
-                            size='small'
-                            name='new_member'
-                            type='email'
-                            as={TextField}
-                            error={
-                              Boolean(errors.new_member) &&
-                              Boolean(touched.new_member)
-                            }
-                            helperText={
-                              Boolean(touched.new_member) && errors.new_member
-                            }
-                          />
-                        </Grid>
-                        <Grid item xs={12} sm={3} lg={3}>
-                          <Button variant='contained' color='primary' type='submit' fullWidth>
-                            Add
-                          </Button>
-                        </Grid>
-                      </Grid>
-                    </form>
-                  )}
-                </Formik>
-              </Box>
 
-              <Paper sx={{ marginTop: 4 }}>
-                <TableContainer component={Paper}>
-                  <Table aria-label='customized table'>
-                    <TableHead>
-                      <TableRow>
-                        <StyledTableCell>
-                          <Typography variant='h6' fontWeight='bold'>
-                            Members
-                          </Typography>
-                        </StyledTableCell>
-                      </TableRow>
-                    </TableHead>
-                    <TableBody>
-                      {groupMembers.length > 0 ? (
-                        groupMembers.map((member, index) => (
-                          <StyledTableRow key={index}>
+                <Box className='group-tab-box'>
+                  <Tabs
+                    value={tabNumber}
+                    onChange={handleTab}
+                    aria-label='basic tabs example'
+                  >
+                    <Tab label='Active' {...a11yProps(0)} />
+                    <Tab label='Settled' {...a11yProps(1)} />
+                  </Tabs>
+                </Box>
+                <GroupExpense value={tabNumber} index={0}>
+                  <Paper sx={{ width: "100%", overflow: "hidden" }}>
+                    <TableContainer sx={{ maxHeight: 440 }}>
+                      <Table stickyHeader aria-label='sticky table'>
+                        <TableBody>
+                          {groupExpense.length > 0 ? (
+                            groupExpense.map((expanse) => (
+                              <TableRow
+                                hover
+                                role='checkbox'
+                                tabIndex={-1}
+                                key={2}
+                              >
+                                <TableCell
+                                  key={1}
+                                  // align={column.align}
+                                >
+                                  {/* {column.format &&
+                                      typeof value === "number"
+                                        ? column.format(value)
+                                        : value} */}
+                                  <Box>
+                                    <Typography
+                                      variant='h6'
+                                      fontWeight='bold'
+                                      className='group-expanse-name'
+                                    >
+                                      {expanse.expense_description}
+                                      <Typography className='group-expanse-amount'>
+                                        $999.00
+                                      </Typography>
+                                    </Typography>
+                                  </Box>
+                                </TableCell>
+                                <TableCell key={2}>
+                                  <Box>
+                                    <Typography fontWeight='bold'>
+                                      <span className='text-slate-500'>
+                                        Paid by{" "}
+                                      </span>
+                                      Demo3
+                                    </Typography>
+                                    <Typography>
+                                      <span className='text-slate-500 font-bold'>
+                                        on{" "}
+                                      </span>
+                                      Sun, 19 Jun 2022
+                                    </Typography>
+                                  </Box>
+                                </TableCell>
+                                <TableCell key={3}>
+                                  <Box color='red'>
+                                    <Typography>You Owe</Typography>
+                                    <Typography fontWeight='bold'>
+                                      $333.00
+                                    </Typography>
+                                  </Box>
+                                </TableCell>
+                                <TableCell key={4}>
+                                  <Box>
+                                    <ChevronRightIcon />
+                                  </Box>
+                                </TableCell>
+                              </TableRow>
+                            ))
+                          ) : (
+                            <TableRow role='checkbox' tabIndex={-1} key={2}>
+                              <TableCell
+                                key={1}
+                                // align={column.align}
+                              >
+                                {/* {column.format &&
+                                  typeof value === "number"
+                                    ? column.format(value)
+                                    : value} */}
+                                <Box>
+                                  <Typography
+                                    variant='h6'
+                                    fontWeight='bold'
+                                    className='group-expanse-name'
+                                  >
+                                    No Expense Ramain
+                                    {/* <Typography className='group-expanse-amount'>
+                                    $999.00
+                                  </Typography> */}
+                                  </Typography>
+                                </Box>
+                              </TableCell>
+                            </TableRow>
+                          )}
+                        </TableBody>
+                      </Table>
+                    </TableContainer>
+                  </Paper>
+                </GroupExpense>
+                <GroupExpense value={tabNumber} index={1}>
+                  <Paper sx={{ width: "100%", overflow: "hidden" }}>
+                    <TableContainer sx={{ maxHeight: 440 }}>
+                      <Table stickyHeader aria-label='sticky table'>
+                        <TableBody>
+                          {groupExpense.length > 0 ? (
+                            groupExpense.map((expanse) => (
+                              <TableRow
+                                hover
+                                role='checkbox'
+                                tabIndex={-1}
+                                key={2}
+                              >
+                                <TableCell
+                                  key={1}
+                                  // align={column.align}
+                                >
+                                  {/* {column.format &&
+                                      typeof value === "number"
+                                        ? column.format(value)
+                                        : value} */}
+                                  <Box>
+                                    <Typography
+                                      variant='h6'
+                                      fontWeight='bold'
+                                      className='group-expanse-name'
+                                    >
+                                      {expanse.expense_description}
+                                      <Typography className='group-expanse-amount'>
+                                        $999.00
+                                      </Typography>
+                                    </Typography>
+                                  </Box>
+                                </TableCell>
+                                <TableCell key={2}>
+                                  <Box>
+                                    <Typography fontWeight='bold'>
+                                      <span className='text-slate-500'>
+                                        Paid by{" "}
+                                      </span>
+                                      Demo3
+                                    </Typography>
+                                    <Typography>
+                                      <span className='text-slate-500 font-bold'>
+                                        on{" "}
+                                      </span>
+                                      Sun, 19 Jun 2022
+                                    </Typography>
+                                  </Box>
+                                </TableCell>
+                                <TableCell key={3}>
+                                  <Box color='red'>
+                                    <Typography>You Owe</Typography>
+                                    <Typography fontWeight='bold'>
+                                      $333.00
+                                    </Typography>
+                                  </Box>
+                                </TableCell>
+                                <TableCell key={4}>
+                                  <Box>
+                                    <ChevronRightIcon />
+                                  </Box>
+                                </TableCell>
+                              </TableRow>
+                            ))
+                          ) : (
+                            <TableRow role='checkbox' tabIndex={-1} key={2}>
+                              <TableCell
+                                key={1}
+                                // align={column.align}
+                              >
+                                {/* {column.format &&
+                                  typeof value === "number"
+                                    ? column.format(value)
+                                    : value} */}
+                                <Box>
+                                  <Typography
+                                    variant='h6'
+                                    fontWeight='bold'
+                                    className='group-expanse-name'
+                                  >
+                                    No Expense Ramain
+                                    {/* <Typography className='group-expanse-amount'>
+                                    $999.00
+                                  </Typography> */}
+                                  </Typography>
+                                </Box>
+                              </TableCell>
+                            </TableRow>
+                          )}
+                        </TableBody>
+                      </Table>
+                    </TableContainer>
+                  </Paper>
+                </GroupExpense>
+              </Grid>
+              <Grid item xs={12} sm={12} lg={6}>
+                <Box>
+                  <Typography className='group-expense-heading' variant='h6'>
+                    Add Member
+                  </Typography>
+                  <Formik
+                    initialValues={formFields}
+                    validationSchema={yup.object({
+                      new_member: yup
+                        .string()
+                        .required("Email is required")
+                        .email("Enter valid email address")
+                        .test(
+                          "unique",
+                          "Member already exists",
+                          function (value) {
+                            return !groupMembers.includes(value);
+                          }
+                        ),
+                    })}
+                    onSubmit={handleSubmit}
+                    validateOnMount
+                  >
+                    {({
+                      handleSubmit,
+                      errors,
+                      isValid,
+                      touched,
+                      setFieldValue,
+                    }) => (
+                      <form onSubmit={handleSubmit}>
+                        <Grid container spacing={1}>
+                          <Grid item xs={12} sm={9} lg={9}>
+                            <Field
+                              fullWidth
+                              size='small'
+                              name='new_member'
+                              type='email'
+                              as={TextField}
+                              error={
+                                Boolean(errors.new_member) &&
+                                Boolean(touched.new_member)
+                              }
+                              helperText={
+                                Boolean(touched.new_member) && errors.new_member
+                              }
+                            />
+                          </Grid>
+                          <Grid item xs={12} sm={3} lg={3}>
+                            <Button
+                              variant='contained'
+                              color='primary'
+                              type='submit'
+                              fullWidth
+                            >
+                              Add
+                            </Button>
+                          </Grid>
+                        </Grid>
+                      </form>
+                    )}
+                  </Formik>
+                </Box>
+
+                <Paper sx={{ marginTop: 4 }}>
+                  <TableContainer component={Paper}>
+                    <Table aria-label='customized table'>
+                      <TableHead>
+                        <TableRow>
+                          <StyledTableCell>
+                            <Typography variant='h6' fontWeight='bold'>
+                              Members
+                            </Typography>
+                          </StyledTableCell>
+                        </TableRow>
+                      </TableHead>
+                      <TableBody>
+                        {groupMembers.length > 0 ? (
+                          groupMembers.map((member, index) => (
+                            <StyledTableRow key={index}>
+                              <StyledTableCell component='th' scope='row'>
+                                <Stack
+                                  display='flex'
+                                  flexDirection='row'
+                                  justifyContent='space-between'
+                                >
+                                  <Typography>{member}</Typography>
+                                  {userData?.email != member && (
+                                    <Box
+                                      color='red'
+                                      onClick={() =>
+                                        DeleteMemberFromList(index)
+                                      }
+                                    >
+                                      <DeleteForeverOutlined />
+                                    </Box>
+                                  )}
+                                </Stack>
+                              </StyledTableCell>
+                            </StyledTableRow>
+                          ))
+                        ) : (
+                          <StyledTableRow key={"no data"}>
                             <StyledTableCell component='th' scope='row'>
                               <Stack
                                 display='flex'
                                 flexDirection='row'
                                 justifyContent='space-between'
                               >
-                                <Typography>{member}</Typography>
-                                {userData?.email != member && (
-                                  <Box
-                                    color='red'
-                                    onClick={() => DeleteMemberFromList(index)}
-                                  >
-                                    <DeleteForeverOutlined />
-                                  </Box>
-                                )}
+                                <Typography>No Data Found</Typography>
                               </Stack>
                             </StyledTableCell>
                           </StyledTableRow>
-                        ))
-                      ) : (
-                        <StyledTableRow key={"no data"}>
-                          <StyledTableCell component='th' scope='row'>
-                            <Stack
-                              display='flex'
-                              flexDirection='row'
-                              justifyContent='space-between'
-                            >
-                              <Typography>No Data Found</Typography>
-                            </Stack>
-                          </StyledTableCell>
-                        </StyledTableRow>
-                      )}
-                    </TableBody>
-                  </Table>
-                </TableContainer>
-              </Paper>
-            </Grid>
-            <Grid item xs={12} sm={12} lg={6}>
-              <Box padding={1} border='2px dashed red'>
-                <Typography variant='h6' fontWeight='bold' textAlign='left'>
-                  Danger Zone
-                </Typography>
-                <Box margin={1}>
-                  <Button
-                    fullWidth
-                    color='error'
-                    onClick={() => setOpenDialog(true)}
-                  >
-                    Delete Group
-                  </Button>
+                        )}
+                      </TableBody>
+                    </Table>
+                  </TableContainer>
+                </Paper>
+              </Grid>
+              <Grid item xs={12} sm={12} lg={6}>
+                <Box padding={1} border='2px dashed red'>
+                  <Typography variant='h6' fontWeight='bold' textAlign='left'>
+                    Danger Zone
+                  </Typography>
+                  <Box margin={1}>
+                    <Button
+                      fullWidth
+                      color='error'
+                      onClick={() => setOpenDialog(true)}
+                    >
+                      Delete Group
+                    </Button>
 
-                  <Dialog
-                    open={openDialog}
-                    onClose={() => setOpenDialog(false)}
-                    aria-labelledby='alert-dialog-title'
-                    aria-describedby='alert-dialog-description'
-                  >
-                    <DialogTitle id='alert-dialog-title'>
-                      {"Are You Sure?"}
-                    </DialogTitle>
-                    <DialogContent>
-                      <DialogContentText id='alert-dialog-description'>
-                        We Are Delete Your all transaction which are done in
-                        this group
-                      </DialogContentText>
-                    </DialogContent>
-                    <DialogActions>
-                      <Button onClick={() => setOpenDialog(false)}>
-                        Disagree
-                      </Button>
-                      <Button onClick={() => deleteGroup(groupData)} autoFocus>
-                        Agree
-                      </Button>
-                    </DialogActions>
-                  </Dialog>
+                    <Dialog
+                      open={openDialog}
+                      onClose={() => setOpenDialog(false)}
+                      aria-labelledby='alert-dialog-title'
+                      aria-describedby='alert-dialog-description'
+                    >
+                      <DialogTitle id='alert-dialog-title'>
+                        {"Are You Sure?"}
+                      </DialogTitle>
+                      <DialogContent>
+                        <DialogContentText id='alert-dialog-description'>
+                          We Are Delete Your all transaction which are done in
+                          this group
+                        </DialogContentText>
+                      </DialogContent>
+                      <DialogActions>
+                        <Button onClick={() => setOpenDialog(false)}>
+                          Disagree
+                        </Button>
+                        <Button
+                          onClick={() => deleteGroup(groupData)}
+                          autoFocus
+                        >
+                          Agree
+                        </Button>
+                      </DialogActions>
+                    </Dialog>
+                  </Box>
                 </Box>
-              </Box>
+              </Grid>
             </Grid>
-          </Grid>
-        </Stack>
-      </Box>
-    </>
-  );
+          </Stack>
+        </Box>
+      </>
+    );
+  else return <Loader />;
 }
 
 export default GroupDetails;

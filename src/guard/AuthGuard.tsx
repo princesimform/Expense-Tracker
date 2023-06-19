@@ -1,8 +1,5 @@
 import React, {
   ComponentType,
-  ReactComponentElement,
-  ReactElement,
-  ReactNode,
   useEffect,
   useState,
 } from "react";
@@ -26,18 +23,12 @@ function AuthGuards({ component }: PropType) {
   const [userData, setUserData] = useState<User>();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  async function getAllGroups(email: string) {
-    await dispatch(getGroups(email));
-  }
-  async function getAllExpenseList(email: string) {
-    await dispatch(getExpenses(email));
-  }
   useEffect(() => {
     checkToken().then((res) => {
-      getAllGroups(String(res?.email));
-      getAllExpenseList(String(res?.email));
+      dispatch(getExpenses(String(res?.email)));
+      dispatch(getGroups(String(res?.email)));
     });
-  }, [component]);
+  }, []);
 
   const SIDE_NAV_WIDTH = 280;
 
@@ -76,22 +67,22 @@ function AuthGuards({ component }: PropType) {
   };
   const [openNav, setOpenNav] = useState(false);
   const Component: ComponentType<GeneralPropType> = component;
-  return status ? (
-    <React.Fragment>
-      <Box className='my-container'>
-        <Box>
-          <Sidenav onClose={() => setOpenNav(false)} open={openNav} />
-          <Navbar onNavOpen={() => setOpenNav(true)} />
+  return (
+    status && (
+      <React.Fragment>
+        <Box className='my-container'>
+          <Box>
+            <Sidenav onClose={() => setOpenNav(false)} open={openNav} />
+            <Navbar onNavOpen={() => setOpenNav(true)} />
+          </Box>
+          <LayoutRoot>
+            <LayoutContainer>
+              <Component userData={userData} />
+            </LayoutContainer>
+          </LayoutRoot>
         </Box>
-        <LayoutRoot>
-          <LayoutContainer>
-            {userData && <Component userData={userData} />}
-          </LayoutContainer>
-        </LayoutRoot>
-      </Box>
-    </React.Fragment>
-  ) : (
-    <React.Fragment></React.Fragment>
+      </React.Fragment>
+    )
   );
 }
 

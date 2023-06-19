@@ -1,5 +1,5 @@
 import { Box, Container, Grid } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, {  useState } from "react";
 import OverviewOfGroups from "../components/group/OverviewOfGroups";
 import Groups from "./GroupPages";
 import { GeneralPropType } from "../routes/AuthRoutes";
