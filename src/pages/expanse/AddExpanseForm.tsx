@@ -35,18 +35,12 @@ import {
   expenseDataType,
   getExpenses,
   setExpense,
+  updateExpense,
 } from "../../redux/expanseSlice";
 import ExpenseFirestoreService from "../../libs/services/firebase/expenseFirestore";
-const style = {
-  position: "absolute" as "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 400,
-  bgcolor: "background.paper",
-  boxShadow: 24,
-  p: 4,
-};
+import { useSnackbar } from "notistack";
+import EditIcon from "@mui/icons-material/Edit";
+import FirebaseFileHandling from "../../libs/services/firebase/fileHandling";
 
 type ListOptionType = {
   label: string;
@@ -56,17 +50,20 @@ type ListOptionType = {
 
 interface PropType extends GeneralPropType {
   FriendsList: string[];
+  updateExpanseData?: expenseDataType;
 }
-function AddExpenseForm({ FriendsList, userData }: PropType) {
+function AddExpenseForm({
+  FriendsList,
+  userData,
+  updateExpanseData,
+}: PropType) {
   const dispatch = useDispatch();
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const { groupList } = useSelector((state: Rootstate) => state.groupReducer);
   var today = new Date();
-  const dd = String(today.getDate()).padStart(2, "0");
-  const mm = String(today.getMonth() + 1).padStart(2, "0");
-  const year = today.getFullYear();
-  const currentDate = year + "/" + mm + "/" + dd;
   const [paidByList, setPaidByList] = useState<string[]>();
   const [formValues, setFormValues] = useState<expenseDataType>({
+    id: 0,
     title: "",
     expense_description: "",
     member_list: null,
@@ -80,15 +77,19 @@ function AddExpenseForm({ FriendsList, userData }: PropType) {
     expense_file: null,
     group_list: [],
   });
-
   const [toggles, toggle] = useToggle({
     isModleOpen: false,
   });
   const [listOptions, setListOptions] = useState<ListOptionType[]>([]);
+  const [defaultListOptions, setDefaultListOptions] = useState<
+    ListOptionType[]
+  >([]);
   let tempFriendsSelectList: ListOptionType[] = [];
+  let tempDefaultFriendsSelectList: ListOptionType[] = [];
   let tempGroupsList: string[] = [];
   let tempFriendsList: string[] = [];
-  const buttonValue = "Create";
+  const buttonValue = updateExpanseData == undefined ? "Create" : "Update";
+  const currencyOptions = { ASD: "USD", INR: "INR" };
 
   const renderGroup = (params: AutocompleteRenderGroupParams) => [
     <li key={params.key} style={{ marginLeft: "10px" }}>
@@ -98,7 +99,35 @@ function AddExpenseForm({ FriendsList, userData }: PropType) {
     ,
   ];
 
-  function updateListOptions() {
+  // async function setDefaultAutoSelectList() {
+  //   console.log("i am setDefaultAutoSelectList running");
+
+  //   if (updateExpanseData != undefined) {
+  //     console.log(updateExpanseData);
+  //     console.log("listOptions", listOptions);
+  //     tempDefaultFriendsSelectList = [];
+  //     updateExpanseData.group_list?.map((item) => {
+  //       listOptions.map((group) => {
+  //         if (group.group == "group" && group.value == item) {
+  //           tempDefaultFriendsSelectList.push(group);
+  //         }
+  //       });
+  //     });
+  //     console.log(tempDefaultFriendsSelectList);
+  //     updateExpanseData.member_list?.map((item) => {
+  //       listOptions.map((friend) => {
+  //         if (friend.value == item) {
+  //           console.log(friend);
+  //           tempDefaultFriendsSelectList.push(friend);
+  //         }
+  //       });
+  //     });
+  //     console.log(tempDefaultFriendsSelectList);
+  //     setDefaultListOptions(tempDefaultFriendsSelectList);
+  //     tempDefaultFriendsSelectList = [];
+  //   }
+  // }
+  async function updateListOptions() {
     groupList.map((group) => {
       tempGroupsList.push(group.name);
       group.member_list!.map((member) => {
@@ -131,15 +160,51 @@ function AddExpenseForm({ FriendsList, userData }: PropType) {
         group: "friend",
       });
     });
+
     setListOptions(tempFriendsSelectList);
+
+    if (updateExpanseData != undefined) {
+      console.log(updateExpanseData);
+      console.log("listOptions", listOptions);
+      tempDefaultFriendsSelectList = [];
+      updateExpanseData.group_list?.map((item) => {
+        tempFriendsSelectList.map((group) => {
+          if (group.group == "group" && group.value == item) {
+            tempDefaultFriendsSelectList.push(group);
+          }
+        });
+      });
+      console.log(tempDefaultFriendsSelectList);
+      updateExpanseData.member_list?.map((item) => {
+        tempFriendsSelectList.map((friend) => {
+          if (friend.value == item) {
+            console.log(friend);
+            tempDefaultFriendsSelectList.push(friend);
+          }
+        });
+      });
+    }
+    setDefaultListOptions(tempDefaultFriendsSelectList);
+    tempDefaultFriendsSelectList = [];
+    tempFriendsSelectList = [];
   }
   useEffect(() => {
+    console.log(" i  am running only ones ");
+
     if (userData?.email) {
       setPaidByList([userData?.email]);
     }
+    if (updateExpanseData != undefined) {
+      setFormValues(updateExpanseData);
+    }
   }, []);
   useEffect(() => {
+    console.log(" i  am running on toggle ");
+
     updateListOptions();
+    if (updateExpanseData?.member_list != undefined) {
+      setPaidByList(updateExpanseData.member_list);
+    }
   }, [toggles]);
 
   const onSelectListOptions = async (
@@ -150,14 +215,21 @@ function AddExpenseForm({ FriendsList, userData }: PropType) {
     details?: AutocompleteChangeDetails<ListOptionType>
   ) => {
     setFieldValue("member_list", value);
-    updatePaidByList(value, setFieldValue);
+    console.log(value);
+    tempGroupsList = [];
+    value.map((item) => {
+      if (item.group == "group") {
+        tempGroupsList.push(item.value);
+      }
+    });
+    setFieldValue("group_list", tempGroupsList);
+    tempGroupsList = [];
+    updatePaidByList(value);
   };
 
-  const updatePaidByList = async (
-    ListData: ListOptionType[],
-    setFieldValue: Function
-  ) => {
+  const updatePaidByList = async (ListData: ListOptionType[]) => {
     tempGroupsList = [];
+
     tempFriendsList = [];
     ListData.map((item) => {
       if (item.group == "group") {
@@ -180,8 +252,11 @@ function AddExpenseForm({ FriendsList, userData }: PropType) {
     tempGroupsList = tempGroupsList.filter(
       (val, id, tempGroupsList) => tempGroupsList.indexOf(val) == id
     );
-    setFieldValue("group_list", tempGroupsList);
+
     if (tempFriendsList.length > 0) {
+      if (userData?.email) {
+        tempFriendsList.push(userData?.email);
+      }
       setPaidByList(tempFriendsList);
     } else {
       if (userData?.email) {
@@ -200,7 +275,7 @@ function AddExpenseForm({ FriendsList, userData }: PropType) {
       var min = 10000;
       var max = 99999;
       var randomNum = Math.floor(Math.random() * (max - min + 1)) + min;
-      const FileResponse = await ExpenseFirestoreService.addFile(
+      const FileResponse = await FirebaseFileHandling.addFile(
         values.expense_file,
         "expense_images",
         `${randomNum}expense`
@@ -210,38 +285,80 @@ function AddExpenseForm({ FriendsList, userData }: PropType) {
         values.expense_file = null;
       }
     }
-    try {
-      const response = await dispatch(setExpense(values));
-      if (response.payload.docData.status) {
-        resetForm({ values: "" });
-        await dispatch(getExpenses(userData?.email));
-        toggle("isModleOpen");
+
+    if (updateExpanseData != undefined) {
+      try {
+        const response = await dispatch(updateExpense(values));
+
+        if (response.payload.docData.status) {
+          enqueueSnackbar(`Expense Update successfully `, {
+            variant: "success",
+            autoHideDuration: 3000,
+          });
+          resetForm({ values: "" });
+          await dispatch(getExpenses(userData?.email));
+          toggle("isModleOpen");
+        }
+      } catch (error) {
+        console.log(error);
+        enqueueSnackbar(`Something went wrong`, {
+          variant: "error",
+          autoHideDuration: 3000,
+        });
       }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  const handleInputChange = (
-    e: ChangeEvent<HTMLInputElement>,
-    setFieldValue: Function
-  ) => {
-    if (e.target.files != null && e.target.files[0]) {
-      setFormValues((perv) => ({ ...perv, expense_file: e.target.files![0] }));
-      setFieldValue("expense_file", e.target.files[0]);
     } else {
-      setFieldValue(e.target.name, Number(e.target.value));
+      try {
+        values.id = new Date().getUTCMilliseconds();
+        const response = await dispatch(setExpense(values));
+
+        if (response.payload.docData.status) {
+          enqueueSnackbar(`Expense Created successfully `, {
+            variant: "success",
+            autoHideDuration: 3000,
+          });
+          resetForm({ values: "" });
+          await dispatch(getExpenses(userData?.email));
+          toggle("isModleOpen");
+        }
+      } catch (error) {
+        console.log(error);
+        enqueueSnackbar(`Something went wrong`, {
+          variant: "error",
+          autoHideDuration: 3000,
+        });
+      }
     }
   };
-  const currencyOptions = { ASD: "USD", INR: "INR" };
+
   return (
     <>
-      <Button
-        variant='contained'
-        color='secondary'
-        onClick={() => toggle("isModleOpen")}
-      >
-        {buttonValue} Expense
-      </Button>
+      {updateExpanseData != undefined ? (
+        <Button
+          sx={{
+            borderRadius: "16px",
+            width: "32px",
+            margin: "4px",
+            minWidth: "16px",
+            height: "32px",
+            color: "rgba(189,85,189,0.9)",
+          }}
+          variant='outlined'
+          color='secondary'
+          size='small'
+          onClick={() => toggle("isModleOpen")}
+        >
+          <EditIcon />
+        </Button>
+      ) : (
+        <Button
+          variant='contained'
+          color='secondary'
+          onClick={() => toggle("isModleOpen")}
+        >
+          {buttonValue} Expense
+        </Button>
+      )}
+
       <Modal
         aria-labelledby='transition-modal-title'
         aria-describedby='transition-modal-description'
@@ -256,14 +373,25 @@ function AddExpenseForm({ FriendsList, userData }: PropType) {
         }}
       >
         <Fade in={toggles.isModleOpen}>
-          <Box sx={style}>
+          <Box
+            sx={{
+              position: "absolute" as "absolute",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+              width: 400,
+              bgcolor: "background.paper",
+              boxShadow: 24,
+              p: 4,
+            }}
+          >
             <Typography
               id='transition-modal-title'
               variant='h5'
               sx={{ textAlign: "center", mb: 2 }}
               component='h2'
             >
-              Create Expanse
+              {buttonValue} Expanse
             </Typography>
             <Box>
               <Formik
@@ -292,6 +420,7 @@ function AddExpenseForm({ FriendsList, userData }: PropType) {
                       options={listOptions}
                       groupBy={(option: ListOptionType) => option.group}
                       renderGroup={renderGroup}
+                      defaultValue={defaultListOptions}
                       multiple
                       id='select-friends'
                       renderInput={(params: any) => (
@@ -340,9 +469,23 @@ function AddExpenseForm({ FriendsList, userData }: PropType) {
                             name='expense_file'
                             type='file'
                             value={undefined}
-                            onChange={(event: ChangeEvent<HTMLInputElement>) =>
-                              handleInputChange(event, setFieldValue)
-                            }
+                            onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                              if (e.target.files != null && e.target.files[0]) {
+                                setFormValues((prev) => ({
+                                  ...prev,
+                                  expense_file: e.target.files![0],
+                                }));
+                                setFieldValue(
+                                  "expense_file",
+                                  e.target.files[0]
+                                );
+                              } else {
+                                setFieldValue(
+                                  e.target.name,
+                                  Number(e.target.value)
+                                );
+                              }
+                            }}
                             error={
                               Boolean(errors.expense_file) &&
                               Boolean(touched.expense_file)
@@ -375,16 +518,6 @@ function AddExpenseForm({ FriendsList, userData }: PropType) {
                           name='currency_type'
                           options={currencyOptions}
                         />
-                        {/* <Select
-                          labelId='demo-simple-select-label'
-                          id='demo-simple-select'
-                          label='Age'
-                          name='currency_type'
-                          size='small'
-                          defaultValue='USD'
-                        >
-                          <MenuItem value={"USD"}>USD</MenuItem>
-                        </Select> */}
                       </Grid>
                       <Grid item xs={10} sm={10} lg={10}>
                         <TextfieldWrapper
@@ -395,17 +528,19 @@ function AddExpenseForm({ FriendsList, userData }: PropType) {
                         />
                       </Grid>
                     </Grid>
-                    {/* <DateTimePicker name="expense_date" label="Expense Data"  /> */}
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                       <DemoContainer components={[]}>
                         <DemoItem label='Expanse Date'>
                           <DatePicker
-                            defaultValue={dayjs(currentDate)}
+                            defaultValue={dayjs(today)}
                             slotProps={{ textField: { size: "small" } }}
-                            maxDate={dayjs(currentDate + 1)}
+                            maxDate={dayjs()}
                             onChange={(date) => {
                               const newDate = new Date(String(date));
-                              setFieldValue("expense_date", newDate);
+                              setFieldValue(
+                                "expense_date",
+                                newDate.toISOString()
+                              );
                             }}
                           />
                         </DemoItem>
@@ -419,9 +554,7 @@ function AddExpenseForm({ FriendsList, userData }: PropType) {
                           ? paidByList?.reduce((a, v) => ({ ...a, [v]: v }), {})
                           : []
                       }
-                      defaultValue={
-                        userData?.email != undefined ? userData.email : ""
-                      }
+                      defaultValue={updateExpanseData?.paid_by}
                       lable='Paid By'
                     />
                     <Box
@@ -443,7 +576,7 @@ function AddExpenseForm({ FriendsList, userData }: PropType) {
                         color='secondary'
                         disabled={!isValid}
                       >
-                        Create Expense
+                        {buttonValue} Expense
                       </Button>
                     </Box>
                   </Form>

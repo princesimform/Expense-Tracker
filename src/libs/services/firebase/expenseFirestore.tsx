@@ -1,7 +1,18 @@
 import { async } from "@firebase/util";
-import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  doc,
+  getDocs,
+  query,
+  setDoc,
+  where,
+  updateDoc,
+  deleteDoc,
+} from "firebase/firestore";
 import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 import { expenseDataType } from "../../../redux/expanseSlice";
+import FirebaseFileHandling from "./fileHandling";
 import { firestore, FirestoreServiceType } from "./firestore";
 
 const ExpenseFirestoreService: FirestoreServiceType = {};
@@ -59,23 +70,56 @@ ExpenseFirestoreService!.addExpenseToFirestore = async (
   collectionName: string
 ) => {
   return new Promise((resolve, reject) => {
-    addDoc(collection(firestore, collectionName), data)
-      .then((docref) => {
-        if (docref) {
-          resolve({
-            status: true,
-            message: "Data Added Successfully",
-            // data: docref,
-          });
-        } else {
-          resolve({
-            status: false,
-            message: "Somthing Went Wrong",
-          });
-        }
+    setDoc(doc(firestore, collectionName, String(data.id)), data)
+      .then(() => {
+        resolve({
+          status: true,
+          message: "Data Added Successfully",
+          // data: docref,
+        });
       })
       .catch((err) => {
         resolve({ status: false, message: err });
+      });
+  });
+};
+
+ExpenseFirestoreService!.updateExpenseToFirestore = async (
+  data: any,
+  collectionName: string
+) => {
+  return new Promise(async (resolve, reject) => {
+    const docRef = await doc(firestore, collectionName, String(data.id));
+    updateDoc(docRef, data)
+      .then((res) => {
+        resolve({ status: true, message: "Data Update Successfully" });
+      })
+      .catch((err) => {
+        resolve({ status: false, message: "Something went wrong" });
+      });
+  });
+};
+
+ExpenseFirestoreService!.deleteExpenseToFirestore = async (
+  docData: expenseDataType,
+  collectionName: string
+) => {
+  const storage = getStorage();
+
+  return new Promise((resolve, reject) => {
+    const fileRef = ref(storage, docData.expense_file_url);
+    const docRef = doc(firestore, collectionName, String(docData.id));
+    if (docData.expense_file_url != "") {
+      const res = FirebaseFileHandling.removeFile(docData.expense_file_url);
+      console.log(res);
+    }
+    deleteDoc(docRef)
+      .then(() => {
+        resolve({ status: true, message: "Deleted Successfully" });
+      })
+      .catch((error) => {
+        console.log(error);
+        resolve({ status: true, message: "Something Went Wrong" });
       });
   });
 };
@@ -99,7 +143,8 @@ ExpenseFirestoreService!.getExpensesFromFirestore = async (
         res.forEach((doc) => {
           const ExpensesData = doc.data();
           const ExpenseData = {
-            title : ExpensesData.title,
+            id: ExpensesData.id,
+            title: ExpensesData.title,
             expense_description: ExpensesData.expense_description,
             member_list: ExpensesData.member_list,
             expense_file_url: ExpensesData.expense_file_url,

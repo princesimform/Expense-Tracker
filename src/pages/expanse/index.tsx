@@ -18,17 +18,21 @@ import {
   Typography,
 } from "@mui/material";
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { TablePaginationActions } from "../../components/TablePaginationActions";
-import { expenseDataType } from "../../redux/expanseSlice";
+import {
+  deleteExpense,
+  expenseDataType,
+  getExpenses,
+} from "../../redux/expanseSlice";
 import { Rootstate } from "../../redux/store";
 import { GeneralPropType } from "../../routes/AuthRoutes";
 import { StyledTableCell } from "../GroupPages/GroupDetails";
 import AddExpenseForm from "./AddExpanseForm";
 import ExpenseCard from "./ExpenseCard";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { useSnackbar } from "notistack";
 interface PropType extends GeneralPropType {}
 
 interface DataTableProps {
@@ -37,6 +41,8 @@ interface DataTableProps {
 }
 
 function ExpenseList({ userData }: PropType) {
+  const dispatch = useDispatch();
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const { expenseList } = useSelector(
     (state: Rootstate) => state.expenseReducer
   );
@@ -58,6 +64,24 @@ function ExpenseList({ userData }: PropType) {
   ) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
+  };
+  const deleteExpanse = async (id: number) => {
+    try {
+      const response = await dispatch(deleteExpense(expenseList[id]));
+      if (response.payload.docData.status) {
+        enqueueSnackbar(`Expense Deleted successfully `, {
+          variant: "success",
+          autoHideDuration: 3000,
+        });
+        await dispatch(getExpenses(userData?.email));
+      }
+    } catch (error) {
+      console.log(error);
+      enqueueSnackbar(`Something went wrong`, {
+        variant: "error",
+        autoHideDuration: 3000,
+      });
+    }
   };
 
   return (
@@ -118,6 +142,12 @@ function ExpenseList({ userData }: PropType) {
                     <TableCell>{row.paid_by}</TableCell>
                     <TableCell>{row.expense_amount}</TableCell>
                     <TableCell style={{ minWidth: 170 }}>
+                      <AddExpenseForm
+                        FriendsList={[]}
+                        userData={userData}
+                        updateExpanseData={row}
+                      />
+
                       <Button
                         sx={{
                           borderRadius: "16px",
@@ -130,21 +160,7 @@ function ExpenseList({ userData }: PropType) {
                         variant='outlined'
                         color='secondary'
                         size='small'
-                      >
-                        <EditIcon />
-                      </Button>
-                      <Button
-                        sx={{
-                          borderRadius: "16px",
-                          width: "32px",
-                          margin: "4px",
-                          minWidth: "16px",
-                          height: "32px",
-                          color: "rgba(189,85,189,0.9)",
-                        }}
-                        variant='outlined'
-                        color='secondary'
-                        size='small'
+                        onClick={() => deleteExpanse(index)}
                       >
                         <DeleteIcon />
                       </Button>

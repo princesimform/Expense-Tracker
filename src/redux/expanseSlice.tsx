@@ -30,8 +30,31 @@ export const getExpenses: any = createAsyncThunk(
   }
 );
 
+export const updateExpense: any = createAsyncThunk(
+  "firestore/updateExpenses",
+  async (data) => {
+    const docData = await ExpenseFirestoreService.updateExpenseToFirestore(
+      data,
+      "expenses"
+    );
+    return { docData };
+  }
+);
+
+export const deleteExpense: any = createAsyncThunk(
+  "firestore/deleteExpenses",
+  async (data) => {
+    const docData = await ExpenseFirestoreService.deleteExpenseToFirestore(
+      data,
+      "expenses"
+    );
+    return { docData };
+  }
+);
+
 export interface expenseDataType {
-  title : string;
+  id: number;
+  title: string;
   expense_description: string;
   member_list: string[] | null;
   expense_file_url: string;
@@ -60,6 +83,18 @@ export const expenseSlice = createSlice({
     builder.addCase(setExpense.fulfilled, (state, action) => {
       const { docData } = action.payload;
       if (docData.status) {
+      }
+    });
+    builder.addCase(updateExpense.fulfilled, (state, action) => {
+      const { docData } = action.payload;
+      if (docData.status) {
+        console.log(docData);
+      }
+    });
+    builder.addCase(deleteExpense.fulfilled, (state, action) => {
+      const { docData } = action.payload;
+      if (docData.status) {
+        console.log(docData);
       }
     });
     builder.addCase(getExpenses.fulfilled, (state, action) => {
