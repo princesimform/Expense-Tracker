@@ -33,6 +33,7 @@ function DashBoard({ userData }: PropType) {
         </Grid>
       </Container>
 
+      <Divider className='divider-top' />
       <DashboardGroup groups={groupList} />
       <Divider className='divider-top' />
       <DashboardExpense expanses={expenseList}  userData={userData}/>
