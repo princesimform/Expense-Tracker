@@ -33,6 +33,7 @@ import ExpenseCard from "./ExpenseCard";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useSnackbar } from "notistack";
+import ExpenseDataTable from "../../components/expense/ExpenseDataTable";
 interface PropType extends GeneralPropType {}
 
 interface DataTableProps {
@@ -106,7 +107,7 @@ function ExpenseList({ userData }: PropType) {
           userData={userData}
         />
       </Box>
-      <Divider className='group-title-divider' />
+      <Divider className='divider' />
       <Container maxWidth='xl'>
         <Grid container spacing={3}>
           {
@@ -125,122 +126,8 @@ function ExpenseList({ userData }: PropType) {
             //   <p>No data avaliable</p>
             // )
           }
-          <TableContainer component={Paper}>
-            <Table sx={{ minWidth: 500 }} aria-label='custom pagination table'>
-              <TableHead>
-                <TableRow>
-                  <StyledTableCell>Title</StyledTableCell>
-                  <StyledTableCell>Paid by</StyledTableCell>
-                  <StyledTableCell>Amount</StyledTableCell>
-                  <StyledTableCell>Owes</StyledTableCell>
-                  <StyledTableCell>Actions</StyledTableCell>
-                  <StyledTableCell align='right'>Settle Up</StyledTableCell>
-                </TableRow>
-              </TableHead>
-
-              <TableBody>
-                {(rowsPerPage > 0
-                  ? expenseList.slice(
-                      page * rowsPerPage,
-                      page * rowsPerPage + rowsPerPage
-                    )
-                  : expenseList
-                ).map((row, index) => (
-                  <TableRow key={index}>
-                    <TableCell scope='row'>{row.title}</TableCell>
-                    <TableCell>{row.paid_by}</TableCell>
-                    <TableCell>{row.expense_amount}</TableCell>
-                    <TableCell style={{ minWidth: 170 }}>
-                      <AddExpenseForm
-                        ModelButtonStyle={{
-                          borderRadius: "16px",
-                          width: "32px",
-                          margin: "5px 4px",
-                          height: "32px",
-                        }}
-                        FriendsList={[]}
-                        userData={userData}
-                        updateExpanseData={row}
-                      />
-
-                      <Button
-                        sx={{
-                          borderRadius: "16px",
-                          width: "32px",
-                          margin: "4px",
-                          minWidth: "16px",
-                          height: "32px",
-                          color: "rgba(189,85,189,0.9)",
-                        }}
-                        variant='outlined'
-                        color='secondary'
-                        size='small'
-                        onClick={() => deleteExpanse(index)}
-                      >
-                        <DeleteIcon />
-                      </Button>
-                      <Button
-                        sx={{
-                          borderRadius: "16px",
-                          width: "32px",
-                          margin: "4px",
-                          minWidth: "16px",
-                          color: "rgba(189,85,189,0.9)",
-                          height: "32px",
-                        }}
-                        variant='outlined'
-                        color='secondary'
-                        size='small'
-                      >
-                        <VisibilityIcon />
-                      </Button>
-                    </TableCell>
-                    <TableCell>{row.expense_amount}</TableCell>
-                    <TableCell style={{ minWidth: 150 }} align='right'>
-                      <Button
-                        variant='contained'
-                        color='secondary'
-                        size='small'
-                      >
-                        Settle Up
-                      </Button>
-                    </TableCell>
-                  </TableRow>
-                ))}
-                {emptyRows > 0 && (
-                  <TableRow style={{ height: 53 * emptyRows }}>
-                    <TableCell colSpan={6} />
-                  </TableRow>
-                )}
-              </TableBody>
-
-              <TableFooter>
-                <TableRow>
-                  <TablePagination
-                    rowsPerPageOptions={[
-                      5,
-                      10,
-                      25,
-                      { label: "All", value: -1 },
-                    ]}
-                    colSpan={6}
-                    count={expenseList.length}
-                    rowsPerPage={rowsPerPage}
-                    page={page}
-                    SelectProps={{
-                      inputProps: {
-                        "aria-label": "rows per page",
-                      },
-                      native: true,
-                    }}
-                    onPageChange={handleChangePage}
-                    onRowsPerPageChange={handleChangeRowsPerPage}
-                    ActionsComponent={TablePaginationActions}
-                  />
-                </TableRow>
-              </TableFooter>
-            </Table>
-          </TableContainer>
+          <ExpenseDataTable userData={userData} />
+          
         </Grid>
       </Container>
     </>

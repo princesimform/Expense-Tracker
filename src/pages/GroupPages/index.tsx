@@ -63,7 +63,7 @@ function Groups({ userData }: PropType) {
           userData={userData}
         />
       </Box>
-      <Divider className='group-title-divider' />
+      <Divider className='divider-bottom' />
       <Container maxWidth='xl'>
         <Grid container spacing={3}>
           {groupList.length >= 0 ? (

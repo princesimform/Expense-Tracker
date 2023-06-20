@@ -135,7 +135,10 @@ const createComponents = () => {
     MuiDivider: {
       styleOverrides: {
         root: {
-          "&.group-title-divider": {
+          "&.divider-top": {
+            marginTop: "50px",
+          },
+          "&.divider-bottom": {
             marginBottom: "50px",
           },
         },

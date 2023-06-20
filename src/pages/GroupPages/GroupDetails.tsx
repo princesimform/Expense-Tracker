@@ -145,7 +145,7 @@ function GroupDetails({ userData }: PropType) {
               />
             </Box>
           </Box>
-          <Divider className='group-title-divider' />
+          <Divider className='divider-bottom' />
           <Stack>
             <Grid container spacing={3}>
               <Grid item xs={12} sm={12} lg={6}>

@@ -1,4 +1,4 @@
-import { Box, Container, Grid } from "@mui/material";
+import { Box, Container, Divider, Grid } from "@mui/material";
 import React, { useState } from "react";
 import OverviewOfGroups from "../components/group/OverviewOfGroups";
 import Groups from "./GroupPages";
@@ -6,6 +6,8 @@ import { GeneralPropType } from "../routes/AuthRoutes";
 import OverviewOfExpenses from "../components/expense/OverviewOfExpenses";
 import { useSelector } from "react-redux";
 import { Rootstate } from "../redux/store";
+import DashboardGroup from "../components/dashboard/DashboardGroup";
+import DashboardExpense from "../components/dashboard/DashboardExpense";
 interface PropType extends GeneralPropType {}
 function DashBoard({ userData }: PropType) {
   const { expenseList } = useSelector(
@@ -17,15 +19,23 @@ function DashBoard({ userData }: PropType) {
       <Container className='dashboard-container' maxWidth='xl'>
         <Grid container spacing={3}>
           <Grid item xs={12} sm={6} lg={3}>
-            <OverviewOfGroups sx={{ height: "100%" }} numberOfGroups={groupList.length} />
+            <OverviewOfGroups
+              sx={{ height: "100%" }}
+              numberOfGroups={groupList.length}
+            />
           </Grid>
           <Grid item xs={12} sm={6} lg={3}>
-            <OverviewOfExpenses  sx={{ height: "100%" }} numberOfExpenses={expenseList.length}/>
+            <OverviewOfExpenses
+              sx={{ height: "100%" }}
+              numberOfExpenses={expenseList.length}
+            />
           </Grid>
         </Grid>
       </Container>
 
-      <Groups userData={userData} />
+      <DashboardGroup groups={groupList} />
+      <Divider className='divider-top' />
+      <DashboardExpense expanses={expenseList}  userData={userData}/>
     </>
   );
 }
