@@ -1,4 +1,10 @@
-import React, { ChangeEvent, ReactNode, SyntheticEvent, useEffect, useState } from "react";
+import React, {
+  ChangeEvent,
+  ReactNode,
+  SyntheticEvent,
+  useEffect,
+  useState,
+} from "react";
 import {
   Autocomplete,
   AutocompleteChangeDetails,
@@ -133,13 +139,13 @@ function AddExpenseForm({
         group: "group",
       });
     });
-    tempFriendsList.map((friendName) => {
-      tempFriendsSelectList.push({
-        label: friendName,
-        value: friendName,
-        group: "friend",
-      });
-    });
+    // tempFriendsList.map((friendName) => {
+    //   tempFriendsSelectList.push({
+    //     label: friendName,
+    //     value: friendName,
+    //     group: "friend",
+    //   });
+    // });
 
     setListOptions(tempFriendsSelectList);
 
@@ -214,6 +220,7 @@ function AddExpenseForm({
     ListData.map((item) => {
       if (item.group == "group") {
         tempGroupsList.push(item.value);
+        console.log(groupList);
         groupList.map((group) => {
           if (group.name == item.value) {
             group.member_list.map((member) => {

@@ -172,7 +172,6 @@ function RegisterForm({ toggleSignUp }: PropType) {
                 type='email'
                 variant='outlined'
                 name='email'
-                autoFocus
                 as={TextField}
                 error={Boolean(errors.email) && Boolean(touched.email)}
                 helperText={Boolean(touched.email) && errors.email}

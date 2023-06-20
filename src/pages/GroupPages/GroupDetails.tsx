@@ -64,15 +64,15 @@ interface PropType extends GeneralPropType {}
 function GroupDetails({ userData }: PropType) {
   // throw new Error("Stop here");
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
-  const { expenseList } = useSelector(
-    (state: Rootstate) => state.expenseReducer
-  );
   const [groupExpense, setGroupExpense] = useState<expenseDataType[]>([]);
   const [tabNumber, setTabNumber] = useState(0);
   const { id } = useParams();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
-
+  const [groupMembers, setGroupMember] = useState<string[]>([]);
+  const { expenseList } = useSelector(
+    (state: Rootstate) => state.expenseReducer
+  );
   const groupData: groupDataType = useSelector((state: Rootstate) => {
     const data = state.groupReducer;
     const Newdata = data.groupList.filter(
@@ -95,7 +95,6 @@ function GroupDetails({ userData }: PropType) {
     }
   }, [expenseList]);
 
-  const [groupMembers, setGroupMember] = useState<string[]>([]);
   const handleTab = (event: React.SyntheticEvent, newValue: number) => {
     setTabNumber(newValue);
   };
@@ -149,8 +148,12 @@ function GroupDetails({ userData }: PropType) {
           <Stack>
             <Grid container spacing={3}>
               <Grid item xs={12} sm={12} lg={6}>
-                <Box sx={{display : "flex" , justifyContent : "space-between"}}>
-                  <Typography className='group-expense-heading' variant='h6' margin={"auto 0"}>
+                <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+                  <Typography
+                    className='group-expense-heading'
+                    variant='h6'
+                    margin={"auto 0"}
+                  >
                     Expenses
                   </Typography>
                   <AddExpenseForm
@@ -176,15 +179,19 @@ function GroupDetails({ userData }: PropType) {
                     <Tab label='Settled' {...a11yProps(1)} />
                   </Tabs>
                 </Box>
+
+                {/* Active Box  */}
                 <GroupExpense
                   value={tabNumber}
                   index={0}
                   groupExpenseList={groupExpense}
+                  userData={userData}
                 ></GroupExpense>
+                {/* Settled Box  */}
                 <GroupExpense
                   value={tabNumber}
                   index={1}
-                  groupExpenseList={[]}
+                  groupExpenseList={groupExpense}
                 ></GroupExpense>
               </Grid>
               <Grid item xs={12} sm={12} lg={6}>
