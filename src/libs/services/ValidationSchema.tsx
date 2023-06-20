@@ -1,20 +1,21 @@
 import * as yup from "yup";
-
-const SUPPORTED_FORMATS = ["image/jpeg", "image/jpg", "image/png"];
+const FILE_SIZE = 200 * 1024;
+const SUPPORTED_FORMATS = ["image/jpg", "image/jpeg", "image/gif", "image/png"];
 export const AddGroupSchema = yup.object({
   name: yup.string().required("Please enter Full Name"),
-  group_image: yup.mixed(),
-  // .notRequired()
-  // .test(
-  //   "fileFormat",
-  //   "Unsupported Format",
-  //   (value: yup.AnyObject) => value && SUPPORTED_FORMATS.includes(value.type)
-  // ),
-  // .test(
-  //   "fileSize",
-  //   "File more than 0.5 MB not Allowed",
-  //   (value: yup.AnyObject) => value && value.size <= 524288
-  // )
+  group_image: yup
+    .mixed()
+    .test(
+      "fileSize",
+      "Filesize is too large",
+      (value: any) => value.size <= FILE_SIZE
+    )
+    .test(
+      "fileFormat",
+      "Unsupported Format",
+      (value: any) => { console.log(value);
+       return value && SUPPORTED_FORMATS.includes(value.type)}
+    ),
 });
 
 export const RegistrationFormSchema = yup.object({

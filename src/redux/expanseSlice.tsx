@@ -5,7 +5,6 @@ import {
 } from "@reduxjs/toolkit";
 import React from "react";
 import ExpenseFirestoreService from "../libs/services/firebase/expenseFirestore";
-import FirestoreService from "../libs/services/firebase/firestore";
 import { Rootstate } from "./store";
 
 export const setExpense: any = createAsyncThunk(

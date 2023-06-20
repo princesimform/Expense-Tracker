@@ -4,41 +4,34 @@ import {
   createSlice,
 } from "@reduxjs/toolkit";
 import React from "react";
-import FirestoreService from "../libs/services/firebase/firestore";
 import { Rootstate } from "./store";
+import GroupFirestoreService from "../libs/services/firebase/groupFirestoreServices";
 
-export const setData: any = createAsyncThunk(
+export const setData = createAsyncThunk(
   "firestore/setData",
   async (data: groupDataType) => {
-    const docId = await FirestoreService.addDataToFirestore(data, "groups");
-    return { docId };
+    return await GroupFirestoreService.addGroup(data);
   }
 );
 
-export const updateData: any = createAsyncThunk(
-  "firestore/setData",
-  async (data) => {
-    const response = await FirestoreService.updateDataToFirestore(
-      data,
-      "groups"
-    );
-    return response;
+export const updateData = createAsyncThunk(
+  "firestore/updateData",
+  async (data : groupDataType) => {
+    return await GroupFirestoreService.updateGroup(data);
   }
 );
 
-export const DeleteData: any = createAsyncThunk(
-  "firestore/setData",
-  async (data) => {
-    const docId = await FirestoreService.deleteDataToFirestore(data, "groups");
-    return { docId };
+export const DeleteData = createAsyncThunk(
+  "firestore/deleteData",
+  async (data: groupDataType) => {
+    return await GroupFirestoreService.deleteGroup(data);
   }
 );
 
-export const getGroups: any = createAsyncThunk(
+export const getGroups = createAsyncThunk(
   "firestore/getData",
   async (email: string) => {
-    const groupList: groupDataType[] = await FirestoreService.getGroups(email);
-    return { groupList };
+    return await GroupFirestoreService.getGroups(email);
   }
 );
 
@@ -64,17 +57,23 @@ export const groupSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(setData.fulfilled, (state, action) => {
-      const { docId } = action.payload;
-    });
-    builder.addCase(setData.rejected, (state, action) => {
-      throw new Error("are you here ");
+      const { res } = action.payload;
     });
     builder.addCase(getGroups.fulfilled, (state, action) => {
-      const { groupList } = action.payload;
-      state.groupList = groupList;
+      const response = action.payload;
+      if (response.status) {
+        state.groupList = response.data;
+      } else {
+        throw new Error("Something went wrong in fetch group");
+      }
     });
-    builder.addCase(getGroups.rejected, (state, action) => {
-      throw new Error("are you here ");
+    builder.addCase(updateData.fulfilled, (state, action) => {
+      console.log(action.payload);
+      // state.groupList = groupList;
+    });
+    builder.addCase(DeleteData.fulfilled, (state, action) => {
+      console.log(action.payload);
+      // state.groupList = groupList;
     });
   },
 });

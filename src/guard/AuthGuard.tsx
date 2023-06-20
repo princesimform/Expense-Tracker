@@ -10,6 +10,7 @@ import { useDispatch } from "react-redux";
 import { getGroups } from "../redux/groupSlice";
 import { GeneralPropType } from "../routes/AuthRoutes";
 import { getExpenses } from "../redux/expanseSlice";
+import { AppDispatch } from "../redux/store";
 interface PropType {
   component: React.ComponentType;
 }
@@ -18,11 +19,11 @@ function AuthGuards({ component }: PropType) {
   const [status, setStatus] = useState<boolean>(false);
   const [userData, setUserData] = useState<User>();
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   useEffect(() => {
     checkToken().then((res) => {
       dispatch(getExpenses(String(res?.email)));
-      dispatch(getGroups(String(res?.email)));
+      res?.email && dispatch(getGroups(String(res?.email)));
     });
   }, []);
 
@@ -65,7 +66,7 @@ function AuthGuards({ component }: PropType) {
   const Component: ComponentType<GeneralPropType> = component;
   return status ? (
     <React.Fragment>
-      <Box className='my-container'>
+      <Box className="my-container">
         <Box>
           <Sidenav onClose={() => setOpenNav(false)} open={openNav} />
           <Navbar onNavOpen={() => setOpenNav(true)} />

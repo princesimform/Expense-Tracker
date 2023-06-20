@@ -28,6 +28,9 @@ import AuthService from "../../libs/services/firebase/auth";
 import useToggle from "../../customHooks/useToggle";
 import { GeneralPropType } from "../../routes/AuthRoutes";
 import EditIcon from "@mui/icons-material/Edit";
+import FirebaseFileHandling from "../../libs/services/firebase/fileHandling";
+import { createdAtTime, setFileinFilebase } from "../../libs/services/utills";
+import { AppDispatch } from "../../redux/store";
 const style = {
   position: "absolute" as "absolute",
   top: "50%",
@@ -40,7 +43,7 @@ const style = {
 };
 interface formDataType {
   name: string;
-  group_image: string;
+  group_image: File | null;
 }
 interface PropsType extends GeneralPropType {
   groupData?: groupDataType;
@@ -49,12 +52,11 @@ interface PropsType extends GeneralPropType {
     width: string;
     margin: string;
     height: string;
-    
   };
 }
 
 function GroupForm({ groupData, userData, ModelButtonStyle }: PropsType) {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const reader = new FileReader();
@@ -63,34 +65,29 @@ function GroupForm({ groupData, userData, ModelButtonStyle }: PropsType) {
     isModleOpen: false,
     processing: false,
   });
-  const [hasOldIamge, setHasOldIamge] = useState<boolean>(
-    groupData ? true : false
-  );
   const buttonValue = groupData ? "Update" : "Create";
   const [GroupProfileimage, setgroupProfileimage] = useState<string>("");
-  const [initalValues, setInitalValues] = useState({
+  const [initalValues, setInitalValues] = useState<formDataType>({
     name: "",
-    group_image: "",
+    group_image: null,
   });
 
   useEffect(() => {
     if (groupData) {
       setInitalValues({
         name: groupData.name,
-        group_image: "",
+        group_image: null,
       }),
         setgroupProfileimage(groupData.group_image);
       // initalValues.group_image = groupData.group_image;
     }
   }, []);
-
   const handleFileInputChange = (
     e: ChangeEvent<HTMLInputElement>,
     setFieldValue: Function
   ) => {
     if (e.target.files && e.target.files[0]) {
       reader.addEventListener("load", function (event) {
-        setHasOldIamge(false);
         setgroupProfileimage(JSON.stringify(reader.result));
       });
       reader.readAsDataURL(e.target.files[0]);
@@ -106,30 +103,41 @@ function GroupForm({ groupData, userData, ModelButtonStyle }: PropsType) {
     }
   };
   const handleAddSubmit = async (values: formDataType) => {
-    const createdAtTime =
-      date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
     if (userData != undefined) {
       const req_data: groupDataType = {
         id: "",
         name: values.name,
-        group_image: values.group_image,
+        group_image: "",
         admin_user_id: userData?.uid,
         admin_user_name: userData?.displayName,
-        created_at: createdAtTime,
+        created_at: createdAtTime(),
         member_list: [`${userData?.email}`],
       };
+      if (values.group_image != null) {
+        const fileUrl = await setFileinFilebase(
+          values.group_image,
+          "group_images",
+          `${userData?.uid + values.name}`
+        );
+        req_data.group_image = fileUrl;
+      }
       try {
         const dataId = await dispatch(setData(req_data));
-        console.log(dataId.payload);
-        enqueueSnackbar(`Group Created successfully `, {
-          variant: "success",
-          autoHideDuration: 3000,
-        });
-
-        toggle("processing");
-        toggle("isModleOpen");
-        dispatch(getGroups(userData?.email));
-        navigate(`/group`);
+        if (dataId.payload.status) {
+          enqueueSnackbar(dataId.payload.message, {
+            variant: "success",
+            autoHideDuration: 3000,
+          });
+          toggle("processing");
+          toggle("isModleOpen");
+          userData?.email && dispatch(getGroups(userData?.email));
+          navigate(`/group`);
+        } else {
+          enqueueSnackbar(dataId.payload.message, {
+            variant: "error",
+            autoHideDuration: 3000,
+          });
+        }
       } catch (error) {
         enqueueSnackbar(`Something Went Wrong`, {
           variant: "error",
@@ -142,15 +150,31 @@ function GroupForm({ groupData, userData, ModelButtonStyle }: PropsType) {
     const NewData = JSON.parse(JSON.stringify(groupData));
     NewData.name = values.name;
     NewData.group_image = values.group_image;
+    if (values.group_image != null) {
+      const fileUrl = await setFileinFilebase(
+        values.group_image,
+        "group_images",
+        `${userData?.uid + values.name}`
+      );
+      NewData.group_image = fileUrl;
+    }
     try {
-      const dataId = await dispatch(updateData(NewData));
-      console.log(dataId.payload);
-      enqueueSnackbar(`Group Updated successfully`, {
-        variant: "success",
-        autoHideDuration: 3000,
-      });
-      toggle("isModleOpen");
-      dispatch(getGroups(userData?.email));
+      const response = await dispatch(updateData(NewData));
+      if (response.payload.status) {
+        enqueueSnackbar(response.payload.message, {
+          variant: "success",
+          autoHideDuration: 3000,
+        });
+        toggle("isModleOpen");
+        userData?.email && dispatch(getGroups(userData?.email));
+      } else {
+        enqueueSnackbar(response.payload.message, {
+          variant: "success",
+          autoHideDuration: 3000,
+        });
+        toggle("isModleOpen");
+      }
+      console.log(response.payload);
     } catch (error) {
       enqueueSnackbar(`Group Updated successfully `, {
         variant: "error",
@@ -167,16 +191,16 @@ function GroupForm({ groupData, userData, ModelButtonStyle }: PropsType) {
           minWidth: "16px",
           color: "rgba(189,85,189,0.9)",
         }}
-        variant='outlined'
-        color='secondary'
-        size='small'
+        variant="outlined"
+        color="secondary"
+        size="small"
         onClick={() => toggle("isModleOpen")}
       >
         {groupData ? <EditIcon /> : <AddIcon />}
       </Button>
       <Modal
-        aria-labelledby='transition-modal-title'
-        aria-describedby='transition-modal-description'
+        aria-labelledby="transition-modal-title"
+        aria-describedby="transition-modal-description"
         open={toggles.isModleOpen}
         // onClose={handleModleToggle}
         closeAfterTransition
@@ -190,10 +214,10 @@ function GroupForm({ groupData, userData, ModelButtonStyle }: PropsType) {
         <Fade in={toggles.isModleOpen}>
           <Box sx={style}>
             <Typography
-              id='transition-modal-title'
-              variant='h5'
+              id="transition-modal-title"
+              variant="h5"
               sx={{ textAlign: "center", mb: 2 }}
-              component='h2'
+              component="h2"
             >
               {groupData ? "Update Group" : "Create Group"}
             </Typography>
@@ -207,25 +231,32 @@ function GroupForm({ groupData, userData, ModelButtonStyle }: PropsType) {
               {({ handleSubmit, errors, isValid, touched, setFieldValue }) => (
                 <Form onSubmit={handleSubmit}>
                   <InputLabel
-                    htmlFor='group-image'
-                    className='m-auto flex w-fit text-center'
+                    htmlFor="group-image"
+                    className="m-auto flex w-fit text-center"
                     sx={{ mb: 2 }}
                   >
                     <Field
                       style={{ display: "none" }}
-                      id='group-image'
-                      name='group_image'
-                      type='file'
+                      id="group-image"
+                      name="group_image"
+                      type="file"
                       value={undefined}
                       onChange={(event: ChangeEvent<HTMLInputElement>) =>
                         handleFileInputChange(event, setFieldValue)
                       }
+                      error={
+                        Boolean(errors.group_image) &&
+                        Boolean(touched.group_image)
+                      }
+                      helperText={
+                        Boolean(touched.group_image) && errors.group_image
+                      }
                     />
                     <Avatar
-                      alt='Remy Sharp'
+                      alt="Remy Sharp"
                       src={
                         GroupProfileimage
-                          ? hasOldIamge
+                          ? GroupProfileimage.slice(0, 4) == "http"
                             ? GroupProfileimage
                             : JSON.parse(GroupProfileimage)
                           : AddGroupImg
@@ -239,11 +270,11 @@ function GroupForm({ groupData, userData, ModelButtonStyle }: PropsType) {
                     />
                   </InputLabel>
                   <Field
-                    name='name'
-                    type='text'
-                    variant='outlined'
-                    color='primary'
-                    label='Full Name'
+                    name="name"
+                    type="text"
+                    variant="outlined"
+                    color="primary"
+                    label="Full Name"
                     fullWidth
                     sx={{ mb: 2 }}
                     as={TextField}
@@ -255,16 +286,16 @@ function GroupForm({ groupData, userData, ModelButtonStyle }: PropsType) {
                     sx={{ display: "flex", justifyContent: "space-between" }}
                   >
                     <Button
-                      variant='contained'
-                      color='warning'
+                      variant="contained"
+                      color="warning"
                       onClick={() => toggle("isModleOpen")}
                     >
                       Cancle
                     </Button>
 
                     <Button
-                      type='submit'
-                      variant='contained'
+                      type="submit"
+                      variant="contained"
                       disabled={!isValid}
                     >
                       {groupData

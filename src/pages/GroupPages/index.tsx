@@ -21,13 +21,8 @@ import UserImg from "./../../assets/avatar.jpg";
 import { AsyncThunkAction, Dispatch } from "@reduxjs/toolkit";
 import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  getGroups,
-  groupActions,
-  groupDataType,
-  setData,
-} from "../../redux/groupSlice";
-import { Rootstate } from "../../redux/store";
+import { getGroups, groupDataType } from "../../redux/groupSlice";
+import { AppDispatch, Rootstate } from "../../redux/store";
 import GroupForm from "./GroupForm";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import GroupCard from "./GroupCard";
@@ -36,20 +31,20 @@ interface PropType extends GeneralPropType {}
 function Groups({ userData }: PropType) {
   const { groupList } = useSelector((state: Rootstate) => state.groupReducer);
 
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   useEffect(() => {
-    dispatch(getGroups(userData?.email));
+    userData?.email && dispatch(getGroups(userData?.email));
   }, []);
 
   return (
     <div>
       <Box
-        display='flex'
-        alignItems='center'
-        justifyContent='space-between'
-        className='groups-page-heading'
+        display="flex"
+        alignItems="center"
+        justifyContent="space-between"
+        className="groups-page-heading"
       >
-        <Typography className='groups-page-title' variant='h4' textAlign='left'>
+        <Typography className="groups-page-title" variant="h4" textAlign="left">
           Your Groups
         </Typography>
         <GroupForm
@@ -63,8 +58,8 @@ function Groups({ userData }: PropType) {
           userData={userData}
         />
       </Box>
-      <Divider className='divider-bottom' />
-      <Container maxWidth='xl'>
+      <Divider className="divider-bottom" />
+      <Container maxWidth="xl">
         <Grid container spacing={3}>
           {groupList.length >= 0 ? (
             groupList.map((group: groupDataType) => (

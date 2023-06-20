@@ -21,6 +21,7 @@ import { StyledTableCell, StyledTableRow } from "./GroupDetails";
 import * as yup from "yup";
 import { DeleteForeverOutlined, Edit, ForkRight } from "@mui/icons-material";
 import { useSnackbar } from "notistack";
+import { AppDispatch } from "../../redux/store";
 
 interface PropType extends GeneralPropType {
   groupMembers: string[];
@@ -33,11 +34,10 @@ interface formFieldType {
 function GroupMemberPage({ groupMembers, groupData, userData }: PropType) {
   const [groupMembersList, setGroupMemberList] = useState<string[]>([]);
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
-
   const formFields: formFieldType = {
     new_member: "",
   };
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   useEffect(() => {
     console.log(groupData.member_list);
     setGroupMemberList(groupData.member_list);
@@ -51,7 +51,7 @@ function GroupMemberPage({ groupMembers, groupData, userData }: PropType) {
       variant: "success",
       autoHideDuration: 3000,
     });
-    await dispatch(getGroups(userData?.email));
+    userData?.email && (await dispatch(getGroups(userData?.email)));
     setGroupMemberList((prev) => [...prev, values.new_member]);
     values.new_member = "";
   };
@@ -70,14 +70,14 @@ function GroupMemberPage({ groupMembers, groupData, userData }: PropType) {
       variant: "success",
       autoHideDuration: 3000,
     });
-    await dispatch(getGroups(userData?.email));
+    userData?.email && (await dispatch(getGroups(userData?.email)));
     setGroupMemberList(new_member_list);
   };
 
   return (
     <>
       <Box>
-        <Typography className='group-expense-heading' variant='h6'>
+        <Typography className="group-expense-heading" variant="h6">
           Add Member
         </Typography>
         <Formik
@@ -100,9 +100,9 @@ function GroupMemberPage({ groupMembers, groupData, userData }: PropType) {
                 <Grid item xs={12} sm={9} lg={9}>
                   <Field
                     fullWidth
-                    size='small'
-                    name='new_member'
-                    type='email'
+                    size="small"
+                    name="new_member"
+                    type="email"
                     as={TextField}
                     error={
                       Boolean(errors.new_member) && Boolean(touched.new_member)
@@ -114,9 +114,9 @@ function GroupMemberPage({ groupMembers, groupData, userData }: PropType) {
                 </Grid>
                 <Grid item xs={12} sm={3} lg={3}>
                   <Button
-                    variant='contained'
-                    color='primary'
-                    type='submit'
+                    variant="contained"
+                    color="primary"
+                    type="submit"
                     fullWidth
                   >
                     Add
@@ -130,11 +130,11 @@ function GroupMemberPage({ groupMembers, groupData, userData }: PropType) {
 
       <Paper sx={{ marginTop: 4 }}>
         <TableContainer component={Paper}>
-          <Table aria-label='customized table'>
+          <Table aria-label="customized table">
             <TableHead>
               <TableRow>
                 <StyledTableCell>
-                  <Typography variant='h6' fontWeight='bold'>
+                  <Typography variant="h6" fontWeight="bold">
                     Members
                   </Typography>
                 </StyledTableCell>
@@ -144,16 +144,16 @@ function GroupMemberPage({ groupMembers, groupData, userData }: PropType) {
               {groupMembersList.length > 0 ? (
                 groupMembersList.map((member, index) => (
                   <StyledTableRow key={index}>
-                    <StyledTableCell component='th' scope='row'>
+                    <StyledTableCell component="th" scope="row">
                       <Stack
-                        display='flex'
-                        flexDirection='row'
-                        justifyContent='space-between'
+                        display="flex"
+                        flexDirection="row"
+                        justifyContent="space-between"
                       >
                         <Typography>{member}</Typography>
                         {userData?.email != member && (
                           <Box
-                            color='red'
+                            color="red"
                             onClick={() => DeleteMemberFromList(index)}
                           >
                             <DeleteForeverOutlined />
@@ -165,11 +165,11 @@ function GroupMemberPage({ groupMembers, groupData, userData }: PropType) {
                 ))
               ) : (
                 <StyledTableRow key={"no data"}>
-                  <StyledTableCell component='th' scope='row'>
+                  <StyledTableCell component="th" scope="row">
                     <Stack
-                      display='flex'
-                      flexDirection='row'
-                      justifyContent='space-between'
+                      display="flex"
+                      flexDirection="row"
+                      justifyContent="space-between"
                     >
                       <Typography>No Data Found</Typography>
                     </Stack>
