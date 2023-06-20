@@ -31,8 +31,10 @@ function UnAuthGuard({ component }: PropType) {
     }
   };
 
-  return status && (
+  return status ? (
     <React.Fragment>{component}</React.Fragment>
+  ): (
+    <React.Fragment></React.Fragment>
   );
 }
 

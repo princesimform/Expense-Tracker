@@ -1,8 +1,4 @@
-import React, {
-  ComponentType,
-  useEffect,
-  useState,
-} from "react";
+import React, { ComponentType, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AuthService from "../libs/services/firebase/auth";
 import { User } from "@firebase/auth";
@@ -67,22 +63,22 @@ function AuthGuards({ component }: PropType) {
   };
   const [openNav, setOpenNav] = useState(false);
   const Component: ComponentType<GeneralPropType> = component;
-  return (
-    status && (
-      <React.Fragment>
-        <Box className='my-container'>
-          <Box>
-            <Sidenav onClose={() => setOpenNav(false)} open={openNav} />
-            <Navbar onNavOpen={() => setOpenNav(true)} />
-          </Box>
-          <LayoutRoot>
-            <LayoutContainer>
-              <Component userData={userData} />
-            </LayoutContainer>
-          </LayoutRoot>
+  return status ? (
+    <React.Fragment>
+      <Box className='my-container'>
+        <Box>
+          <Sidenav onClose={() => setOpenNav(false)} open={openNav} />
+          <Navbar onNavOpen={() => setOpenNav(true)} />
         </Box>
-      </React.Fragment>
-    )
+        <LayoutRoot>
+          <LayoutContainer>
+            <Component userData={userData} />
+          </LayoutContainer>
+        </LayoutRoot>
+      </Box>
+    </React.Fragment>
+  ) : (
+    <React.Fragment></React.Fragment>
   );
 }
 
