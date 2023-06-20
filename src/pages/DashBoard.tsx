@@ -22,19 +22,21 @@ function DashBoard({ userData }: PropType) {
             <OverviewOfGroups
               sx={{ height: "100%" }}
               numberOfGroups={groupList.length}
+              userData={userData}
             />
           </Grid>
           <Grid item xs={12} sm={6} lg={3}>
             <OverviewOfExpenses
               sx={{ height: "100%" }}
               numberOfExpenses={expenseList.length}
+              userData={userData}
             />
           </Grid>
         </Grid>
       </Container>
 
       <Divider className='divider-top' />
-      <DashboardGroup groups={groupList} />
+      <DashboardGroup groups={groupList} userData={userData} />
       <Divider className='divider-top' />
       <DashboardExpense expanses={expenseList}  userData={userData}/>
     </>

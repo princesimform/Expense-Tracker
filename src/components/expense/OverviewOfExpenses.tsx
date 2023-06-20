@@ -13,12 +13,13 @@ import {
 import React from "react";
 import AddExpenseForm from "../../pages/expanse/AddExpanseForm";
 import GroupForm from "../../pages/GroupPages/GroupForm";
-interface PropType {
+import { GeneralPropType } from "../../routes/AuthRoutes";
+interface PropType  extends GeneralPropType {
   numberOfExpenses: number;
   sx: { height: string };
  
 }
-function OverviewOfExpenses({ sx, numberOfExpenses }: PropType) {
+function OverviewOfExpenses({ userData ,sx, numberOfExpenses }: PropType) {
   return (
     <>
       <Card sx={sx}>
@@ -41,7 +42,7 @@ function OverviewOfExpenses({ sx, numberOfExpenses }: PropType) {
                 width: "56px",
                 margin: "10px",
                 height: "56px",
-              }} FriendsList={[]} />
+              }} FriendsList={[]} userData={userData} />
             {/* <Avatar
               sx={{
                 // backgroundColor: "error.main",

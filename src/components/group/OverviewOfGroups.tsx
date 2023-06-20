@@ -12,11 +12,12 @@ import {
 } from "@mui/material";
 import React from "react";
 import GroupForm from "../../pages/GroupPages/GroupForm";
-interface PropType {
+import { GeneralPropType } from "../../routes/AuthRoutes";
+interface PropType extends GeneralPropType{
   numberOfGroups: number;
   sx: { height: string };
 }
-function OverviewOfGroups({ sx, numberOfGroups }: PropType) {
+function OverviewOfGroups({ userData , sx, numberOfGroups }: PropType) {
   return (
     <>
       <Card sx={sx}>
@@ -41,6 +42,7 @@ function OverviewOfGroups({ sx, numberOfGroups }: PropType) {
                 margin: "10px",
                 height: "56px",
               }}
+              userData={userData}
             />
             {/* <Avatar
               sx={{
