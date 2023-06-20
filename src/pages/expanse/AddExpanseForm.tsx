@@ -215,14 +215,16 @@ function AddExpenseForm({
 
   const updatePaidByList = async (ListData: ListOptionType[]) => {
     tempGroupsList = [];
+    console.log(ListData);
 
     tempFriendsList = [];
+
+    console.log(groupList);
     ListData.map((item) => {
       if (item.group == "group") {
-        tempGroupsList.push(item.value);
-        console.log(groupList);
         groupList.map((group) => {
           if (group.name == item.value) {
+            console.log(group.member_list);
             group.member_list.map((member) => {
               tempFriendsList.push(member);
             });
@@ -235,9 +237,6 @@ function AddExpenseForm({
     });
     tempFriendsList = tempFriendsList.filter(
       (val, id, tempFriendsList) => tempFriendsList.indexOf(val) == id
-    );
-    tempGroupsList = tempGroupsList.filter(
-      (val, id, tempGroupsList) => tempGroupsList.indexOf(val) == id
     );
 
     if (tempFriendsList.length > 0) {

@@ -107,7 +107,7 @@ function ExpenseList({ userData }: PropType) {
           userData={userData}
         />
       </Box>
-      <Divider className='divider' />
+      <Divider className='divider-bottom' />
       <Container maxWidth='xl'>
         <Grid container spacing={3}>
           {
@@ -127,7 +127,6 @@ function ExpenseList({ userData }: PropType) {
             // )
           }
           <ExpenseDataTable userData={userData} />
-          
         </Grid>
       </Container>
     </>

@@ -116,7 +116,7 @@ function GroupExpense(props: TabPanelProps) {
                             fontWeight='bold'
                             className='group-expanse-name'
                           >
-                            No Expense Ramain
+                            No Expense Remain
                             {/* <Typography className='group-expanse-amount'>
                                     $999.00
                                   </Typography> */}

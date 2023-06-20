@@ -15,7 +15,7 @@ import {
 import { Field, Formik } from "formik";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { groupDataType, updateData } from "../../redux/groupSlice";
+import { groupDataType, updateData, getGroups } from "../../redux/groupSlice";
 import { GeneralPropType } from "../../routes/AuthRoutes";
 import { StyledTableCell, StyledTableRow } from "./GroupDetails";
 import * as yup from "yup";
@@ -51,6 +51,7 @@ function GroupMemberPage({ groupMembers, groupData, userData }: PropType) {
       variant: "success",
       autoHideDuration: 3000,
     });
+    await dispatch(getGroups(userData?.email));
     setGroupMemberList((prev) => [...prev, values.new_member]);
     values.new_member = "";
   };
@@ -64,10 +65,12 @@ function GroupMemberPage({ groupMembers, groupData, userData }: PropType) {
     reqData.member_list = new_member_list;
     console.log(reqData);
     await dispatch(updateData(reqData));
+
     enqueueSnackbar(`Member Removed successfully `, {
       variant: "success",
       autoHideDuration: 3000,
     });
+    await dispatch(getGroups(userData?.email));
     setGroupMemberList(new_member_list);
   };
 

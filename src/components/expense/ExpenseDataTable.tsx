@@ -11,7 +11,7 @@ import {
   TablePagination,
   TableRow,
 } from "@mui/material";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { StyledTableCell } from "../../pages/GroupPages/GroupDetails";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useDispatch, useSelector } from "react-redux";
@@ -22,19 +22,23 @@ import { GeneralPropType } from "../../routes/AuthRoutes";
 import { deleteExpense, getExpenses } from "../../redux/expanseSlice";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import { TablePaginationActions } from "../TablePaginationActions";
+import ExpanseDelete from "../../pages/expanse/ExpanseDelete";
 
 interface PropType extends GeneralPropType {}
 function ExpenseDataTable({ userData }: PropType) {
   const { expenseList } = useSelector(
     (state: Rootstate) => state.expenseReducer
   );
+  const [expenseListData, setExpenseListData] = useState(expenseList);
   const dispatch = useDispatch();
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - expenseList.length) : 0;
-
+useEffect(() => {
+  console.log(expenseList);
+} , [])
   const handleChangePage = (
     event: React.MouseEvent<HTMLButtonElement> | null,
     newPage: number
@@ -47,24 +51,6 @@ function ExpenseDataTable({ userData }: PropType) {
   ) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
-  };
-  const deleteExpanse = async (id: number) => {
-    try {
-      const response = await dispatch(deleteExpense(expenseList[id]));
-      if (response.payload.docData.status) {
-        enqueueSnackbar(`Expense Deleted successfully `, {
-          variant: "success",
-          autoHideDuration: 3000,
-        });
-        await dispatch(getExpenses(userData?.email));
-      }
-    } catch (error) {
-      console.log(error);
-      enqueueSnackbar(`Something went wrong`, {
-        variant: "error",
-        autoHideDuration: 3000,
-      });
-    }
   };
 
   return (
@@ -105,23 +91,7 @@ function ExpenseDataTable({ userData }: PropType) {
                   userData={userData}
                   updateExpanseData={row}
                 />
-
-                <Button
-                  sx={{
-                    borderRadius: "16px",
-                    width: "32px",
-                    margin: "4px",
-                    minWidth: "16px",
-                    height: "32px",
-                    color: "rgba(189,85,189,0.9)",
-                  }}
-                  variant='outlined'
-                  color='secondary'
-                  size='small'
-                  onClick={() => deleteExpanse(index)}
-                >
-                  <DeleteIcon />
-                </Button>
+                <ExpanseDelete expnaseData={row} userData={userData}/>
                 <Button
                   sx={{
                     borderRadius: "16px",

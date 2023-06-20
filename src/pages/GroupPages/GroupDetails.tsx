@@ -206,6 +206,8 @@ function GroupDetails({ userData }: PropType) {
               </Grid>
             </Grid>
           </Stack>
+
+          
         </Box>
       </>
     );
