@@ -10,6 +10,7 @@ import {
   tableCellClasses,
   TableRow,
   Tabs,
+  TextField,
   Typography,
 } from "@mui/material";
 import React, { FormEvent, useEffect, useState } from "react";
@@ -131,20 +132,39 @@ function GroupDetails({ userData }: PropType) {
               </Typography>
             </Box>
             <Box>
-              <AddExpenseForm
-                FriendsList={groupData.member_list}
+              <GroupForm
+                ModelButtonStyle={{
+                  borderRadius: "16px",
+                  width: "32px",
+                  margin: "5px 10px",
+                  height: "32px",
+                  // value : "Update"
+                }}
+                groupData={groupData}
                 userData={userData}
               />
-              <GroupForm groupData={groupData} userData={userData} />
             </Box>
           </Box>
           <Divider className='group-title-divider' />
           <Stack>
             <Grid container spacing={3}>
               <Grid item xs={12} sm={12} lg={6}>
-                <Typography className='group-expense-heading' variant='h6'>
-                  Expenses
-                </Typography>
+                <Box sx={{display : "flex" , justifyContent : "space-between"}}>
+                  <Typography className='group-expense-heading' variant='h6' margin={"auto 0"}>
+                    Expenses
+                  </Typography>
+                  <AddExpenseForm
+                    ModelButtonStyle={{
+                      borderRadius: "16px",
+                      width: "32px",
+                      margin: "10px",
+                      height: "32px",
+                    }}
+                    FriendsList={groupData.member_list}
+                    userData={userData}
+                  />
+                </Box>
+                <Divider />
 
                 <Box className='group-tab-box'>
                   <Tabs

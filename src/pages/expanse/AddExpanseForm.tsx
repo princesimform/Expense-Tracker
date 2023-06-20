@@ -1,4 +1,4 @@
-import React, { ChangeEvent, SyntheticEvent, useEffect, useState } from "react";
+import React, { ChangeEvent, ReactNode, SyntheticEvent, useEffect, useState } from "react";
 import {
   Autocomplete,
   AutocompleteChangeDetails,
@@ -41,6 +41,7 @@ import ExpenseFirestoreService from "../../libs/services/firebase/expenseFiresto
 import { useSnackbar } from "notistack";
 import EditIcon from "@mui/icons-material/Edit";
 import FirebaseFileHandling from "../../libs/services/firebase/fileHandling";
+import AddIcon from "@mui/icons-material/Add";
 
 type ListOptionType = {
   label: string;
@@ -51,11 +52,18 @@ type ListOptionType = {
 interface PropType extends GeneralPropType {
   FriendsList: string[];
   updateExpanseData?: expenseDataType;
+  ModelButtonStyle: {
+    borderRadius: string;
+    width: string;
+    margin: string;
+    height: string;
+  };
 }
 function AddExpenseForm({
   FriendsList,
   userData,
   updateExpanseData,
+  ModelButtonStyle,
 }: PropType) {
   const dispatch = useDispatch();
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
@@ -99,34 +107,6 @@ function AddExpenseForm({
     ,
   ];
 
-  // async function setDefaultAutoSelectList() {
-  //   console.log("i am setDefaultAutoSelectList running");
-
-  //   if (updateExpanseData != undefined) {
-  //     console.log(updateExpanseData);
-  //     console.log("listOptions", listOptions);
-  //     tempDefaultFriendsSelectList = [];
-  //     updateExpanseData.group_list?.map((item) => {
-  //       listOptions.map((group) => {
-  //         if (group.group == "group" && group.value == item) {
-  //           tempDefaultFriendsSelectList.push(group);
-  //         }
-  //       });
-  //     });
-  //     console.log(tempDefaultFriendsSelectList);
-  //     updateExpanseData.member_list?.map((item) => {
-  //       listOptions.map((friend) => {
-  //         if (friend.value == item) {
-  //           console.log(friend);
-  //           tempDefaultFriendsSelectList.push(friend);
-  //         }
-  //       });
-  //     });
-  //     console.log(tempDefaultFriendsSelectList);
-  //     setDefaultListOptions(tempDefaultFriendsSelectList);
-  //     tempDefaultFriendsSelectList = [];
-  //   }
-  // }
   async function updateListOptions() {
     groupList.map((group) => {
       tempGroupsList.push(group.name);
@@ -332,32 +312,19 @@ function AddExpenseForm({
 
   return (
     <>
-      {updateExpanseData != undefined ? (
-        <Button
-          sx={{
-            borderRadius: "16px",
-            width: "32px",
-            margin: "4px",
-            minWidth: "16px",
-            height: "32px",
-            color: "rgba(189,85,189,0.9)",
-          }}
-          variant='outlined'
-          color='secondary'
-          size='small'
-          onClick={() => toggle("isModleOpen")}
-        >
-          <EditIcon />
-        </Button>
-      ) : (
-        <Button
-          variant='contained'
-          color='secondary'
-          onClick={() => toggle("isModleOpen")}
-        >
-          {buttonValue} Expense
-        </Button>
-      )}
+      <Button
+        sx={{
+          ...ModelButtonStyle,
+          minWidth: "16px",
+          color: "rgba(189,85,189,0.9)",
+        }}
+        variant='outlined'
+        color='secondary'
+        size='small'
+        onClick={() => toggle("isModleOpen")}
+      >
+        {updateExpanseData ? <EditIcon /> : <AddIcon />}
+      </Button>
 
       <Modal
         aria-labelledby='transition-modal-title'

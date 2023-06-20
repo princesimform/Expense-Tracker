@@ -95,7 +95,16 @@ function ExpenseList({ userData }: PropType) {
         <Typography className='groups-page-title' variant='h4' textAlign='left'>
           Your Expenses
         </Typography>
-        <AddExpenseForm FriendsList={[]} userData={userData} />
+        <AddExpenseForm
+          ModelButtonStyle={{
+            borderRadius: "16px",
+            width: "32px",
+            margin: "5px 10px",
+            height: "32px",
+          }}
+          FriendsList={[]}
+          userData={userData}
+        />
       </Box>
       <Divider className='group-title-divider' />
       <Container maxWidth='xl'>
@@ -143,6 +152,12 @@ function ExpenseList({ userData }: PropType) {
                     <TableCell>{row.expense_amount}</TableCell>
                     <TableCell style={{ minWidth: 170 }}>
                       <AddExpenseForm
+                        ModelButtonStyle={{
+                          borderRadius: "16px",
+                          width: "32px",
+                          margin: "5px 4px",
+                          height: "32px",
+                        }}
                         FriendsList={[]}
                         userData={userData}
                         updateExpanseData={row}

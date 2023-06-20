@@ -44,18 +44,27 @@ function Groups({ userData }: PropType) {
   return (
     <div>
       <Box
-        display="flex"
-        alignItems="center"
-        justifyContent="space-between"
-        className="groups-page-heading"
+        display='flex'
+        alignItems='center'
+        justifyContent='space-between'
+        className='groups-page-heading'
       >
-        <Typography className="groups-page-title" variant="h4" textAlign="left">
+        <Typography className='groups-page-title' variant='h4' textAlign='left'>
           Your Groups
         </Typography>
-        <GroupForm userData={userData}/>
+        <GroupForm
+          ModelButtonStyle={{
+            borderRadius: "16px",
+            width: "32px",
+            margin: "0px 10px",
+            height: "32px",
+            // value: "Create",
+          }}
+          userData={userData}
+        />
       </Box>
-      <Divider className="group-title-divider" />
-      <Container maxWidth="xl">
+      <Divider className='group-title-divider' />
+      <Container maxWidth='xl'>
         <Grid container spacing={3}>
           {groupList.length >= 0 ? (
             groupList.map((group: groupDataType) => (
@@ -73,9 +82,7 @@ function Groups({ userData }: PropType) {
           <Grid item xs={12} sm={6} lg={4}>
             {/* <GroupCard /> */}
           </Grid>
-          <Grid item xs={12} sm={6} lg={4}>
-            <GroupForm userData={userData}/>
-          </Grid>
+          <Grid item xs={12} sm={6} lg={4}></Grid>
         </Grid>
       </Container>
     </div>

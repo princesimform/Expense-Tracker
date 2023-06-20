@@ -27,6 +27,7 @@ import { useNavigate } from "react-router-dom";
 import AuthService from "../../libs/services/firebase/auth";
 import useToggle from "../../customHooks/useToggle";
 import { GeneralPropType } from "../../routes/AuthRoutes";
+import EditIcon from "@mui/icons-material/Edit";
 const style = {
   position: "absolute" as "absolute",
   top: "50%",
@@ -43,9 +44,16 @@ interface formDataType {
 }
 interface PropsType extends GeneralPropType {
   groupData?: groupDataType;
+  ModelButtonStyle: {
+    borderRadius: string;
+    width: string;
+    margin: string;
+    height: string;
+    
+  };
 }
 
-function GroupForm({ groupData, userData }: PropsType) {
+function GroupForm({ groupData, userData, ModelButtonStyle }: PropsType) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
@@ -154,11 +162,17 @@ function GroupForm({ groupData, userData }: PropsType) {
   return (
     <>
       <Button
-        variant='contained'
+        sx={{
+          ...ModelButtonStyle,
+          minWidth: "16px",
+          color: "rgba(189,85,189,0.9)",
+        }}
+        variant='outlined'
         color='secondary'
+        size='small'
         onClick={() => toggle("isModleOpen")}
       >
-        {buttonValue} Group
+        {groupData ? <EditIcon /> : <AddIcon />}
       </Button>
       <Modal
         aria-labelledby='transition-modal-title'

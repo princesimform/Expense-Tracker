@@ -11,12 +11,14 @@ import {
   Typography,
 } from "@mui/material";
 import React from "react";
+import AddExpenseForm from "../../pages/expanse/AddExpanseForm";
 import GroupForm from "../../pages/GroupPages/GroupForm";
 interface PropType {
-  numberOfGroups: number;
+  numberOfExpenses: number;
   sx: { height: string };
+ 
 }
-function OverviewOfGroups({ sx, numberOfGroups }: PropType) {
+function OverviewOfExpenses({ sx, numberOfExpenses }: PropType) {
   return (
     <>
       <Card sx={sx}>
@@ -30,18 +32,16 @@ function OverviewOfGroups({ sx, numberOfGroups }: PropType) {
           >
             <Stack spacing={1}>
               <Typography color='text.secondary' variant='overline'>
-                Groups
+                Expenses
               </Typography>
-              <Typography variant='h4'>{numberOfGroups}</Typography>
+              <Typography variant='h4'>{numberOfExpenses}</Typography>
             </Stack>
-            <GroupForm
-              ModelButtonStyle={{
+            <AddExpenseForm    ModelButtonStyle={{
                 borderRadius: "27px",
                 width: "56px",
                 margin: "10px",
                 height: "56px",
-              }}
-            />
+              }} FriendsList={[]} />
             {/* <Avatar
               sx={{
                 // backgroundColor: "error.main",
@@ -60,4 +60,4 @@ function OverviewOfGroups({ sx, numberOfGroups }: PropType) {
   );
 }
 
-export default OverviewOfGroups;
+export default OverviewOfExpenses;
