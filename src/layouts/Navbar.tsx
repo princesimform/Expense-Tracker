@@ -44,7 +44,7 @@ function Navbar({ window, onNavOpen }: PropsTypes) {
   const [userProfile, setUserProfile] = useState<string | null>();
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
-  const lgUp = useMediaQuery((theme : Theme) => theme.breakpoints.up("lg"));
+  const lgUp = useMediaQuery((theme: Theme) => theme.breakpoints.up("lg"));
   const accountPopover = usePopover();
 
   const navItems = [
@@ -125,16 +125,14 @@ function Navbar({ window, onNavOpen }: PropsTypes) {
       >
         <Toolbar>
           <IconButton
-            // color='blur'
             aria-label='open drawer'
             edge='start'
             onClick={() => onNavOpen()}
-            // onClick={() => toggle("isDrawerOpen")}
             sx={{
               mr: 2,
               display: { lg: "none" },
-              color: "white",
             }}
+            style={{ color: "white" }}
           >
             <MenuIcon />
           </IconButton>
@@ -147,10 +145,8 @@ function Navbar({ window, onNavOpen }: PropsTypes) {
             }}
           >
             {!lgUp && (
-              <NavLink to='/dashboard'>
-                <Typography variant='h6' color='white'>
-                  Expanse Tracker
-                </Typography>
+              <NavLink to='/dashboard' >
+                <Typography variant='h6' style={{ color: "white" }}>Expanse Tracker</Typography>
               </NavLink>
             )}
           </Box>
