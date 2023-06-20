@@ -22,6 +22,9 @@ import * as yup from "yup";
 import { DeleteForeverOutlined, Edit, ForkRight } from "@mui/icons-material";
 import { useSnackbar } from "notistack";
 import { AppDispatch } from "../../redux/store";
+import useToggle from "../../customHooks/useToggle";
+import Loader from "../../components/Loader";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 interface PropType extends GeneralPropType {
   groupMembers: string[];
@@ -33,6 +36,9 @@ interface formFieldType {
 
 function GroupMemberPage({ groupMembers, groupData, userData }: PropType) {
   const [groupMembersList, setGroupMemberList] = useState<string[]>([]);
+  const [toggles, toggle] = useToggle({
+    processing: false,
+  });
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const formFields: formFieldType = {
     new_member: "",
@@ -43,17 +49,27 @@ function GroupMemberPage({ groupMembers, groupData, userData }: PropType) {
     setGroupMemberList(groupData.member_list);
   }, []);
   const handleSubmit = async (values: formFieldType) => {
+    toggle("processing");
+
     const reqData: groupDataType = JSON.parse(JSON.stringify(groupData));
     reqData.member_list = [...groupMembers, values.new_member];
     const response = await dispatch(updateData(reqData));
-    console.log(response.payload);
-    enqueueSnackbar(`Member Added successfully `, {
-      variant: "success",
-      autoHideDuration: 3000,
-    });
-    userData?.email && (await dispatch(getGroups(userData?.email)));
-    setGroupMemberList((prev) => [...prev, values.new_member]);
-    values.new_member = "";
+    if (response.payload.status) {
+      enqueueSnackbar(`Member Added successfully `, {
+        variant: "success",
+        autoHideDuration: 3000,
+      });
+      userData?.email && (await dispatch(getGroups(userData?.email)));
+      setGroupMemberList((prev) => [...prev, values.new_member]);
+      values.new_member = "";
+      toggle("processing");
+    } else {
+      enqueueSnackbar(`Something Went Wrong `, {
+        variant: "error",
+        autoHideDuration: 3000,
+      });
+      toggle("processing");
+    }
   };
 
   const DeleteMemberFromList = async (index: number) => {
@@ -119,7 +135,7 @@ function GroupMemberPage({ groupMembers, groupData, userData }: PropType) {
                     type="submit"
                     fullWidth
                   >
-                    Add
+                    {toggles.processing ? "Processing" : "Add"}
                   </Button>
                 </Grid>
               </Grid>
@@ -129,56 +145,68 @@ function GroupMemberPage({ groupMembers, groupData, userData }: PropType) {
       </Box>
 
       <Paper sx={{ marginTop: 4 }}>
-        <TableContainer component={Paper}>
-          <Table aria-label="customized table">
-            <TableHead>
-              <TableRow>
-                <StyledTableCell>
-                  <Typography variant="h6" fontWeight="bold">
-                    Members
-                  </Typography>
-                </StyledTableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {groupMembersList.length > 0 ? (
-                groupMembersList.map((member, index) => (
-                  <StyledTableRow key={index}>
+        {toggles.processing ? (
+          <Loader />
+        ) : (
+          <TableContainer component={Paper}>
+            <Table aria-label="customized table">
+              <TableHead>
+                <TableRow>
+                  <StyledTableCell>
+                    <Typography variant="h6" fontWeight="bold">
+                      Members
+                    </Typography>
+                  </StyledTableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {groupMembersList.length > 0 ? (
+                  groupMembersList.map((member, index) => (
+                    <StyledTableRow key={index}>
+                      <StyledTableCell component="th" scope="row">
+                        <Stack
+                          display="flex"
+                          flexDirection="row"
+                          justifyContent="space-between"
+                        >
+                          <Typography>{member}</Typography>
+
+                          {userData?.email != member && (
+                            <Button
+                              sx={{
+                                borderRadius: "16px",
+                                width: "32px",
+                                height: "32px",
+                              }}
+                              color="error"
+                              variant="outlined"
+                              size="small"
+                              onClick={() => DeleteMemberFromList(index)}
+                            >
+                              <DeleteIcon color="error" />
+                            </Button>
+                          )}
+                        </Stack>
+                      </StyledTableCell>
+                    </StyledTableRow>
+                  ))
+                ) : (
+                  <StyledTableRow key={"no data"}>
                     <StyledTableCell component="th" scope="row">
                       <Stack
                         display="flex"
                         flexDirection="row"
                         justifyContent="space-between"
                       >
-                        <Typography>{member}</Typography>
-                        {userData?.email != member && (
-                          <Box
-                            color="red"
-                            onClick={() => DeleteMemberFromList(index)}
-                          >
-                            <DeleteForeverOutlined />
-                          </Box>
-                        )}
+                        <Typography>No Data Found</Typography>
                       </Stack>
                     </StyledTableCell>
                   </StyledTableRow>
-                ))
-              ) : (
-                <StyledTableRow key={"no data"}>
-                  <StyledTableCell component="th" scope="row">
-                    <Stack
-                      display="flex"
-                      flexDirection="row"
-                      justifyContent="space-between"
-                    >
-                      <Typography>No Data Found</Typography>
-                    </Stack>
-                  </StyledTableCell>
-                </StyledTableRow>
-              )}
-            </TableBody>
-          </Table>
-        </TableContainer>
+                )}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        )}
       </Paper>
     </>
   );
