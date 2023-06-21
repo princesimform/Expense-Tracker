@@ -8,6 +8,9 @@ const Groups = lazy(() => import("./../pages/GroupPages"));
 const Profile = lazy(() => import("./../pages/Profile"));
 const GroupDetails = lazy(() => import("../pages/GroupPages/GroupDetails"));
 const ExpenseList = lazy(() => import("../pages/expanse"));
+const ExpenseDetails = lazy(
+  () => import("../components/expense/ExpenseDetails")
+);
 
 export interface GeneralPropType {
   userData?: User;
@@ -38,6 +41,10 @@ const AuthRoutes: ReactNode[] = [
     path='/expense'
     element={<AuthGuards component={ExpenseList} />}
   />,
+  <Route
+    key='Expense'
+    path='/expense/:id'
+    element={<AuthGuards component={ExpenseDetails} />}
+  />,
 ];
 export default AuthRoutes;
-  

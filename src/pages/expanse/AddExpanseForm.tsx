@@ -254,7 +254,9 @@ function AddExpenseForm({
   };
   const handlesubmit = async (values: expenseDataType, resetForm: Function) => {
     if (paidByList != undefined) {
-      values.member_list = paidByList;
+      values.member_list = paidByList.filter(
+        (val, id, paidByList) => paidByList.indexOf(val) == id
+      );
     }
 
     if (values.expense_file != null) {

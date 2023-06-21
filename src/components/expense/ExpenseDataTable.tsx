@@ -23,6 +23,8 @@ import { deleteExpense, getExpenses } from "../../redux/expanseSlice";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import { TablePaginationActions } from "../TablePaginationActions";
 import ExpanseDelete from "../../pages/expanse/ExpanseDelete";
+import ExpenseDetails from "./ExpenseDetails";
+import { useNavigate } from "react-router-dom";
 
 interface PropType extends GeneralPropType {}
 function ExpenseDataTable({ userData }: PropType) {
@@ -31,14 +33,15 @@ function ExpenseDataTable({ userData }: PropType) {
   );
   const [expenseListData, setExpenseListData] = useState(expenseList);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - expenseList.length) : 0;
-useEffect(() => {
-  console.log(expenseList);
-} , [])
+  useEffect(() => {
+    console.log(expenseList);
+  }, []);
   const handleChangePage = (
     event: React.MouseEvent<HTMLButtonElement> | null,
     newPage: number
@@ -91,7 +94,7 @@ useEffect(() => {
                   userData={userData}
                   updateExpanseData={row}
                 />
-                <ExpanseDelete expnaseData={row} userData={userData}/>
+                <ExpanseDelete expnaseData={row} userData={userData} />
                 <Button
                   sx={{
                     borderRadius: "16px",
@@ -104,6 +107,7 @@ useEffect(() => {
                   variant='outlined'
                   color='secondary'
                   size='small'
+                  onClick={() => navigate(`/expense/${row.id}`)}
                 >
                   <VisibilityIcon />
                 </Button>
