@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "./../style/header.module.css";
 import Logo from "./../assets/logo.png";
-import { Avatar, Button, Divider } from "@mui/material";
+import { Avatar, Button, Divider, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 function Header() {
   return (
@@ -9,8 +9,9 @@ function Header() {
       <div className={styles.headerMain}>
         <div className={styles.headerLogo}>
           <img src={Logo} />
+          <Typography variant="h6" className={styles.productName}>Expense Tracker</Typography>
         </div>
-        <div className='flex items-center justify-end md:flex-1 lg:w-0'>
+        <div className={styles.headerButtons}>
           <Link to='/login'>
             <Button variant='contained' sx={{ marginRight: 4 }}>
               Log In
