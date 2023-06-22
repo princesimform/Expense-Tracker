@@ -191,16 +191,16 @@ function GroupForm({ groupData, userData, ModelButtonStyle }: PropsType) {
           minWidth: "16px",
           color: "rgba(189,85,189,0.9)",
         }}
-        variant="outlined"
-        color="secondary"
-        size="small"
+        variant='outlined'
+        color='secondary'
+        size='small'
         onClick={() => toggle("isModleOpen")}
       >
         {groupData ? <EditIcon /> : <AddIcon />}
       </Button>
       <Modal
-        aria-labelledby="transition-modal-title"
-        aria-describedby="transition-modal-description"
+        aria-labelledby='transition-modal-title'
+        aria-describedby='transition-modal-description'
         open={toggles.isModleOpen}
         // onClose={handleModleToggle}
         closeAfterTransition
@@ -214,10 +214,10 @@ function GroupForm({ groupData, userData, ModelButtonStyle }: PropsType) {
         <Fade in={toggles.isModleOpen}>
           <Box sx={style}>
             <Typography
-              id="transition-modal-title"
-              variant="h5"
+              id='transition-modal-title'
+              variant='h5'
               sx={{ textAlign: "center", mb: 2 }}
-              component="h2"
+              component='h2'
             >
               {groupData ? "Update Group" : "Create Group"}
             </Typography>
@@ -231,15 +231,15 @@ function GroupForm({ groupData, userData, ModelButtonStyle }: PropsType) {
               {({ handleSubmit, errors, isValid, touched, setFieldValue }) => (
                 <Form onSubmit={handleSubmit}>
                   <InputLabel
-                    htmlFor="group-image"
-                    className="m-auto flex w-fit text-center"
+                    htmlFor='group-image'
+                    className='m-auto flex w-fit text-center'
                     sx={{ mb: 2 }}
                   >
                     <Field
                       style={{ display: "none" }}
-                      id="group-image"
-                      name="group_image"
-                      type="file"
+                      id='group-image'
+                      name='group_image'
+                      type='file'
                       value={undefined}
                       onChange={(event: ChangeEvent<HTMLInputElement>) =>
                         handleFileInputChange(event, setFieldValue)
@@ -253,7 +253,7 @@ function GroupForm({ groupData, userData, ModelButtonStyle }: PropsType) {
                       }
                     />
                     <Avatar
-                      alt="Remy Sharp"
+                      alt='Remy Sharp'
                       src={
                         GroupProfileimage
                           ? GroupProfileimage.slice(0, 4) == "http"
@@ -270,11 +270,11 @@ function GroupForm({ groupData, userData, ModelButtonStyle }: PropsType) {
                     />
                   </InputLabel>
                   <Field
-                    name="name"
-                    type="text"
-                    variant="outlined"
-                    color="primary"
-                    label="Full Name"
+                    name='name'
+                    type='text'
+                    variant='outlined'
+                    color='primary'
+                    label='Full Name'
                     fullWidth
                     sx={{ mb: 2 }}
                     as={TextField}
@@ -286,16 +286,16 @@ function GroupForm({ groupData, userData, ModelButtonStyle }: PropsType) {
                     sx={{ display: "flex", justifyContent: "space-between" }}
                   >
                     <Button
-                      variant="contained"
-                      color="warning"
+                      variant='contained'
+                      color='warning'
                       onClick={() => toggle("isModleOpen")}
                     >
                       Cancle
                     </Button>
 
                     <Button
-                      type="submit"
-                      variant="contained"
+                      type='submit'
+                      variant='contained'
                       disabled={!isValid}
                     >
                       {groupData

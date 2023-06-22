@@ -21,7 +21,7 @@ import { GeneralPropType } from "../../routes/AuthRoutes";
 import Loader from "../../components/Loader";
 import ExpenseDetails from "../../components/expense/ExpenseDetails";
 import useToggle from "../../customHooks/useToggle";
-import SettlementDetails from "../../components/expense/SettlementDetails";
+import ExpenseWiseSettlement from "../../components/settlement/ExpenseWiseSettlement";
 
 function GroupExpense(props: PropType) {
   const { children, value, index, userData, ...other } = props;
@@ -94,7 +94,7 @@ function GroupExpense(props: PropType) {
                             </Box>
                           </TableCell>
                           <TableCell key={3}>
-                            <SettlementDetails expense={expanse} userData={userData} />
+                            <ExpenseWiseSettlement expense={expanse} userData={userData} />
                             
                           </TableCell>
                           <TableCell key={4}>

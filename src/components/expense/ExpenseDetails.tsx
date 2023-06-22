@@ -25,7 +25,7 @@ import { useParams } from "react-router-dom";
 import Loader from "../Loader";
 import AddExpenseForm from "../../pages/expanse/AddExpanseForm";
 import { useSnackbar } from "notistack";
-import SettlementDetails from "./SettlementDetails";
+import ExpenseWiseSettlement from "../settlement/ExpenseWiseSettlement";
 
 interface PropType extends GeneralPropType {
   expenseData: expenseDataType;
@@ -124,7 +124,10 @@ function ExpenseDetails({
             </Grid>
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6} lg={6}>
-                <SettlementDetails expense={expenseData} userData={userData} />
+                <ExpenseWiseSettlement
+                  expense={expenseData}
+                  userData={userData}
+                />
               </Grid>
               <Grid item xs={12} sm={6} lg={6}>
                 {expenseData.isSettle && (
@@ -162,12 +165,12 @@ function ExpenseDetails({
               >
                 {expenseData.isSettle ? (
                   <Button
-                  onClick={() => settleExpense()}
-                  variant='contained'
-                  color='error'
-                >
-                  Revert
-                </Button>
+                    onClick={() => settleExpense()}
+                    variant='contained'
+                    color='error'
+                  >
+                    Revert
+                  </Button>
                 ) : (
                   <Button
                     onClick={() => settleExpense()}

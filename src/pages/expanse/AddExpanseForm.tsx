@@ -399,7 +399,7 @@ function AddExpenseForm({
                       defaultValue={defaultListOptions}
                       multiple
                       id='select-friends'
-                      renderInput={(params: any) => (
+                      renderInput={(params) => (
                         <Field
                           name='member_list'
                           as={TextField}

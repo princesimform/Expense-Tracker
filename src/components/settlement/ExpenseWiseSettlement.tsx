@@ -5,7 +5,7 @@ import { GeneralPropType } from "../../routes/AuthRoutes";
 interface PropType extends GeneralPropType {
   expense: expenseDataType;
 }
-function SettlementDetails({ expense, userData }: PropType) {
+function ExpenseWiseSettlement({ expense, userData }: PropType) {
   return (
     <>
       {expense.paid_by == userData?.email ? (
@@ -42,4 +42,4 @@ function SettlementDetails({ expense, userData }: PropType) {
   );
 }
 
-export default SettlementDetails;
+export default ExpenseWiseSettlement;
