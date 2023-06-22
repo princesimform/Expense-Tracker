@@ -156,6 +156,7 @@ ExpenseFirestoreService!.getExpensesFromFirestore = async (
             isSettle: ExpensesData.isSettle,
             expense_file: ExpensesData.expense_file,
             group_list: ExpensesData.group_list,
+            settleBy: ExpensesData.settleBy,
           };
 
           data.push(ExpenseData);

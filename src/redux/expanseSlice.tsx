@@ -63,6 +63,7 @@ export interface expenseDataType {
   expense_date: string;
   created_at: string;
   isSettle: boolean;
+  settleBy: string;
   group_list: string[];
   expense_file: File | null;
 }

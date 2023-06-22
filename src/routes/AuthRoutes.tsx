@@ -41,10 +41,5 @@ const AuthRoutes: ReactNode[] = [
     path='/expense'
     element={<AuthGuards component={ExpenseList} />}
   />,
-  <Route
-    key='Expense'
-    path='/expense/:id'
-    element={<AuthGuards component={ExpenseDetails} />}
-  />,
 ];
 export default AuthRoutes;

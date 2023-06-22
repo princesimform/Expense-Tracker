@@ -88,6 +88,7 @@ function AddExpenseForm({
     expense_date: today.toISOString(),
     created_at: today.toISOString(),
     isSettle: false,
+    settleBy: "",
     expense_file: null,
     group_list: [],
   });

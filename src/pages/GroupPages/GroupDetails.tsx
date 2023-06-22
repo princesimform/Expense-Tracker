@@ -64,12 +64,15 @@ interface PropType extends GeneralPropType {}
 function GroupDetails({ userData }: PropType) {
   // throw new Error("Stop here");
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
-  const [groupExpense, setGroupExpense] = useState<expenseDataType[]>([]);
   const [tabNumber, setTabNumber] = useState(0);
   const { id } = useParams();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [groupMembers, setGroupMember] = useState<string[]>([]);
+  const [activeGroupExpense, setActiveGroupExpenseList] =
+    useState<expenseDataType[]>();
+  const [settleGroupExpense, setSettleGroupExpenseList] =
+    useState<expenseDataType[]>();
   const { expenseList } = useSelector(
     (state: Rootstate) => state.expenseReducer
   );
@@ -84,13 +87,19 @@ function GroupDetails({ userData }: PropType) {
 
   useEffect(() => {
     if (groupData != undefined) {
-      const groupExpenseList: expenseDataType[] = [];
+      const activeGroupExpenseList: expenseDataType[] = [];
+      const settleGroupExpenseList: expenseDataType[] = [];
       expenseList.forEach((expense) => {
         if (expense.group_list?.indexOf(groupData.name) >= 0) {
-          groupExpenseList.push(expense);
+          if (expense.isSettle) {
+            settleGroupExpenseList.push(expense);
+          } else {
+            activeGroupExpenseList.push(expense);
+          }
         }
       });
-      setGroupExpense(groupExpenseList);
+      setSettleGroupExpenseList(settleGroupExpenseList);
+      setActiveGroupExpenseList(activeGroupExpenseList);
       setGroupMember(groupData.member_list);
     }
   }, [expenseList]);
@@ -169,30 +178,38 @@ function GroupDetails({ userData }: PropType) {
                 </Box>
                 <Divider />
 
-                <Box className='group-tab-box'>
-                  <Tabs
-                    value={tabNumber}
-                    onChange={handleTab}
-                    aria-label='basic tabs example'
-                  >
-                    <Tab label='Active' {...a11yProps(0)} />
-                    <Tab label='Settled' {...a11yProps(1)} />
-                  </Tabs>
-                </Box>
+                {activeGroupExpense != undefined &&
+                settleGroupExpense != undefined ? (
+                  <>
+                    <Box className='group-tab-box'>
+                      <Tabs
+                        value={tabNumber}
+                        onChange={handleTab}
+                        aria-label='basic tabs example'
+                      >
+                        <Tab label='Active' {...a11yProps(0)} />
+                        <Tab label='Settled' {...a11yProps(1)} />
+                      </Tabs>
+                    </Box>
 
-                {/* Active Box  */}
-                <GroupExpense
-                  value={tabNumber}
-                  index={0}
-                  groupExpenseList={groupExpense}
-                  userData={userData}
-                ></GroupExpense>
-                {/* Settled Box  */}
-                <GroupExpense
-                  value={tabNumber}
-                  index={1}
-                  groupExpenseList={groupExpense}
-                ></GroupExpense>
+                    {/* Active Box  */}
+                    <GroupExpense
+                      value={tabNumber}
+                      index={0}
+                      groupExpenseList={activeGroupExpense}
+                      userData={userData}
+                    ></GroupExpense>
+                    {/* Settled Box  */}
+                    <GroupExpense
+                      value={tabNumber}
+                      index={1}
+                      groupExpenseList={settleGroupExpense}
+                      userData={userData}
+                    ></GroupExpense>
+                  </>
+                ) : (
+                  <Loader />
+                )}
               </Grid>
               <Grid item xs={12} sm={12} lg={6}>
                 <GroupMemberPage
@@ -206,8 +223,6 @@ function GroupDetails({ userData }: PropType) {
               </Grid>
             </Grid>
           </Stack>
-
-          
         </Box>
       </>
     );

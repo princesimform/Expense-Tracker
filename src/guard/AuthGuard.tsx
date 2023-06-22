@@ -22,8 +22,8 @@ function AuthGuards({ component }: PropType) {
   const dispatch = useDispatch<AppDispatch>();
   useEffect(() => {
     checkToken().then((res) => {
-      dispatch(getExpenses(String(res?.email)));
       res?.email && dispatch(getGroups(String(res?.email)));
+      res?.email && dispatch(getExpenses(String(res?.email)));
     });
   }, []);
 
