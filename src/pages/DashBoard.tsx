@@ -16,11 +16,13 @@ function DashBoard({ userData }: PropType) {
   const { groupList } = useSelector((state: Rootstate) => state.groupReducer);
   return (
     <>
-      <Container className="dashboard-container" maxWidth="xl">
+      <Container className='dashboard-container' maxWidth='xl'>
         <Grid container spacing={3}>
           <Grid item xs={12} sm={6} lg={3}>
             <OverviewOfGroups
-              sx={{ height: "100%" }}
+              sx={{
+                height: "100%",
+              }}
               numberOfGroups={groupList.length}
               userData={userData}
             />
@@ -35,9 +37,9 @@ function DashBoard({ userData }: PropType) {
         </Grid>
       </Container>
 
-      <Divider className="divider-top" />
+      <Divider className='divider-top' />
       <DashboardGroup groups={groupList} userData={userData} />
-      <Divider className="divider-top" />
+      <Divider className='divider-top' />
       <DashboardExpense expanses={expenseList} userData={userData} />
     </>
   );

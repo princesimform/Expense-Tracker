@@ -20,7 +20,7 @@ import {
   updateData,
 } from "../../redux/groupSlice";
 import AddGroupImg from "./../../assets/add_group.png";
-import { Field, Form, Formik } from "formik";
+import { ErrorMessage, Field, Form, Formik } from "formik";
 import { AddGroupSchema } from "../../libs/services/ValidationSchema";
 import { useSnackbar } from "notistack";
 import { useNavigate } from "react-router-dom";
@@ -31,6 +31,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import FirebaseFileHandling from "../../libs/services/firebase/fileHandling";
 import { createdAtTime, setFileinFilebase } from "../../libs/services/utills";
 import { AppDispatch } from "../../redux/store";
+import { string } from "yup";
 const style = {
   position: "absolute" as "absolute",
   top: "50%",
@@ -48,10 +49,7 @@ interface formDataType {
 interface PropsType extends GeneralPropType {
   groupData?: groupDataType;
   ModelButtonStyle: {
-    borderRadius: string;
-    width: string;
-    margin: string;
-    height: string;
+    [key: string]: string;
   };
 }
 
@@ -82,13 +80,16 @@ function GroupForm({ groupData, userData, ModelButtonStyle }: PropsType) {
       // initalValues.group_image = groupData.group_image;
     }
   }, []);
-  const handleFileInputChange = (
+  const handleFileInputChange = async (
     e: ChangeEvent<HTMLInputElement>,
     setFieldValue: Function
   ) => {
     if (e.target.files && e.target.files[0]) {
+      const res = await setFieldValue("group_image", e.target.files[0]);
       reader.addEventListener("load", function (event) {
-        setgroupProfileimage(JSON.stringify(reader.result));
+        console.log(res.group_image);
+        if (res.group_image == undefined)
+          setgroupProfileimage(JSON.stringify(reader.result));
       });
       reader.readAsDataURL(e.target.files[0]);
       setFieldValue("group_image", e.target.files[0]);
@@ -187,9 +188,9 @@ function GroupForm({ groupData, userData, ModelButtonStyle }: PropsType) {
     <>
       <Button
         sx={{
-          ...ModelButtonStyle,
-          minWidth: "16px",
           color: "rgba(189,85,189,0.9)",
+          minWidth: "16px",
+          ...ModelButtonStyle,
         }}
         variant='outlined'
         color='secondary'
@@ -236,7 +237,7 @@ function GroupForm({ groupData, userData, ModelButtonStyle }: PropsType) {
                     sx={{ mb: 2 }}
                   >
                     <Field
-                      style={{ display: "none" }}
+                      style={{ opacity: 0 }}
                       id='group-image'
                       name='group_image'
                       type='file'
@@ -266,8 +267,10 @@ function GroupForm({ groupData, userData, ModelButtonStyle }: PropsType) {
                         height: 100,
                         borderWidth: 2,
                         borderColor: "primary",
+                        margin: "auto",
                       }}
                     />
+                    <ErrorMessage name='group_image' component='p' />
                   </InputLabel>
                   <Field
                     name='name'

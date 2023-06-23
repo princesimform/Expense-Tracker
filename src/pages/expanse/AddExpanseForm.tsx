@@ -22,7 +22,7 @@ import {
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 
-import { Field, Form, Formik } from "formik";
+import { ErrorMessage, Field, Form, Formik } from "formik";
 import { AddExpenseFormSchema } from "../../libs/services/ValidationSchema";
 import useToggle from "../../customHooks/useToggle";
 import { Rootstate } from "../../redux/store";
@@ -59,10 +59,7 @@ interface PropType extends GeneralPropType {
   FriendsList: string[];
   updateExpanseData?: expenseDataType;
   ModelButtonStyle: {
-    borderRadius: string;
-    width: string;
-    margin: string;
-    height: string;
+    [key: string]: string;
   };
 }
 function AddExpenseForm({
@@ -105,6 +102,7 @@ function AddExpenseForm({
   let tempFriendsList: string[] = [];
   const buttonValue = updateExpanseData == undefined ? "Create" : "Update";
   const currencyOptions = { ASD: "USD", INR: "INR" };
+  const reader = new FileReader();
 
   const renderGroup = (params: AutocompleteRenderGroupParams) => [
     <li key={params.key} style={{ marginLeft: "10px" }}>
@@ -212,6 +210,25 @@ function AddExpenseForm({
     setFieldValue("group_list", tempGroupsList);
     tempGroupsList = [];
     updatePaidByList(value);
+  };
+
+  const handleFileInputChange = async (
+    e: ChangeEvent<HTMLInputElement>,
+    setFieldValue: Function
+  ) => {
+    if (e.target.files && e.target.files[0]) {
+      const res = await setFieldValue("expense_file", e.target.files[0]);
+      reader.addEventListener("load", function (event) {
+        console.log(res.expense_file);
+        if (res.expense_file == undefined)
+          setFormValues((prev) => ({
+            ...prev,
+            expense_file: e.target.files![0],
+          }));
+      });
+      reader.readAsDataURL(e.target.files[0]);
+      setFieldValue("expense_file", e.target.files[0]);
+    }
   };
 
   const updatePaidByList = async (ListData: ListOptionType[]) => {
@@ -323,9 +340,9 @@ function AddExpenseForm({
     <>
       <Button
         sx={{
-          ...ModelButtonStyle,
           minWidth: "16px",
           color: "rgba(189,85,189,0.9)",
+          ...ModelButtonStyle,
         }}
         variant='outlined'
         color='secondary'
@@ -386,6 +403,9 @@ function AddExpenseForm({
                   setFieldValue,
                 }) => (
                   <Form onSubmit={handleSubmit}>
+                    <Box sx={{ margin: "auto", textAlign: "center" }}>
+                      <ErrorMessage name='expense_file' component='p' />
+                    </Box>
                     <TextfieldWrapper name='title' label='Title' size='small' />
                     <Autocomplete
                       sx={{ mt: 2 }}
@@ -440,28 +460,18 @@ function AddExpenseForm({
                           sx={{ mb: 2 }}
                         >
                           <Field
-                            style={{ display: "none" }}
+                            style={{
+                              opacity: 0,
+                              display: "inherit",
+                              height: 0,
+                            }}
                             id='bill-image'
                             name='expense_file'
                             type='file'
                             value={undefined}
-                            onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                              if (e.target.files != null && e.target.files[0]) {
-                                setFormValues((prev) => ({
-                                  ...prev,
-                                  expense_file: e.target.files![0],
-                                }));
-                                setFieldValue(
-                                  "expense_file",
-                                  e.target.files[0]
-                                );
-                              } else {
-                                setFieldValue(
-                                  e.target.name,
-                                  Number(e.target.value)
-                                );
-                              }
-                            }}
+                            onChange={(event: ChangeEvent<HTMLInputElement>) =>
+                              handleFileInputChange(event, setFieldValue)
+                            }
                             error={
                               Boolean(errors.expense_file) &&
                               Boolean(touched.expense_file)

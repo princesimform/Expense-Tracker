@@ -14,15 +14,21 @@ import React from "react";
 import AddExpenseForm from "../../pages/expanse/AddExpanseForm";
 import GroupForm from "../../pages/GroupPages/GroupForm";
 import { GeneralPropType } from "../../routes/AuthRoutes";
-interface PropType  extends GeneralPropType {
+interface PropType extends GeneralPropType {
   numberOfExpenses: number;
   sx: { height: string };
- 
 }
-function OverviewOfExpenses({ userData ,sx, numberOfExpenses }: PropType) {
+function OverviewOfExpenses({ userData, sx, numberOfExpenses }: PropType) {
   return (
     <>
-      <Card sx={sx}>
+      <Card
+        sx={sx}
+        style={{
+          background:
+            "linear-gradient( 90deg, hsl(263deg 54% 59% / 100%), hsl(263deg 54% 59% / 100%))",
+          color: "white",
+        }}
+      >
         <CardContent>
           <Stack
             display='flex'
@@ -32,17 +38,24 @@ function OverviewOfExpenses({ userData ,sx, numberOfExpenses }: PropType) {
             spacing={3}
           >
             <Stack spacing={1}>
-              <Typography color='text.secondary' variant='overline'>
+              <Typography fontWeight={600} fontSize='1rem' variant='overline'>
                 Expenses
               </Typography>
               <Typography variant='h4'>{numberOfExpenses}</Typography>
             </Stack>
-            <AddExpenseForm    ModelButtonStyle={{
+            <AddExpenseForm
+              ModelButtonStyle={{
+                background: "linear-gradient( 90deg, hsl(263deg 54% 59% / 100%), hsl(263deg 54% 59% / 100%))",
+                color : "white",
+                border : "1px solid white",
                 borderRadius: "27px",
                 width: "56px",
                 margin: "10px",
                 height: "56px",
-              }} FriendsList={[]} userData={userData} />
+              }}
+              FriendsList={[]}
+              userData={userData}
+            />
             {/* <Avatar
               sx={{
                 // backgroundColor: "error.main",

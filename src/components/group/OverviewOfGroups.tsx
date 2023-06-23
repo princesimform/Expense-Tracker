@@ -13,14 +13,21 @@ import {
 import React from "react";
 import GroupForm from "../../pages/GroupPages/GroupForm";
 import { GeneralPropType } from "../../routes/AuthRoutes";
-interface PropType extends GeneralPropType{
+interface PropType extends GeneralPropType {
   numberOfGroups: number;
   sx: { height: string };
 }
-function OverviewOfGroups({ userData , sx, numberOfGroups }: PropType) {
+function OverviewOfGroups({ userData, sx, numberOfGroups }: PropType) {
   return (
     <>
-      <Card sx={sx}>
+      <Card
+        style={{
+          background:
+            "linear-gradient( 90deg, hsl(263deg 54% 59% / 100%), hsl(263deg 54% 59% / 100%))",
+          color: "white",
+        }}
+        sx={sx}
+      >
         <CardContent>
           <Stack
             display='flex'
@@ -30,13 +37,16 @@ function OverviewOfGroups({ userData , sx, numberOfGroups }: PropType) {
             spacing={3}
           >
             <Stack spacing={1}>
-              <Typography color='text.secondary' variant='overline'>
+              <Typography fontWeight={600} fontSize='1rem' variant='overline'>
                 Groups
               </Typography>
               <Typography variant='h4'>{numberOfGroups}</Typography>
             </Stack>
             <GroupForm
               ModelButtonStyle={{
+                background: "linear-gradient( 90deg, hsl(263deg 54% 59% / 100%), hsl(263deg 54% 59% / 100%))",
+                color : "white",
+                border : "1px solid white",
                 borderRadius: "27px",
                 width: "56px",
                 margin: "10px",

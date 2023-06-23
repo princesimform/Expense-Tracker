@@ -5,17 +5,16 @@ export const AddGroupSchema = yup.object({
   name: yup.string().required("Please enter Full Name"),
   group_image: yup
     .mixed()
-    .test(
-      "fileSize",
-      "Filesize is too large",
-      (value: any) => value.size <= FILE_SIZE
-    )
-    .test(
-      "fileFormat",
-      "Unsupported Format",
-      (value: any) => { console.log(value);
-       return value && SUPPORTED_FORMATS.includes(value.type)}
-    ),
+    .nullable()
+    .test("fileSize", "Filesize is too large", (value: any) => {
+      if (value == null) return true;
+      if (value != null) return value.size <= FILE_SIZE;
+    })
+    .test("fileFormat", "Unsupported Format", (value: any) => {
+      console.log(value);
+      if (value == null) return true;
+      if (value != null) return value && SUPPORTED_FORMATS.includes(value.type);
+    }),
 });
 
 export const RegistrationFormSchema = yup.object({
@@ -60,7 +59,13 @@ export const AddExpenseFormSchema = yup.object({
     .array()
     .required("reduired")
     .min(1, "at least one member orgroup require"),
-  // expense_file: yup,
+  expense_file: yup
+    .mixed()
+    .nullable()
+    .test("fileSize", "Filesize is too large", (value: any) => {
+      if (value == null) return true;
+      if (value != null) return value.size <= FILE_SIZE;
+    }),
   expense_amount: yup.number().required("reduired"),
   currency_type: yup.string().required("reduired"),
   paid_by: yup.string().required("reduired"),
