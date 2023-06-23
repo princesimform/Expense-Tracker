@@ -81,11 +81,22 @@ function GroupExpense(props: PropType) {
                           <TableCell key={2}>
                             <Box>
                               <Typography fontWeight='bold'>
-                                <span className='text-slate-500'>Paid by </span>
+                                <span
+                                  style={{
+                                    color: "rgb(100 116 139)",
+                                  }}
+                                >
+                                  Paid by{" "}
+                                </span>
                                 {expanse.paid_by}
                               </Typography>
                               <Typography>
-                                <span className='text-slate-500 font-bold'>
+                                <span
+                                  style={{
+                                    fontWeight: 700,
+                                    color: "rgb(100 116 139)",
+                                  }}
+                                >
                                   on{" "}
                                 </span>
                                 {expanse.expense_date.substring(0, 10)}
@@ -94,8 +105,10 @@ function GroupExpense(props: PropType) {
                             </Box>
                           </TableCell>
                           <TableCell key={3}>
-                            <ExpenseWiseSettlement expense={expanse} userData={userData} />
-                            
+                            <ExpenseWiseSettlement
+                              expense={expanse}
+                              userData={userData}
+                            />
                           </TableCell>
                           <TableCell key={4}>
                             <Box>

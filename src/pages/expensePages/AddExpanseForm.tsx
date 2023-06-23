@@ -48,7 +48,7 @@ import { useSnackbar } from "notistack";
 import EditIcon from "@mui/icons-material/Edit";
 import FirebaseFileHandling from "../../libs/services/firebase/fileHandling";
 import AddIcon from "@mui/icons-material/Add";
-
+import Styles from "./../../style/default.module.css"
 type ListOptionType = {
   label: string;
   value: string;
@@ -463,7 +463,7 @@ function AddExpenseForm({
                       <Grid item xs={2} sm={2} lg={2}>
                         <InputLabel
                           htmlFor='bill-image'
-                          className='m-auto flex w-fit text-center'
+                          className={Styles.billImageField}
                           sx={{ mb: 2 }}
                         >
                           <Field

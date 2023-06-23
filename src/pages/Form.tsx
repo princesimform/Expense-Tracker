@@ -5,7 +5,7 @@ import { Language } from "@mui/icons-material";
 import LoginForm from "../components/login/LoginForm";
 import RegisterForm from "../components/registration/RegisterForm";
 import { useNavigate } from "react-router-dom";
-
+import Styles from "./../style/Authform.module.css";
 interface PropType {
   isLogin: boolean;
 }
@@ -23,13 +23,14 @@ function Form({ isLogin }: PropType) {
   };
 
   return (
-    <Container className='m-auto' sx={{ height: "100vh", display: "flex" }}>
-      <Box className='w-[90%] md:h-[90vh] flex m-auto font-poppins tracking-wider font-sans max-w-[1200px] '>
+    <Container
+      className={Styles.formContainer}
+      sx={{ height: "100vh", display: "flex" }}
+    >
+      <Box className={Styles.formBox}>
         <Grid container spacing={2}>
           <Grid
-            className={
-              "hidden md:flex justify-between rounded-l-md tracking-wider bg-primary text-white "
-            }
+            className={Styles.formGrid}
             item
             xs={12}
             md={6}
@@ -38,26 +39,24 @@ function Form({ isLogin }: PropType) {
             }}
             order={{ xs: 2, sm: 1 }}
           >
-            <Box className='flex'>
-              <Box className='m-1 w-3 h-3 bg-red-500 rounded-full  '></Box>
-              <Box className='m-1 w-3 h-3 bg-amber-400 rounded-full '></Box>
-              <Box className='m-1 w-3 h-3 bg-green-600 rounded-full '></Box>
+            <Box className={Styles.dotSpanContainer}>
+              <Box className={`${Styles.dotSpan}  ${Styles.red}`}></Box>
+              <Box className={`${Styles.dotSpan}  ${Styles.amber}`}></Box>
+              <Box className={`${Styles.dotSpan}  ${Styles.green}`}></Box>
             </Box>
-            <Box className='my-auto p-12'>
-              <Box className='m-auto border-2 border-inherit rounded-full inline-block bg-white mb-10'>
-                <img src={Logo} className='w-[7rem] h-[7rem] ' />
+            <Box className={Styles.FormDesignContainer}>
+              <Box className={Styles.FormDesignImgBox}>
+                <img src={Logo} />
               </Box>
-              <Box className='m-auto  '>
-                <h1 className='text-3xl font-bold mb-5 '>Expense Tracker</h1>
-                <h3 className='text-lg'>
-                  Spending and Manage Your Finances Effectively
-                </h3>
+              <Box className={Styles.FormDesignContentBox}>
+                <h1>Expense Tracker</h1>
+                <h3>Spending and Manage Your Finances Effectively</h3>
               </Box>
             </Box>
-            <Box className='mt-[0] mr-[4rem] mb-[4rem] ml-[4rem] p-4'>
+            <Box className={Styles.FormDesignLinkContainer}>
               <Link href='#' underline='none'>
-                <Box className='text-white'>
-                  <span className='px-3'>
+                <Box className={Styles.FormDesignLinkIcon}>
+                  <span>
                     <Language />
                   </span>
                   <span>www.expancetracker.com</span>
@@ -66,7 +65,7 @@ function Form({ isLogin }: PropType) {
             </Box>
           </Grid>
           <Grid
-            className=' md:flex justify-between rounded-r-md tracking-wider bg-white'
+            className={Styles.FormRightContainer}
             item
             xs={12}
             md={6}

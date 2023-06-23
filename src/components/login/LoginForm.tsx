@@ -8,7 +8,8 @@ import { useNavigate } from "react-router-dom";
 import useToggle from "../../customHooks/useToggle";
 import AuthService from "../../libs/services/firebase/auth";
 import { LoginFormSchema } from "../../libs/services/ValidationSchema";
-
+import Styles from "./../../style/Authform.module.css";
+import Link from "@mui/material";
 interface PropType {
   toggleSignUp: Function;
 }
@@ -69,9 +70,9 @@ function LoginForm({ toggleSignUp }: PropType) {
   };
   return (
     <div>
-      <Box className='w-100 sm:mx-0 md:m-auto pr-[1rem] md:mx-[4rem] '>
+      <Box className={Styles.LoginMainContainer}>
         <Box>
-          <p className=' text-3xl mb-5  text-left font-medium'>Sign In</p>
+          <p className={Styles.LoginContainerTitle}>Sign In</p>
         </Box>
         <Formik
           initialValues={formField}
@@ -80,7 +81,7 @@ function LoginForm({ toggleSignUp }: PropType) {
           validateOnMount
         >
           {({ handleSubmit, errors, isValid, touched }) => (
-            <Form onSubmit={handleSubmit} className='mt-12'>
+            <Form onSubmit={handleSubmit} className={Styles.LoginForm}>
               <Field
                 fullWidth
                 id='outlined-basic'
@@ -95,7 +96,7 @@ function LoginForm({ toggleSignUp }: PropType) {
                 error={Boolean(errors.email) && Boolean(touched.email)}
                 helperText={Boolean(touched.email) && errors.email}
               />
-              <Box className='my-5'></Box>
+              <Box className={Styles.LoginFormSpace}></Box>
 
               <Field
                 fullWidth
@@ -126,7 +127,7 @@ function LoginForm({ toggleSignUp }: PropType) {
                 error={Boolean(errors.password) && Boolean(touched.password)}
                 helperText={Boolean(touched.password) && errors.password}
               />
-              <Box className='grid  md:flex md:flex-row-reverse my-5 md:justify-between'>
+              <Box className={Styles.LoginBtn}>
                 <Button
                   type='submit'
                   variant='contained'
@@ -135,14 +136,15 @@ function LoginForm({ toggleSignUp }: PropType) {
                 >
                   {toggles.processing ? "Processing..." : "Sign In"}
                 </Button>
-                <Box className='my-5 md:my-auto '>
+                <Box className={Styles.forgetPasswordBtn}>
                   {/* <Link
-                underline='none'
-                className='text-center md:text-left '
-                sx={{ margin: "auto 0" }}
-              >
-                Forgot Password?
-              </Link> */}
+                    to='/'
+                    underline='none'
+                    className={Styles.forgetPasswordBtnLink}
+                    sx={{ margin: "auto 0" }}
+                  >
+                    Forgot Password?
+                  </Link> */}
                 </Box>
               </Box>
             </Form>
@@ -150,11 +152,8 @@ function LoginForm({ toggleSignUp }: PropType) {
         </Formik>
       </Box>
 
-      <Box
-        onClick={() => toggleSignUp()}
-        className='bg-primary bg-opacity-10 border-primary border-opacity-30 border-2 rounded-md mt-[0] md:mx-[4rem] mr-[1rem] mb-[1rem] md:mb-[4rem] p-4 cursor-pointer text-primary text-sm md:text-base'
-      >
-        Don't Have an Account ?<span className='font-bold'> Sign Up</span>
+      <Box onClick={() => toggleSignUp()} className={Styles.toggleForm}>
+        Don't Have an Account ?<span> Sign Up</span>
       </Box>
     </div>
   );

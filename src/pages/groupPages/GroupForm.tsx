@@ -233,6 +233,12 @@ function GroupForm({ groupData, userData, ModelButtonStyle }: PropsType) {
                 <Form onSubmit={handleSubmit}>
                   <InputLabel
                     htmlFor='group-image'
+                    style={{
+                      margin: "auto",
+                      display: "play",
+                      width: "fit-content",
+                      textAlign: "center",
+                    }}
                     className='m-auto flex w-fit text-center'
                     sx={{ mb: 2 }}
                   >

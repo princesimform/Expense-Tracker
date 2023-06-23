@@ -12,7 +12,13 @@
   -moz-animation: spin 2s linear infinite;
   animation: spin 2s linear infinite;
 }
-
+.billImageField {
+  /* 'm-auto flex w-fit text-center' */
+  margin: auto;
+  display: flex;
+  width: fit-content;
+  text-align: center;
+}
 @-moz-keyframes spin {
   100% {
     -moz-transform: rotate(360deg);

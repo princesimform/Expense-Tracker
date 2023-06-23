@@ -16,6 +16,7 @@ import useToggle from "../../customHooks/useToggle";
 import { Field, Form, Formik } from "formik";
 import { RegistrationFormSchema } from "../../libs/services/ValidationSchema";
 import AddUserImg from "./../../assets/add_user.png";
+import Styles from "./../../style/Authform.module.css";
 
 interface PropType {
   toggleSignUp: Function;
@@ -105,10 +106,10 @@ function RegisterForm({ toggleSignUp }: PropType) {
 
   return (
     <>
-      <Box className='text-left font-bold'></Box>
-      <Box className='w-100 sm:mx-0 mb-5 md:m-auto pr-[1rem] md:mx-[4rem] '>
-        <Box className='flex justify-between flex-row'>
-          <p className='my-auto text-3xl   text-left font-medium '>Sign Up</p>
+      {/* <Box className='text-left font-bold'></Box> */}
+      <Box className={Styles.RegistrationContainerMain}>
+        <Box className={Styles.RegistrationTitleContainer}>
+          <p>Sign Up</p>
         </Box>
         <Formik
           initialValues={formFields}
@@ -120,7 +121,7 @@ function RegisterForm({ toggleSignUp }: PropType) {
             <Form className='mt-12' onSubmit={handleSubmit}>
               <InputLabel
                 htmlFor='profile'
-                className='m-auto flex w-fit text-center'
+                className={Styles.ProfileAvatar}
                 sx={{ mb: 2 }}
               >
                 <Field
@@ -239,7 +240,7 @@ function RegisterForm({ toggleSignUp }: PropType) {
                   Boolean(touched.confirm_password) && errors.confirm_password
                 }
               />
-              <Box className='grid  md:flex md:flex-row-reverse my-5 md:justify-between'>
+              <Box className={Styles.SignUpBtn}>
                 <Button
                   type='submit'
                   variant='contained'
@@ -254,11 +255,8 @@ function RegisterForm({ toggleSignUp }: PropType) {
         </Formik>
       </Box>
 
-      <Box
-        onClick={() => toggleSignUp()}
-        className='bg-primary bg-opacity-10 border-primary border-opacity-30 border-2 rounded-md mt-[0] md:mx-[4rem] mr-[1rem] mb-[1rem] md:mb-[4rem] p-4 cursor-pointer text-primary text-sm md:text-base'
-      >
-        Already have an account <span className='font-bold'> Sign In</span>
+      <Box onClick={() => toggleSignUp()} className={Styles.toggleForm}>
+        Already have an account <span > Sign In</span>
       </Box>
     </>
   );
