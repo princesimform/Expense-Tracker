@@ -27,7 +27,7 @@ import {
 } from "../../redux/expanseSlice";
 import { Rootstate } from "../../redux/store";
 import { GeneralPropType } from "../../routes/AuthRoutes";
-import { StyledTableCell } from "../GroupPages/GroupDetails";
+import { StyledTableCell } from "../groupPages/GroupDetails";
 import AddExpenseForm from "./AddExpanseForm";
 import ExpenseCard from "./ExpenseCard";
 import VisibilityIcon from "@mui/icons-material/Visibility";
@@ -88,6 +88,7 @@ function ExpenseList({ userData }: PropType) {
   return (
     <>
       <Box
+        margin='0px 16px'
         display='flex'
         alignItems='center'
         justifyContent='space-between'

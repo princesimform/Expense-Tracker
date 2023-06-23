@@ -7,7 +7,7 @@ import store from "./redux/store";
 import ErrorBoundary from "./components/ErrorBoundary";
 import Loader from "./components/Loader";
 import "./App.css";
-import PageNotFound from "./pages/PageNotFound";
+import PageNotFound from "./pages/errorPages/PageNotFound";
 const renderLoader = () => <p>Loading</p>;
 
 function App() {

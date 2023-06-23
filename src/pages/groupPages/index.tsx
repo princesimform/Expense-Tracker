@@ -27,6 +27,7 @@ import GroupForm from "./GroupForm";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import GroupCard from "./GroupCard";
 import { GeneralPropType } from "../../routes/AuthRoutes";
+import NoDataFound from "../errorPages/NoDataFound";
 interface PropType extends GeneralPropType {}
 function Groups({ userData }: PropType) {
   const { groupList } = useSelector((state: Rootstate) => state.groupReducer);
@@ -39,12 +40,13 @@ function Groups({ userData }: PropType) {
   return (
     <div>
       <Box
-        display="flex"
-        alignItems="center"
-        justifyContent="space-between"
-        className="groups-page-heading"
+      margin='0px 16px'
+        display='flex'
+        alignItems='center'
+        justifyContent='space-between'
+        className='groups-page-heading'
       >
-        <Typography className="groups-page-title" variant="h4" textAlign="left">
+        <Typography className='groups-page-title' variant='h4' textAlign='left'>
           Your Groups
         </Typography>
         <GroupForm
@@ -58,10 +60,10 @@ function Groups({ userData }: PropType) {
           userData={userData}
         />
       </Box>
-      <Divider className="divider-bottom" />
-      <Container maxWidth="xl">
+      <Divider className='divider-bottom' />
+      <Container maxWidth='xl'>
         <Grid container spacing={3}>
-          {groupList.length >= 0 ? (
+          {groupList.length > 0 ? (
             groupList.map((group: groupDataType) => (
               <>
                 <Grid item xs={12} sm={6} lg={4} key={group.created_at}>
@@ -71,13 +73,8 @@ function Groups({ userData }: PropType) {
               </>
             ))
           ) : (
-            <p>No data avaliable</p>
+            <NoDataFound />
           )}
-
-          <Grid item xs={12} sm={6} lg={4}>
-            {/* <GroupCard /> */}
-          </Grid>
-          <Grid item xs={12} sm={6} lg={4}></Grid>
         </Grid>
       </Container>
     </div>

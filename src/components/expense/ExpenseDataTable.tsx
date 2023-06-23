@@ -10,14 +10,15 @@ import {
   TableHead,
   TablePagination,
   TableRow,
+  Typography,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { StyledTableCell } from "../../pages/GroupPages/GroupDetails";
+import { StyledTableCell } from "../../pages/groupPages/GroupDetails";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useDispatch, useSelector } from "react-redux";
 import { useSnackbar } from "notistack";
 import { Rootstate } from "../../redux/store";
-import AddExpenseForm from "../../pages/expanse/AddExpanseForm";
+import AddExpenseForm from "../../pages/expensePages/AddExpanseForm";
 import { GeneralPropType } from "../../routes/AuthRoutes";
 import {
   deleteExpense,
@@ -27,9 +28,10 @@ import {
 } from "../../redux/expanseSlice";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import { TablePaginationActions } from "../TablePaginationActions";
-import ExpanseDelete from "../../pages/expanse/ExpanseDelete";
+import ExpanseDelete from "../../pages/expensePages/ExpanseDelete";
 import ExpenseDetails from "./ExpenseDetails";
 import { useNavigate } from "react-router-dom";
+import NoDataFound from "../../pages/errorPages/NoDataFound";
 
 interface PropType extends GeneralPropType {}
 function ExpenseDataTable({ userData }: PropType) {
@@ -94,110 +96,116 @@ function ExpenseDataTable({ userData }: PropType) {
 
   return (
     <>
-      <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 500 }} aria-label='custom pagination table'>
-          <TableHead>
-            <TableRow>
-              <StyledTableCell>Title</StyledTableCell>
-              <StyledTableCell>Paid by</StyledTableCell>
-              <StyledTableCell>Amount</StyledTableCell>
-              <StyledTableCell>Owes</StyledTableCell>
-              <StyledTableCell>Actions</StyledTableCell>
-              <StyledTableCell align='right'>Settle Up</StyledTableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {(rowsPerPage > 0
-              ? expenseList.slice(
-                  page * rowsPerPage,
-                  page * rowsPerPage + rowsPerPage
-                )
-              : expenseList
-            ).map((row, index) => (
-              <TableRow key={index}>
-                <TableCell scope='row'>{row.title}</TableCell>
-                <TableCell>{row.paid_by}</TableCell>
-                <TableCell>{row.expense_amount}</TableCell>
-                <TableCell style={{ minWidth: 170 }}>
-                  <AddExpenseForm
-                    ModelButtonStyle={{
-                      borderRadius: "16px",
-                      width: "32px",
-                      margin: "5px 4px",
-                      height: "32px",
-                    }}
-                    FriendsList={[]}
-                    userData={userData}
-                    updateExpanseData={row}
-                  />
-                  <ExpanseDelete expnaseData={row} userData={userData} />
-                  <Button
-                    sx={{
-                      borderRadius: "16px",
-                      width: "32px",
-                      margin: "4px",
-                      minWidth: "16px",
-                      color: "rgba(189,85,189,0.9)",
-                      height: "32px",
-                    }}
-                    variant='outlined'
-                    color='secondary'
-                    size='small'
-                    onClick={() => openModel(row)}
-                  >
-                    <VisibilityIcon />
-                  </Button>
-                </TableCell>
-                <TableCell>{row.expense_amount}</TableCell>
-                <TableCell style={{ minWidth: 150 }} align='right'>
-                  {row.isSettle ? (
-                    <Button
-                      onClick={() => settleExpense(row)}
-                      variant='contained'
-                      color='error'
-                    >
-                      Revert
-                    </Button>
-                  ) : (
-                    <Button
-                      onClick={() => settleExpense(row)}
-                      variant='contained'
-                      color='primary'
-                    >
-                      Settle Up
-                    </Button>
-                  )}
-                </TableCell>
+      {expenseList.length > 0 ? (
+        <TableContainer component={Paper}>
+          <Table sx={{ minWidth: 500 }} aria-label='custom pagination table'>
+            <TableHead>
+              <TableRow>
+                <StyledTableCell>Title</StyledTableCell>
+                <StyledTableCell>Paid by</StyledTableCell>
+                <StyledTableCell>Amount</StyledTableCell>
+                <StyledTableCell>Owes</StyledTableCell>
+                <StyledTableCell>Actions</StyledTableCell>
+                <StyledTableCell align='right'>Settle Up</StyledTableCell>
               </TableRow>
-            ))}
-            {emptyRows > 0 && (
-              <TableRow style={{ height: 53 * emptyRows }}>
-                <TableCell colSpan={6} />
+            </TableHead>
+            <TableBody>
+              {(rowsPerPage > 0
+                ? expenseList.slice(
+                    page * rowsPerPage,
+                    page * rowsPerPage + rowsPerPage
+                  )
+                : expenseList
+              ).map((row, index) => (
+                <TableRow key={index}>
+                  <TableCell scope='row'>{row.title}</TableCell>
+                  <TableCell>{row.paid_by}</TableCell>
+                  <TableCell>{row.expense_amount}</TableCell>
+                  <TableCell style={{ minWidth: 170 }}>
+                    <AddExpenseForm
+                      ModelButtonStyle={{
+                        borderRadius: "16px",
+                        width: "32px",
+                        margin: "5px 4px",
+                        height: "32px",
+                      }}
+                      FriendsList={[]}
+                      userData={userData}
+                      updateExpanseData={row}
+                    />
+                    <ExpanseDelete expnaseData={row} userData={userData} />
+                    <Button
+                      sx={{
+                        borderRadius: "16px",
+                        width: "32px",
+                        margin: "4px",
+                        minWidth: "16px",
+                        color: "rgba(189,85,189,0.9)",
+                        height: "32px",
+                      }}
+                      variant='outlined'
+                      color='secondary'
+                      size='small'
+                      onClick={() => openModel(row)}
+                    >
+                      <VisibilityIcon />
+                    </Button>
+                  </TableCell>
+                  <TableCell>{row.expense_amount}</TableCell>
+                  <TableCell style={{ minWidth: 150 }} align='right'>
+                    {row.isSettle ? (
+                      <Button
+                        onClick={() => settleExpense(row)}
+                        variant='contained'
+                        color='error'
+                      >
+                        Revert
+                      </Button>
+                    ) : (
+                      <Button
+                        onClick={() => settleExpense(row)}
+                        variant='contained'
+                        color='primary'
+                      >
+                        Settle Up
+                      </Button>
+                    )}
+                  </TableCell>
+                </TableRow>
+              ))}
+              {emptyRows > 0 && (
+                <TableRow style={{ height: 53 * emptyRows }}>
+                  <TableCell colSpan={6} />
+                </TableRow>
+              )}
+            </TableBody>
+            <TableFooter>
+              <TableRow>
+                <TablePagination
+                  rowsPerPageOptions={[5, 10, 25, { label: "All", value: -1 }]}
+                  colSpan={6}
+                  count={expenseList.length}
+                  rowsPerPage={rowsPerPage}
+                  page={page}
+                  SelectProps={{
+                    inputProps: {
+                      "aria-label": "rows per page",
+                    },
+                    native: true,
+                  }}
+                  onPageChange={handleChangePage}
+                  onRowsPerPageChange={handleChangeRowsPerPage}
+                  ActionsComponent={TablePaginationActions}
+                />
               </TableRow>
-            )}
-          </TableBody>
-          <TableFooter>
-            <TableRow>
-              <TablePagination
-                rowsPerPageOptions={[5, 10, 25, { label: "All", value: -1 }]}
-                colSpan={6}
-                count={expenseList.length}
-                rowsPerPage={rowsPerPage}
-                page={page}
-                SelectProps={{
-                  inputProps: {
-                    "aria-label": "rows per page",
-                  },
-                  native: true,
-                }}
-                onPageChange={handleChangePage}
-                onRowsPerPageChange={handleChangeRowsPerPage}
-                ActionsComponent={TablePaginationActions}
-              />
-            </TableRow>
-          </TableFooter>
-        </Table>
-      </TableContainer>
+            </TableFooter>
+          </Table>
+        </TableContainer>
+      ) : (
+        <>
+          <NoDataFound />
+        </>
+      )}
       {activeExpense != undefined && (
         <ExpenseDetails
           isOpen={isExpenseOpen}

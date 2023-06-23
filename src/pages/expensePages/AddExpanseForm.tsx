@@ -81,7 +81,7 @@ function AddExpenseForm({
     expense_file_url: "",
     expense_amount: 0,
     paid_by: "",
-    currency_type: "",
+    currency_type: "INR",
     expense_date: today.toISOString(),
     created_at: today.toISOString(),
     isSettle: false,
@@ -406,53 +406,60 @@ function AddExpenseForm({
                     <Box sx={{ margin: "auto", textAlign: "center" }}>
                       <ErrorMessage name='expense_file' component='p' />
                     </Box>
-                    <TextfieldWrapper name='title' label='Title' size='small' />
-                    <Autocomplete
-                      sx={{ mt: 2 }}
-                      isOptionEqualToValue={(
-                        option: ListOptionType,
-                        value: ListOptionType
-                      ) => option.value === value.value}
-                      options={listOptions}
-                      groupBy={(option: ListOptionType) => option.group}
-                      renderGroup={renderGroup}
-                      defaultValue={defaultListOptions}
-                      multiple
-                      id='select-friends'
-                      renderInput={(params) => (
-                        <Field
-                          name='member_list'
-                          as={TextField}
-                          {...params}
-                          variant='standard'
-                          sx={{ mb: 2 }}
-                          label='With You And'
-                          color='primary'
-                          placeholder='Friend of Group'
-                          error={
-                            Boolean(errors.member_list) &&
-                            Boolean(touched.member_list)
+                    <Grid container spacing={1}>
+                      <Grid item xs={12} sm={12} lg={12}>
+                        <TextfieldWrapper
+                          name='title'
+                          label='Title'
+                          size='small'
+                        />
+                      </Grid>
+                      <Grid item xs={12} sm={12} lg={12}>
+                        <Autocomplete
+                          sx={{ mt: 2 }}
+                          isOptionEqualToValue={(
+                            option: ListOptionType,
+                            value: ListOptionType
+                          ) => option.value === value.value}
+                          options={listOptions}
+                          groupBy={(option: ListOptionType) => option.group}
+                          renderGroup={renderGroup}
+                          defaultValue={defaultListOptions}
+                          multiple
+                          id='select-friends'
+                          renderInput={(params) => (
+                            <Field
+                              name='member_list'
+                              as={TextField}
+                              {...params}
+                              variant='standard'
+                              sx={{ mb: 2 }}
+                              label='With You And'
+                              color='primary'
+                              placeholder='Friend of Group'
+                              error={
+                                Boolean(errors.member_list) &&
+                                Boolean(touched.member_list)
+                              }
+                            />
+                          )}
+                          aria-required
+                          onChange={(
+                            e: SyntheticEvent<Element, Event>,
+                            value: ListOptionType[],
+                            reason: AutocompleteChangeReason,
+                            details?: AutocompleteChangeDetails<ListOptionType>
+                          ) =>
+                            onSelectListOptions(
+                              e,
+                              value,
+                              reason,
+                              setFieldValue,
+                              details
+                            )
                           }
                         />
-                      )}
-                      aria-required
-                      onChange={(
-                        e: SyntheticEvent<Element, Event>,
-                        value: ListOptionType[],
-                        reason: AutocompleteChangeReason,
-                        details?: AutocompleteChangeDetails<ListOptionType>
-                      ) =>
-                        onSelectListOptions(
-                          e,
-                          value,
-                          reason,
-                          setFieldValue,
-                          details
-                        )
-                      }
-                    />
-
-                    <Grid container spacing={1}>
+                      </Grid>
                       <Grid item xs={2} sm={2} lg={2}>
                         <InputLabel
                           htmlFor='bill-image'
@@ -497,15 +504,7 @@ function AddExpenseForm({
                           size='small'
                         />
                       </Grid>
-                    </Grid>
-                    <Grid container spacing={1}>
-                      <Grid item xs={2} sm={2} lg={2}>
-                        <SelectWrapper
-                          name='currency_type'
-                          options={currencyOptions}
-                        />
-                      </Grid>
-                      <Grid item xs={10} sm={10} lg={10}>
+                      <Grid item xs={12} sm={12} lg={12} sx={{ mb: 2 }}>
                         <TextfieldWrapper
                           name='expense_amount'
                           label='Amoount'
@@ -513,40 +512,48 @@ function AddExpenseForm({
                           size='small'
                         />
                       </Grid>
+                      <Grid item xs={12} sm={12} lg={12} sx={{ mb: 2 }}>
+                        <LocalizationProvider dateAdapter={AdapterDayjs}>
+                          <DemoContainer components={[]}>
+                            <DatePicker
+                              label='Expanse Date'
+                              defaultValue={dayjs(today)}
+                              slotProps={{
+                                textField: { size: "small", fullWidth: true },
+                              }}
+                              maxDate={dayjs()}
+                              onChange={(date) => {
+                                const newDate = new Date(String(date));
+                                setFieldValue(
+                                  "expense_date",
+                                  newDate.toISOString()
+                                );
+                              }}
+                            />
+                          </DemoContainer>
+                        </LocalizationProvider>
+                      </Grid>
+                      <Grid item xs={12} sm={12} lg={12} sx={{ mb: 2 }}>
+                        <SelectWrapper
+                          name='paid_by'
+                          options={
+                            paidByList != undefined
+                              ? paidByList?.reduce(
+                                  (a, v) => ({ ...a, [v]: v }),
+                                  {}
+                                )
+                              : []
+                          }
+                          defaultValue={updateExpanseData?.paid_by}
+                          lable='Paid By'
+                        />
+                      </Grid>
                     </Grid>
-                    <LocalizationProvider dateAdapter={AdapterDayjs}>
-                      <DemoContainer components={[]}>
-                        <DemoItem label='Expanse Date'>
-                          <DatePicker
-                            defaultValue={dayjs(today)}
-                            slotProps={{ textField: { size: "small" } }}
-                            maxDate={dayjs()}
-                            onChange={(date) => {
-                              const newDate = new Date(String(date));
-                              setFieldValue(
-                                "expense_date",
-                                newDate.toISOString()
-                              );
-                            }}
-                          />
-                        </DemoItem>
-                      </DemoContainer>
-                    </LocalizationProvider>
-
-                    <SelectWrapper
-                      name='paid_by'
-                      options={
-                        paidByList != undefined
-                          ? paidByList?.reduce((a, v) => ({ ...a, [v]: v }), {})
-                          : []
-                      }
-                      defaultValue={updateExpanseData?.paid_by}
-                      lable='Paid By'
-                    />
                     <Box
                       sx={{
                         display: "flex",
                         justifyContent: "space-between",
+                        mt: 2,
                       }}
                     >
                       <Button

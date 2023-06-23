@@ -23,7 +23,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Rootstate } from "../../redux/store";
 import { useParams } from "react-router-dom";
 import Loader from "../Loader";
-import AddExpenseForm from "../../pages/expanse/AddExpanseForm";
+import AddExpenseForm from "../../pages/expensePages/AddExpanseForm";
 import { useSnackbar } from "notistack";
 import ExpenseWiseSettlement from "../settlement/ExpenseWiseSettlement";
 

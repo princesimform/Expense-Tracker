@@ -11,7 +11,7 @@ import {
   Typography,
 } from "@mui/material";
 import React from "react";
-import GroupForm from "../../pages/GroupPages/GroupForm";
+import GroupForm from "../../pages/groupPages/GroupForm";
 import { GeneralPropType } from "../../routes/AuthRoutes";
 interface PropType extends GeneralPropType {
   numberOfGroups: number;

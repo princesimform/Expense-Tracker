@@ -2,7 +2,7 @@ import { ArrowLeft } from "@mui/icons-material";
 import { Button, Container, SvgIcon, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import React from "react";
-import PageNotFoundImg from "./../assets/page_not_found.png";
+import PageNotFoundImg from "./../../assets/page_not_found.png";
 function PageNotFound() {
   return (
     <Box

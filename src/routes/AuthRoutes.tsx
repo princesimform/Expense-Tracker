@@ -4,10 +4,10 @@ import { Route } from "react-router-dom";
 
 const AuthGuards = lazy(() => import("./../guard/AuthGuard"));
 const DashBoard = lazy(() => import("./../pages/DashBoard"));
-const Groups = lazy(() => import("./../pages/GroupPages"));
+const Groups = lazy(() => import("../pages/groupPages"));
 const Profile = lazy(() => import("./../pages/Profile"));
-const GroupDetails = lazy(() => import("../pages/GroupPages/GroupDetails"));
-const ExpenseList = lazy(() => import("../pages/expanse"));
+const GroupDetails = lazy(() => import("../pages/groupPages/GroupDetails"));
+const ExpenseList = lazy(() => import("../pages/expensePages"));
 const ExpenseDetails = lazy(
   () => import("../components/expense/ExpenseDetails")
 );

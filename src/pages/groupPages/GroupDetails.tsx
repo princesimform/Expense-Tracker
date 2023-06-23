@@ -20,7 +20,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { Rootstate } from "../../redux/store";
 import { DeleteData, groupDataType, updateData } from "../../redux/groupSlice";
-import AddExpenseForm from "../expanse/AddExpanseForm";
+import AddExpenseForm from "../expensePages/AddExpanseForm";
 import { GeneralPropType } from "../../routes/AuthRoutes";
 import { expenseDataType } from "../../redux/expanseSlice";
 import Loader from "../../components/Loader";

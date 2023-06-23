@@ -11,8 +11,8 @@ import {
 import { Box } from "@mui/system";
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import GroupCard from "../../pages/GroupPages/GroupCard";
-import GroupForm from "../../pages/GroupPages/GroupForm";
+import GroupCard from "../../pages/groupPages/GroupCard";
+import GroupForm from "../../pages/groupPages/GroupForm";
 import { groupDataType } from "../../redux/groupSlice";
 import { GeneralPropType } from "../../routes/AuthRoutes";
 import KeyboardDoubleArrowRightIcon from "@mui/icons-material/KeyboardDoubleArrowRight";
@@ -25,6 +25,7 @@ function DashboardGroup({ userData, groups }: PropType) {
   return (
     <>
       <Box
+        margin='0px 16px'
         display='flex'
         alignItems='center'
         justifyContent='space-between'
@@ -52,24 +53,30 @@ function DashboardGroup({ userData, groups }: PropType) {
         /> */}
       </Box>
       <Divider className='divider-bottom' />
-      <Container maxWidth='xl'>
-        <Grid container spacing={3}>
-          {groups.length >= 0 ? (
-            groups.map((group: groupDataType, index) => (
-              <>
-                {index < 3 && (
-                  <Grid item xs={12} sm={6} lg={4} key={group.created_at}>
-                    <GroupCard userData={userData} groupItem={group} />
-                  </Grid>
-                )}
-                {/* <p key={group.created_at}>{group.name}</p>{" "} */}
-              </>
-            ))
-          ) : (
-            <p>No data avaliable</p>
-          )}
-        </Grid>
-      </Container>
+      {groups.length > 0 ? (
+        <Container maxWidth='xl'>
+          <Grid container spacing={3}>
+            {groups.length >= 0 ? (
+              groups.map((group: groupDataType, index) => (
+                <>
+                  {index < 3 && (
+                    <Grid item xs={12} sm={6} lg={4} key={group.created_at}>
+                      <GroupCard userData={userData} groupItem={group} />
+                    </Grid>
+                  )}
+                  {/* <p key={group.created_at}>{group.name}</p>{" "} */}
+                </>
+              ))
+            ) : (
+              <p>No data avaliable</p>
+            )}
+          </Grid>
+        </Container>
+      ) : (
+        <>
+          <Typography>No Data Avaliable</Typography>
+        </>
+      )}
     </>
   );
 }

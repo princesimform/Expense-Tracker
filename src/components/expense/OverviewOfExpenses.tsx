@@ -11,8 +11,8 @@ import {
   Typography,
 } from "@mui/material";
 import React from "react";
-import AddExpenseForm from "../../pages/expanse/AddExpanseForm";
-import GroupForm from "../../pages/GroupPages/GroupForm";
+import AddExpenseForm from "../../pages/expensePages/AddExpanseForm";
+import GroupForm from "../../pages/groupPages/GroupForm";
 import { GeneralPropType } from "../../routes/AuthRoutes";
 interface PropType extends GeneralPropType {
   numberOfExpenses: number;
