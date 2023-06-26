@@ -12,13 +12,14 @@ import {
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import {
-  deleteExpense,
   expenseDataType,
   getExpenses,
+  updateExpense,
 } from "../../redux/expanseSlice";
 import { useSnackbar } from "notistack";
 import { GeneralPropType } from "../../routes/AuthRoutes";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { GetTimestemp } from "../../libs/services/utills";
 
 interface PropType extends GeneralPropType {
   expnaseData: expenseDataType;
@@ -29,15 +30,17 @@ function ExpanseDelete({ expnaseData, userData }: PropType) {
   const dispatch = useDispatch();
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const deleteExpanse = async (data: expenseDataType) => {
+    const RequestData: expenseDataType = JSON.parse(JSON.stringify(data));
+    RequestData.deleted_at = GetTimestemp();
     try {
-      const response = await dispatch(deleteExpense(data));
+      const response = await dispatch(updateExpense(RequestData));
       if (response.payload.docData.status) {
         enqueueSnackbar(`Expense Deleted successfully `, {
           variant: "success",
           autoHideDuration: 3000,
         });
         await dispatch(getExpenses(userData?.email));
-        
+
         setOpenDialog(false);
       }
     } catch (error) {

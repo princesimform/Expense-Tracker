@@ -21,7 +21,6 @@ import { Rootstate } from "../../redux/store";
 import AddExpenseForm from "../../pages/expensePages/AddExpanseForm";
 import { GeneralPropType } from "../../routes/AuthRoutes";
 import {
-  deleteExpense,
   expenseDataType,
   getExpenses,
   updateExpense,

@@ -21,9 +21,9 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { TablePaginationActions } from "../../components/TablePaginationActions";
 import {
-  deleteExpense,
   expenseDataType,
   getExpenses,
+  updateExpense,
 } from "../../redux/expanseSlice";
 import { Rootstate } from "../../redux/store";
 import { GeneralPropType } from "../../routes/AuthRoutes";
@@ -34,6 +34,7 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useSnackbar } from "notistack";
 import ExpenseDataTable from "../../components/expense/ExpenseDataTable";
+import { GetTimestemp } from "../../libs/services/utills";
 interface PropType extends GeneralPropType {}
 
 interface DataTableProps {
@@ -67,8 +68,13 @@ function ExpenseList({ userData }: PropType) {
     setPage(0);
   };
   const deleteExpanse = async (id: number) => {
+    const RequestData: expenseDataType = JSON.parse(
+      JSON.stringify(expenseList[id])
+    );
+    RequestData.deleted_at = GetTimestemp();
+
     try {
-      const response = await dispatch(deleteExpense(expenseList[id]));
+      const response = await dispatch(updateExpense(RequestData));
       if (response.payload.docData.status) {
         enqueueSnackbar(`Expense Deleted successfully `, {
           variant: "success",

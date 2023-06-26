@@ -40,16 +40,6 @@ export const updateExpense: any = createAsyncThunk(
   }
 );
 
-export const deleteExpense: any = createAsyncThunk(
-  "firestore/deleteExpenses",
-  async (data) => {
-    const docData = await ExpenseFirestoreService.deleteExpenseToFirestore(
-      data,
-      "expenses"
-    );
-    return { docData };
-  }
-);
 
 export interface expenseDataType {
   id: number;
@@ -61,11 +51,12 @@ export interface expenseDataType {
   paid_by: string;
   currency_type: string;
   expense_date: string;
-  created_at: string;
   isSettle: boolean;
   settleBy: string;
   group_list: string[];
   expense_file: File | null;
+  created_at: string;
+  deleted_at: string;
 }
 
 export interface expenseStateType {
@@ -86,12 +77,6 @@ export const expenseSlice = createSlice({
       }
     });
     builder.addCase(updateExpense.fulfilled, (state, action) => {
-      const { docData } = action.payload;
-      if (docData.status) {
-        console.log(docData);
-      }
-    });
-    builder.addCase(deleteExpense.fulfilled, (state, action) => {
       const { docData } = action.payload;
       if (docData.status) {
         console.log(docData);

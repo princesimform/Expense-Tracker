@@ -48,7 +48,7 @@ import { useSnackbar } from "notistack";
 import EditIcon from "@mui/icons-material/Edit";
 import FirebaseFileHandling from "../../libs/services/firebase/fileHandling";
 import AddIcon from "@mui/icons-material/Add";
-import Styles from "./../../style/default.module.css"
+import Styles from "./../../style/default.module.css";
 type ListOptionType = {
   label: string;
   value: string;
@@ -88,6 +88,7 @@ function AddExpenseForm({
     settleBy: "",
     expense_file: null,
     group_list: [],
+    deleted_at: "",
   });
   const [toggles, toggle] = useToggle({
     isModleOpen: false,

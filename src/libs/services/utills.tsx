@@ -1,6 +1,6 @@
 import FirebaseFileHandling from "./firebase/fileHandling";
 
-export const createdAtTime = () => {
+export const GetTimestemp = () => {
   var today = new Date();
   return today.toISOString();
 };

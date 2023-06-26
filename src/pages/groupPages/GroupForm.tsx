@@ -29,7 +29,10 @@ import useToggle from "../../customHooks/useToggle";
 import { GeneralPropType } from "../../routes/AuthRoutes";
 import EditIcon from "@mui/icons-material/Edit";
 import FirebaseFileHandling from "../../libs/services/firebase/fileHandling";
-import { createdAtTime, setFileinFilebase } from "../../libs/services/utills";
+import {
+  GetTimestemp,
+  setFileinFilebase,
+} from "../../libs/services/utills";
 import { AppDispatch } from "../../redux/store";
 import { string } from "yup";
 const style = {
@@ -111,7 +114,8 @@ function GroupForm({ groupData, userData, ModelButtonStyle }: PropsType) {
         group_image: "",
         admin_user_id: userData?.uid,
         admin_user_name: userData?.displayName,
-        created_at: createdAtTime(),
+        created_at: GetTimestemp(),
+        deleted_at: "",
         member_list: [`${userData?.email}`],
       };
       if (values.group_image != null) {

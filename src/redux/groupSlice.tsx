@@ -16,17 +16,17 @@ export const setData = createAsyncThunk(
 
 export const updateData = createAsyncThunk(
   "firestore/updateData",
-  async (data : groupDataType) => {
+  async (data: groupDataType) => {
     return await GroupFirestoreService.updateGroup(data);
   }
 );
 
-export const DeleteData = createAsyncThunk(
-  "firestore/deleteData",
-  async (data: groupDataType) => {
-    return await GroupFirestoreService.deleteGroup(data);
-  }
-);
+// export const DeleteData = createAsyncThunk(
+//   "firestore/deleteData",
+//   async (data: groupDataType) => {
+//     return await GroupFirestoreService.deleteGroup(data);
+//   }
+// );
 
 export const getGroups = createAsyncThunk(
   "firestore/getData",
@@ -39,10 +39,11 @@ export interface groupDataType {
   id: string;
   name: string;
   group_image: string;
-  created_at: string;
   admin_user_id: string;
   admin_user_name: string | null;
   member_list: string[] | [];
+  created_at: string;
+  deleted_at: string;
 }
 export interface groupStateType {
   groupList: groupDataType[];
@@ -68,10 +69,6 @@ export const groupSlice = createSlice({
       }
     });
     builder.addCase(updateData.fulfilled, (state, action) => {
-      console.log(action.payload);
-      // state.groupList = groupList;
-    });
-    builder.addCase(DeleteData.fulfilled, (state, action) => {
       console.log(action.payload);
       // state.groupList = groupList;
     });

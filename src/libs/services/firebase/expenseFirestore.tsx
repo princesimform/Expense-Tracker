@@ -100,30 +100,6 @@ ExpenseFirestoreService!.updateExpenseToFirestore = async (
   });
 };
 
-ExpenseFirestoreService!.deleteExpenseToFirestore = async (
-  docData: expenseDataType,
-  collectionName: string
-) => {
-  const storage = getStorage();
-
-  return new Promise((resolve, reject) => {
-    const fileRef = ref(storage, docData.expense_file_url);
-    const docRef = doc(firestore, collectionName, String(docData.id));
-    if (docData.expense_file_url != "") {
-      const res = FirebaseFileHandling.removeFile(docData.expense_file_url);
-      console.log(res);
-    }
-    deleteDoc(docRef)
-      .then(() => {
-        resolve({ status: true, message: "Deleted Successfully" });
-      })
-      .catch((error) => {
-        console.log(error);
-        resolve({ status: true, message: "Something Went Wrong" });
-      });
-  });
-};
-
 ExpenseFirestoreService!.getExpensesFromFirestore = async (
   email: string,
   collectionName: string
@@ -133,6 +109,7 @@ ExpenseFirestoreService!.getExpensesFromFirestore = async (
 
     const getExpenseQuery = query(
       collection(firestore, collectionName),
+      where("deleted_at", "==", ""),
       where("member_list", "array-contains", email)
     );
 
@@ -157,6 +134,7 @@ ExpenseFirestoreService!.getExpensesFromFirestore = async (
             expense_file: ExpensesData.expense_file,
             group_list: ExpensesData.group_list,
             settleBy: ExpensesData.settleBy,
+            deleted_at: ExpensesData.deleted_at,
           };
 
           data.push(ExpenseData);
@@ -168,4 +146,29 @@ ExpenseFirestoreService!.getExpensesFromFirestore = async (
       });
   });
 };
+
+// ExpenseFirestoreService!.deleteExpenseToFirestore = async (
+//   docData: expenseDataType,
+//   collectionName: string
+// ) => {
+//   const storage = getStorage();
+
+//   return new Promise((resolve, reject) => {
+//     const fileRef = ref(storage, docData.expense_file_url);
+//     const docRef = doc(firestore, collectionName, String(docData.id));
+//     if (docData.expense_file_url != "") {
+//       const res = FirebaseFileHandling.removeFile(docData.expense_file_url);
+//       console.log(res);
+//     }
+//     deleteDoc(docRef)
+//       .then(() => {
+//         resolve({ status: true, message: "Deleted Successfully" });
+//       })
+//       .catch((error) => {
+//         console.log(error);
+//         resolve({ status: true, message: "Something Went Wrong" });
+//       });
+//   });
+// };
+
 export default ExpenseFirestoreService;
