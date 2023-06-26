@@ -25,5 +25,4 @@ export const items: itemsType[] = [
     path: "/expense",
     icon: <ShoppingCartCheckoutIcon />,
   },
-  
 ];

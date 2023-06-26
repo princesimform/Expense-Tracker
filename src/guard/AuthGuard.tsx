@@ -90,7 +90,9 @@ function AuthGuards({ component }: PropType) {
     </React.Fragment>
   ) : (
     <React.Fragment>
-      <Loader />
+      <Box sx={{ height: "100vh", margin: "auto", display: "flex" }}>
+        <Loader />
+      </Box>
     </React.Fragment>
   );
 }
