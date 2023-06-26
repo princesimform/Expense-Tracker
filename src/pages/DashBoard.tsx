@@ -1,7 +1,6 @@
-import { Box, Container, Divider, Grid } from "@mui/material";
 import React, { useState } from "react";
+import {  Container, Divider, Grid } from "@mui/material";
 import OverviewOfGroups from "../components/group/OverviewOfGroups";
-import Groups from "./groupPages";
 import { GeneralPropType } from "../routes/AuthRoutes";
 import OverviewOfExpenses from "../components/expense/OverviewOfExpenses";
 import { useSelector } from "react-redux";

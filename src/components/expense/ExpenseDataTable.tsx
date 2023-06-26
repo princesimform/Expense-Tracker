@@ -1,4 +1,3 @@
-import { Tab } from "@mui/base";
 import {
   Button,
   Paper,
@@ -10,11 +9,9 @@ import {
   TableHead,
   TablePagination,
   TableRow,
-  Typography,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { StyledTableCell } from "../../pages/groupPages/GroupDetails";
-import DeleteIcon from "@mui/icons-material/Delete";
 import { useDispatch, useSelector } from "react-redux";
 import { useSnackbar } from "notistack";
 import { Rootstate } from "../../redux/store";
@@ -29,7 +26,6 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import { TablePaginationActions } from "../TablePaginationActions";
 import ExpanseDelete from "../../pages/expensePages/ExpanseDelete";
 import ExpenseDetails from "./ExpenseDetails";
-import { useNavigate } from "react-router-dom";
 import NoDataFound from "../../pages/errorPages/NoDataFound";
 
 interface PropType extends GeneralPropType {}
@@ -38,9 +34,7 @@ function ExpenseDataTable({ userData }: PropType) {
     (state: Rootstate) => state.expenseReducer
   );
   const [activeExpense, setActiveExpense] = useState<expenseDataType>();
-  const [expenseListData, setExpenseListData] = useState(expenseList);
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
@@ -48,9 +42,6 @@ function ExpenseDataTable({ userData }: PropType) {
 
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - expenseList.length) : 0;
-  useEffect(() => {
-    console.log(expenseList);
-  }, []);
   const handleChangePage = (
     event: React.MouseEvent<HTMLButtonElement> | null,
     newPage: number
@@ -68,29 +59,6 @@ function ExpenseDataTable({ userData }: PropType) {
   const openModel = (expense: expenseDataType) => {
     setActiveExpense(expense);
     setIsExpenseOpen(true);
-  };
-
-  const settleExpense = async (expenseData: expenseDataType) => {
-    const requestData = JSON.parse(JSON.stringify(expenseData));
-    requestData.isSettle = !requestData.isSettle;
-    requestData.settleBy = userData?.email;
-    try {
-      const response = await dispatch(updateExpense(requestData));
-
-      if (response.payload.docData.status) {
-        enqueueSnackbar(`Expense Update successfully `, {
-          variant: "success",
-          autoHideDuration: 3000,
-        });
-        await dispatch(getExpenses(userData?.email));
-      }
-    } catch (error) {
-      console.log(error);
-      enqueueSnackbar(`Something went wrong`, {
-        variant: "error",
-        autoHideDuration: 3000,
-      });
-    }
   };
 
   return (

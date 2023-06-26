@@ -1,16 +1,10 @@
-import Add from "@mui/icons-material/Add";
+import React from "react";
 import {
-  Avatar,
-  Box,
   Card,
   CardContent,
-  Container,
-  Grid,
   Stack,
-  SvgIcon,
   Typography,
 } from "@mui/material";
-import React from "react";
 import GroupForm from "../../pages/groupPages/GroupForm";
 import { GeneralPropType } from "../../routes/AuthRoutes";
 interface PropType extends GeneralPropType {
@@ -54,17 +48,6 @@ function OverviewOfGroups({ userData, sx, numberOfGroups }: PropType) {
               }}
               userData={userData}
             />
-            {/* <Avatar
-              sx={{
-                // backgroundColor: "error.main",
-                height: 56,
-                width: 56,
-              }}
-            >
-              <SvgIcon>
-                <Add />
-              </SvgIcon>
-            </Avatar> */}
           </Stack>
         </CardContent>
       </Card>

@@ -1,8 +1,7 @@
 import React, { lazy, ReactNode } from "react";
 import { Route } from "react-router-dom";
-
 const UnAuthGuard = lazy(() => import("./../guard/UnAuthGuard"));
-const HomePage = lazy(() => import("./../pages/HomePage"));
+const LandingPage = lazy(() => import("../pages/LandingPage"));
 const Form = lazy(() => import("./../pages/Form"));
 
 const UnAuthRoutes: ReactNode[] = [
@@ -19,7 +18,7 @@ const UnAuthRoutes: ReactNode[] = [
   <Route
     key='Home'
     path='/'
-    element={<UnAuthGuard component={<HomePage />} />}
+    element={<UnAuthGuard component={<LandingPage />} />}
   />,
 ];
 

@@ -55,7 +55,6 @@ function AuthGuards({ component }: PropType) {
         const user: User = await AuthService.getProfile(true);
         const oldtoken = localStorage.getItem("isExpire");
         const newToken = await user.getIdToken();
-        // localStorage.setItem("isExpire", await user.getIdToken());
         if (!user) {
           navigate(`/login`);
         } else {

@@ -1,30 +1,18 @@
 import { Add } from "@mui/icons-material";
 import {
-  alpha,
-  Avatar,
-  AvatarGroup,
   Box,
-  Button,
-  Card,
-  CardActions,
-  CardContent,
   Container,
   Divider,
   Grid,
-  Stack,
-  SvgIcon,
-  TextField,
   Typography,
 } from "@mui/material";
 import UserImg from "./../../assets/avatar.jpg";
 
-import { AsyncThunkAction, Dispatch } from "@reduxjs/toolkit";
-import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import React, {  useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getGroups, groupDataType } from "../../redux/groupSlice";
 import { AppDispatch, Rootstate } from "../../redux/store";
 import GroupForm from "./GroupForm";
-import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import GroupCard from "./GroupCard";
 import { GeneralPropType } from "../../routes/AuthRoutes";
 import NoDataFound from "../errorPages/NoDataFound";
@@ -55,7 +43,6 @@ function Groups({ userData }: PropType) {
             width: "32px",
             margin: "0px 10px",
             height: "32px",
-            // value: "Create",
           }}
           userData={userData}
         />
@@ -69,7 +56,6 @@ function Groups({ userData }: PropType) {
                 <Grid item xs={12} sm={6} lg={4} key={group.created_at}>
                   <GroupCard userData={userData} groupItem={group} />
                 </Grid>
-                {/* <p key={group.created_at}>{group.name}</p>{" "} */}
               </>
             ))
           ) : (

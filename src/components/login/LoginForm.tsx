@@ -1,9 +1,9 @@
+import React, { FormEvent } from "react";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { Button, IconButton, InputAdornment, TextField } from "@mui/material";
 import { Box } from "@mui/system";
 import { Field, Form, Formik } from "formik";
 import { useSnackbar } from "notistack";
-import React, { FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import useToggle from "../../customHooks/useToggle";
 import AuthService from "../../libs/services/firebase/auth";

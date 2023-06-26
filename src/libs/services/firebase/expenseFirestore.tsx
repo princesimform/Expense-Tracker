@@ -148,28 +148,5 @@ ExpenseFirestoreService!.getExpensesFromFirestore = async (
   });
 };
 
-// ExpenseFirestoreService!.deleteExpenseToFirestore = async (
-//   docData: expenseDataType,
-//   collectionName: string
-// ) => {
-//   const storage = getStorage();
-
-//   return new Promise((resolve, reject) => {
-//     const fileRef = ref(storage, docData.expense_file_url);
-//     const docRef = doc(firestore, collectionName, String(docData.id));
-//     if (docData.expense_file_url != "") {
-//       const res = FirebaseFileHandling.removeFile(docData.expense_file_url);
-//       console.log(res);
-//     }
-//     deleteDoc(docRef)
-//       .then(() => {
-//         resolve({ status: true, message: "Deleted Successfully" });
-//       })
-//       .catch((error) => {
-//         console.log(error);
-//         resolve({ status: true, message: "Something Went Wrong" });
-//       });
-//   });
-// };
 
 export default ExpenseFirestoreService;

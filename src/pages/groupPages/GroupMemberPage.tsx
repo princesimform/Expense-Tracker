@@ -19,7 +19,6 @@ import { groupDataType, updateData, getGroups } from "../../redux/groupSlice";
 import { GeneralPropType } from "../../routes/AuthRoutes";
 import { StyledTableCell, StyledTableRow } from "./GroupDetails";
 import * as yup from "yup";
-import { DeleteForeverOutlined, Edit, ForkRight } from "@mui/icons-material";
 import { useSnackbar } from "notistack";
 import { AppDispatch } from "../../redux/store";
 import useToggle from "../../customHooks/useToggle";

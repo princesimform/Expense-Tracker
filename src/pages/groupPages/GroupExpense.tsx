@@ -20,7 +20,6 @@ import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import { GeneralPropType } from "../../routes/AuthRoutes";
 import Loader from "../../components/Loader";
 import ExpenseDetails from "../../components/expense/ExpenseDetails";
-import useToggle from "../../customHooks/useToggle";
 import ExpenseWiseSettlement from "../../components/settlement/ExpenseWiseSettlement";
 
 function GroupExpense(props: PropType) {
@@ -59,12 +58,7 @@ function GroupExpense(props: PropType) {
                         >
                           <TableCell
                             key={1}
-                            // align={column.align}
                           >
-                            {/* {column.format &&
-                                      typeof value === "number"
-                                        ? column.format(value)
-                                        : value} */}
                             <Box>
                               <Typography
                                 variant='h6'
@@ -100,7 +94,6 @@ function GroupExpense(props: PropType) {
                                   on{" "}
                                 </span>
                                 {expanse.expense_date.substring(0, 10)}
-                                {/* Sun, 19 Jun 2022 */}
                               </Typography>
                             </Box>
                           </TableCell>
@@ -128,9 +121,6 @@ function GroupExpense(props: PropType) {
                             className='group-expanse-name'
                           >
                             No Expense Remain
-                            {/* <Typography className='group-expanse-amount'>
-                                    $999.00
-                                  </Typography> */}
                           </Typography>
                         </Box>
                       </TableCell>

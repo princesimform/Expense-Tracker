@@ -1,23 +1,9 @@
-import {
-  Button,
-  Card,
-  CardContent,
-  Container,
-  Divider,
-  Grid,
-  SvgIcon,
-  Typography,
-} from "@mui/material";
+import { Button, Container, Divider, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import GroupCard from "../../pages/groupPages/GroupCard";
-import GroupForm from "../../pages/groupPages/GroupForm";
-import { groupDataType } from "../../redux/groupSlice";
 import { GeneralPropType } from "../../routes/AuthRoutes";
-import KeyboardDoubleArrowRightIcon from "@mui/icons-material/KeyboardDoubleArrowRight";
 import { expenseDataType } from "../../redux/expanseSlice";
-import ExpenseList from "../../pages/expensePages";
 import ExpenseDataTable from "../expense/ExpenseDataTable";
 
 interface PropType extends GeneralPropType {

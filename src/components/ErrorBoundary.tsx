@@ -1,22 +1,6 @@
-import { ArrowLeft } from "@mui/icons-material";
-import { Box, Button, Container, SvgIcon, Typography } from "@mui/material";
-import React, {
-  Component,
-  ErrorInfo,
-  ReactComponentElement,
-  ReactNode,
-} from "react";
-import {
-  BrowserRouter as Router,
-  Route,
-  Link,
-  useNavigate,
-  NavigateFunction,
-  redirect,
-} from "react-router-dom";
+import React, { Component, ErrorInfo, ReactNode } from "react";
+import { Box } from "@mui/material";
 import SomethingWentWrong from "./SomethingWentWrong";
-
-import { withRouter } from "./withRouter";
 
 interface ErrorBoundaryProps {
   children: ReactNode;
@@ -52,7 +36,7 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
               minHeight: "93vh",
             }}
           >
-          <SomethingWentWrong />
+            <SomethingWentWrong />
           </Box>
         </>
       );

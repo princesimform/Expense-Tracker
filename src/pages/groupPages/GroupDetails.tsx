@@ -10,16 +10,15 @@ import {
   tableCellClasses,
   TableRow,
   Tabs,
-  TextField,
   Typography,
 } from "@mui/material";
-import React, { FormEvent, useEffect, useState } from "react";
+import React, {  useEffect, useState } from "react";
 import GroupExpense from "./GroupExpense";
 import GroupForm from "./GroupForm";
-import { useNavigate, useParams } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import {  useParams } from "react-router-dom";
+import {  useSelector } from "react-redux";
 import { Rootstate } from "../../redux/store";
-import { groupDataType, updateData } from "../../redux/groupSlice";
+import { groupDataType } from "../../redux/groupSlice";
 import AddExpenseForm from "../expensePages/AddExpanseForm";
 import { GeneralPropType } from "../../routes/AuthRoutes";
 import { expenseDataType } from "../../redux/expanseSlice";
@@ -27,11 +26,7 @@ import Loader from "../../components/Loader";
 import { useSnackbar } from "notistack";
 import GroupDeleteForm from "./GroupDeleteForm";
 import GroupMemberPage from "./GroupMemberPage";
-interface TabPanelProps {
-  children?: React.ReactNode;
-  index: number;
-  value: number;
-}
+
 
 function a11yProps(index: number) {
   return {
@@ -62,12 +57,8 @@ export const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 interface PropType extends GeneralPropType {}
 function GroupDetails({ userData }: PropType) {
-  // throw new Error("Stop here");
-  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [tabNumber, setTabNumber] = useState(0);
   const { id } = useParams();
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [groupMembers, setGroupMember] = useState<string[]>([]);
   const [activeGroupExpense, setActiveGroupExpenseList] =
     useState<expenseDataType[]>();
@@ -108,17 +99,6 @@ function GroupDetails({ userData }: PropType) {
     setTabNumber(newValue);
   };
 
-  const handleChangePage = (event: unknown, newPage: number) => {
-    setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setRowsPerPage(+event.target.value);
-    setPage(0);
-  };
-
   if (groupData != undefined)
     return (
       <>
@@ -146,7 +126,6 @@ function GroupDetails({ userData }: PropType) {
                   width: "32px",
                   margin: "5px 10px",
                   height: "32px",
-                  // value : "Update"
                 }}
                 groupData={groupData}
                 userData={userData}

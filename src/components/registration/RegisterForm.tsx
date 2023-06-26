@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FormEvent, useState } from "react";
+import React, { ChangeEvent, useState } from "react";
 import {
   Avatar,
   Box,
@@ -106,7 +106,6 @@ function RegisterForm({ toggleSignUp }: PropType) {
 
   return (
     <>
-      {/* <Box className='text-left font-bold'></Box> */}
       <Box className={Styles.RegistrationContainerMain}>
         <Box className={Styles.RegistrationTitleContainer}>
           <p>Sign Up</p>

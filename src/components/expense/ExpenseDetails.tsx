@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import {
   Box,
   Button,
@@ -6,8 +6,6 @@ import {
   Modal,
   Typography,
   Backdrop,
-  Stack,
-  Avatar,
   Divider,
   Grid,
   FormControl,
@@ -16,22 +14,17 @@ import {
   FormControlLabel,
   Radio,
 } from "@mui/material";
-import VisibilityIcon from "@mui/icons-material/Visibility";
-import useToggle from "../../customHooks/useToggle";
 import { GeneralPropType } from "../../routes/AuthRoutes";
 import {
   expenseDataType,
   getExpenses,
   updateExpense,
 } from "../../redux/expanseSlice";
-import { useDispatch, useSelector } from "react-redux";
-import { Rootstate } from "../../redux/store";
-import { useParams } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import Loader from "../Loader";
-import AddExpenseForm from "../../pages/expensePages/AddExpanseForm";
 import { useSnackbar } from "notistack";
 import ExpenseWiseSettlement from "../settlement/ExpenseWiseSettlement";
-import { ErrorMessage, Field, Form, Formik } from "formik";
+import { ErrorMessage, Form, Formik } from "formik";
 import { SettleExpenseFormSchema } from "../../libs/services/ValidationSchema";
 
 interface PropType extends GeneralPropType {
@@ -65,11 +58,6 @@ function ExpenseDetails({
     // setSettleType((event.target as HTMLInputElement).value);
   };
 
-  // function settleExpenseform() {
-  //   return (
-
-  //   );
-  // }
   const handleSubmit = async (values: { settle_expense_type: string }) => {
     settleExpense(values.settle_expense_type);
   };

@@ -49,24 +49,6 @@ GroupFirestoreService.updateGroup = async (data: any) => {
   });
 };
 
-// GroupFirestoreService.deleteGroup = async (data: groupDataType) => {
-//   return new Promise((resolve, reject) => {
-//     deleteDoc(doc(firestore, COLLECTION_NAME, data.id))
-//       .then(() => {
-//         resolve({
-//           status: true,
-//           message: "Group Deleted Successfully",
-//         });
-//       })
-//       .catch((error) => {
-//         console.log(error);
-//         resolve({
-//           status: true,
-//           message: "Something Went Wrong",
-//         });
-//       });
-//   });
-// };
 
 GroupFirestoreService.getGroups = async (email: string) => {
   return new Promise((resolve, reject) => {

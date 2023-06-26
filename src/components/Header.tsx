@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "./../style/header.module.css";
 import Logo from "./../assets/logo.png";
-import { Avatar, Button, Divider, Typography } from "@mui/material";
+import {  Button, Divider, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 interface PropType {
   isLoggedIn: boolean;

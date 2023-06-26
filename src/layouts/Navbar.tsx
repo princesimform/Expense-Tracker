@@ -145,8 +145,10 @@ function Navbar({ window, onNavOpen }: PropsTypes) {
             }}
           >
             {!lgUp && (
-              <NavLink to='/dashboard' >
-                <Typography variant='h6' style={{ color: "white" }}>Expanse Tracker</Typography>
+              <NavLink to='/dashboard'>
+                <Typography variant='h6' style={{ color: "white" }}>
+                  Expanse Tracker
+                </Typography>
               </NavLink>
             )}
           </Box>

@@ -1,7 +1,6 @@
 import React from "react";
-import { Box, Button, Container, SvgIcon, Typography } from "@mui/material";
+import { Box, Container, Typography } from "@mui/material";
 import NoDataImg from "./../../assets/page_not_found.png";
-import { ArrowLeft } from "@mui/icons-material";
 
 function NoDataFound() {
   return (

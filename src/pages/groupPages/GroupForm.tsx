@@ -24,17 +24,12 @@ import { ErrorMessage, Field, Form, Formik } from "formik";
 import { AddGroupSchema } from "../../libs/services/ValidationSchema";
 import { useSnackbar } from "notistack";
 import { useNavigate } from "react-router-dom";
-import AuthService from "../../libs/services/firebase/auth";
 import useToggle from "../../customHooks/useToggle";
 import { GeneralPropType } from "../../routes/AuthRoutes";
 import EditIcon from "@mui/icons-material/Edit";
-import FirebaseFileHandling from "../../libs/services/firebase/fileHandling";
-import {
-  GetTimestemp,
-  setFileinFilebase,
-} from "../../libs/services/utills";
+import { GetTimestemp, setFileinFilebase } from "../../libs/services/utills";
 import { AppDispatch } from "../../redux/store";
-import { string } from "yup";
+
 const style = {
   position: "absolute" as "absolute",
   top: "50%",
@@ -61,7 +56,6 @@ function GroupForm({ groupData, userData, ModelButtonStyle }: PropsType) {
   const navigate = useNavigate();
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const reader = new FileReader();
-  const date = new Date();
   const [toggles, toggle] = useToggle({
     isModleOpen: false,
     processing: false,
@@ -80,7 +74,6 @@ function GroupForm({ groupData, userData, ModelButtonStyle }: PropsType) {
         group_image: null,
       }),
         setgroupProfileimage(groupData.group_image);
-      // initalValues.group_image = groupData.group_image;
     }
   }, []);
   const handleFileInputChange = async (
@@ -207,7 +200,6 @@ function GroupForm({ groupData, userData, ModelButtonStyle }: PropsType) {
         aria-labelledby='transition-modal-title'
         aria-describedby='transition-modal-description'
         open={toggles.isModleOpen}
-        // onClose={handleModleToggle}
         closeAfterTransition
         slots={{ backdrop: Backdrop }}
         slotProps={{
@@ -277,7 +269,7 @@ function GroupForm({ groupData, userData, ModelButtonStyle }: PropsType) {
                         height: 100,
                         borderWidth: 2,
                         borderColor: "primary",
-                        margin: "auto",
+                        margin: "0 auto 2rem auto ",
                       }}
                     />
                     <ErrorMessage name='group_image' component='p' />

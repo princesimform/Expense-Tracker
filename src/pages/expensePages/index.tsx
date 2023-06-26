@@ -1,25 +1,6 @@
-import {
-  Avatar,
-  Box,
-  Button,
-  Container,
-  Divider,
-  Grid,
-  Paper,
-  Stack,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableFooter,
-  TableHead,
-  TablePagination,
-  TableRow,
-  Typography,
-} from "@mui/material";
-import React, { useState } from "react";
+import React from "react";
+import { Box, Container, Divider, Grid, Typography } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import { TablePaginationActions } from "../../components/TablePaginationActions";
 import {
   expenseDataType,
   getExpenses,
@@ -27,20 +8,11 @@ import {
 } from "../../redux/expanseSlice";
 import { Rootstate } from "../../redux/store";
 import { GeneralPropType } from "../../routes/AuthRoutes";
-import { StyledTableCell } from "../groupPages/GroupDetails";
 import AddExpenseForm from "./AddExpanseForm";
-import ExpenseCard from "./ExpenseCard";
-import VisibilityIcon from "@mui/icons-material/Visibility";
-import DeleteIcon from "@mui/icons-material/Delete";
 import { useSnackbar } from "notistack";
 import ExpenseDataTable from "../../components/expense/ExpenseDataTable";
 import { GetTimestemp } from "../../libs/services/utills";
 interface PropType extends GeneralPropType {}
-
-interface DataTableProps {
-  data: expenseDataType[];
-  rowsPerPage: number;
-}
 
 function ExpenseList({ userData }: PropType) {
   const dispatch = useDispatch();
@@ -48,48 +20,6 @@ function ExpenseList({ userData }: PropType) {
   const { expenseList } = useSelector(
     (state: Rootstate) => state.expenseReducer
   );
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
-
-  const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - expenseList.length) : 0;
-
-  const handleChangePage = (
-    event: React.MouseEvent<HTMLButtonElement> | null,
-    newPage: number
-  ) => {
-    setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
-  const deleteExpanse = async (id: number) => {
-    const RequestData: expenseDataType = JSON.parse(
-      JSON.stringify(expenseList[id])
-    );
-    RequestData.deleted_at = GetTimestemp();
-
-    try {
-      const response = await dispatch(updateExpense(RequestData));
-      if (response.payload.docData.status) {
-        enqueueSnackbar(`Expense Deleted successfully `, {
-          variant: "success",
-          autoHideDuration: 3000,
-        });
-        await dispatch(getExpenses(userData?.email));
-      }
-    } catch (error) {
-      console.log(error);
-      enqueueSnackbar(`Something went wrong`, {
-        variant: "error",
-        autoHideDuration: 3000,
-      });
-    }
-  };
 
   return (
     <>
@@ -117,22 +47,6 @@ function ExpenseList({ userData }: PropType) {
       <Divider className='divider-bottom' />
       <Container maxWidth='xl'>
         <Grid container spacing={3}>
-          {
-            // expenseList.length > 0 ? (
-            //   expenseList.map((expense: expenseDataType) => {
-            //     return (
-            //       <>
-            //         <Grid item xs={12} sm={12} lg={12} key={expense.created_at}>
-            //           <ExpenseCard expanse={expense} />
-            //         </Grid>
-            //         {/* <p key={group.created_at}>{group.name}</p>{" "} */}
-            //       </>
-            //     );
-            //   })
-            // ) : (
-            //   <p>No data avaliable</p>
-            // )
-          }
           <ExpenseDataTable userData={userData} />
         </Grid>
       </Container>

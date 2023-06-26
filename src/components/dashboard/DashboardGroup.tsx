@@ -1,21 +1,16 @@
 import {
   Button,
-  Card,
-  CardContent,
   Container,
   Divider,
   Grid,
-  SvgIcon,
   Typography,
 } from "@mui/material";
 import { Box } from "@mui/system";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import GroupCard from "../../pages/groupPages/GroupCard";
-import GroupForm from "../../pages/groupPages/GroupForm";
 import { groupDataType } from "../../redux/groupSlice";
 import { GeneralPropType } from "../../routes/AuthRoutes";
-import KeyboardDoubleArrowRightIcon from "@mui/icons-material/KeyboardDoubleArrowRight";
 
 interface PropType extends GeneralPropType {
   groups: groupDataType[];
@@ -41,16 +36,6 @@ function DashboardGroup({ userData, groups }: PropType) {
         >
           View Group
         </Button>
-        {/* <GroupForm
-          ModelButtonStyle={{
-            width: "32px",
-            borderRadius: "16px",
-            margin: "0px 10px",
-            height: "32px",
-            // value: "Create",
-          }}
-          userData={userData}
-        /> */}
       </Box>
       <Divider className='divider-bottom' />
       {groups.length > 0 ? (
@@ -64,7 +49,6 @@ function DashboardGroup({ userData, groups }: PropType) {
                       <GroupCard userData={userData} groupItem={group} />
                     </Grid>
                   )}
-                  {/* <p key={group.created_at}>{group.name}</p>{" "} */}
                 </>
               ))
             ) : (

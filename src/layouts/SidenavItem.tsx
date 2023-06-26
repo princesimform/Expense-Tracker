@@ -52,13 +52,4 @@ function SidenavItem(props: {
   );
 }
 
-// SidenavItem.propTypes = {
-//   active: PropTypes.bool,
-//   disabled: PropTypes.bool,
-//   external: PropTypes.bool,
-//   icon: PropTypes.node,
-//   path: PropTypes.string,
-//   title: PropTypes.string.isRequired,
-// };
-
 export default SidenavItem;

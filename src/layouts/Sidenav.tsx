@@ -1,3 +1,4 @@
+import React from "react";
 import {
   Divider,
   Drawer,
@@ -7,7 +8,6 @@ import {
   useMediaQuery,
 } from "@mui/material";
 import { Box } from "@mui/system";
-import React from "react";
 import Logo from "./../assets/logo.png";
 import SidenavItem from "./SidenavItem";
 import { items, itemsType } from "./config";

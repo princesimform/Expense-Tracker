@@ -8,7 +8,6 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import UserImg from "./../../assets/avatar.jpg";
 import { groupDataType } from "../../redux/groupSlice";
 import { useNavigate } from "react-router-dom";
 import { GeneralPropType } from "../../routes/AuthRoutes";
@@ -41,12 +40,6 @@ function GroupCard({ groupItem, userData }: PropType) {
               userData={userData}
               groupName={groupItem.name}
             />
-            {/* <Typography color={"lightgreen"} fontWeight={"bold"}>
-              you are owned : $400
-            </Typography>
-            <Typography color={"darkred"} fontWeight={"bold"}>
-              you are owned : $400
-            </Typography> */}
           </Stack>
           <Stack
             display='flex'
@@ -72,11 +65,6 @@ function GroupCard({ groupItem, userData }: PropType) {
                 ) : (
                   <></>
                 )}
-                {/* <Avatar alt='Remy Sharp' src={UserImg} />
-                  <Avatar alt='Travis Howard' src={UserImg} />
-                  <Avatar alt='Cindy Baker' src={UserImg} />
-                  <Avatar alt='Agnes Walker' src={UserImg} />
-                  <Avatar alt='Trevor Henderson' src={UserImg} /> */}
               </AvatarGroup>
             </Stack>
           </Stack>

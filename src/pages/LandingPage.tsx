@@ -54,12 +54,16 @@ function LandingPage() {
     try {
       if (typeof AuthService.getProfile != "boolean") {
         let user: User = await AuthService.getProfile();
-
+        const oldtoken = localStorage.getItem("isExpire");
+        const newToken = await user.getIdToken();
         if (!user) {
-          localStorage.removeItem("token");
           setisLoggedIn(false);
         } else {
-          setisLoggedIn(true);
+          if (oldtoken == newToken) {
+            setisLoggedIn(true);
+          } else {
+            AuthService.logout();
+          }
         }
       }
     } catch (error: unknown) {
@@ -96,14 +100,14 @@ function LandingPage() {
                 </p>
                 <div className={styles.ContainerHeadButton}>
                   {isLoggedIn ? (
-                    <Link to="/dashboard">
-                      <Button variant="contained" fullWidth>
+                    <Link to='/dashboard'>
+                      <Button variant='contained' fullWidth>
                         Dashboard
                       </Button>
                     </Link>
                   ) : (
-                    <Link to="/register">
-                      <Button variant="contained" fullWidth>
+                    <Link to='/register'>
+                      <Button variant='contained' fullWidth>
                         Get Started
                       </Button>
                     </Link>
@@ -121,10 +125,10 @@ function LandingPage() {
             </p>
             <div className={styles.SecondContainerImageContainer}>
               <div className={styles.SecondContainerImageDiv}>
-                <a href="https://medium.com/" target="_blank" rel="noreferrer">
+                <a href='https://medium.com/' target='_blank' rel='noreferrer'>
                   <img
                     src={MediumLogo}
-                    alt="hashnode"
+                    alt='hashnode'
                     className={styles.SecondContainerImage}
                   />
                 </a>
@@ -136,7 +140,7 @@ function LandingPage() {
         {/* Alternating Feature Sections */}
 
         <div className={styles.FeatureContainerMain}>
-          <div aria-hidden="true" className={styles.FeatureContainerDivider} />
+          <div aria-hidden='true' className={styles.FeatureContainerDivider} />
           <div>
             <div className={styles.FeatureOne}>
               <div className={styles.FeatureOneContainer}>
@@ -151,15 +155,13 @@ function LandingPage() {
                       <span>Split Bill</span> to keep track of your bills and
                       share your expenses with your friends.
                     </p>
-                    <div>
-                      
-                    </div>
+                    <div></div>
                   </div>
                 </div>
               </div>
               <div className={styles.FeatureOneImageContainer}>
                 <div>
-                  <img className="" src={DashboardImg} alt="dashboard" />
+                  <img className='' src={DashboardImg} alt='dashboard' />
                 </div>
               </div>
             </div>
@@ -168,7 +170,7 @@ function LandingPage() {
             <div className={styles.FeatureTwo}>
               <div className={styles.FeatureOneImageContainer}>
                 <div>
-                  <img className="" src={GroupImg} alt="dashboard" />
+                  <img className='' src={GroupImg} alt='dashboard' />
                 </div>
               </div>
               <div className={styles.FeatureOneContainer}>
@@ -182,9 +184,7 @@ function LandingPage() {
                       Want to share your expenses with group of friends? No
                       worries create groups and share it easily.
                     </p>
-                    <div>
-                    
-                    </div>
+                    <div></div>
                   </div>
                 </div>
               </div>
@@ -204,7 +204,7 @@ function LandingPage() {
                 <div key={feature.name}>
                   <div>
                     <span className={styles.OurFeatureBoxIcon}>
-                      <feature.icon aria-hidden="true" />
+                      <feature.icon aria-hidden='true' />
                     </span>
                   </div>
                   <div className={styles.OurFeatureBoxContent}>
@@ -217,7 +217,7 @@ function LandingPage() {
           </div>
         </div>
 
-        <footer className="bg-gray-50" aria-labelledby="footer-heading">
+        <footer className='bg-gray-50' aria-labelledby='footer-heading'>
           {/* <h2 id='footer-heading' className='sr-only'>
           Footer
         </h2> */}
@@ -227,11 +227,11 @@ function LandingPage() {
                 <h3>Follow Me</h3>
                 <div>
                   <a
-                    href="https://medium.com/"
-                    target="_blank"
-                    rel="noopener noreferrer"
+                    href='https://medium.com/'
+                    target='_blank'
+                    rel='noopener noreferrer'
                   >
-                    <img src={MediumLogo} alt="medium" />
+                    <img src={MediumLogo} alt='medium' />
                   </a>
                 </div>
               </div>
