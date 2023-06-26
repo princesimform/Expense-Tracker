@@ -40,7 +40,7 @@ export interface groupDataType {
   name: string;
   group_image: string;
   admin_user_id: string;
-  admin_user_name: string | null;
+  admin: string | null;
   member_list: string[] | [];
   created_at: string;
   deleted_at: string;

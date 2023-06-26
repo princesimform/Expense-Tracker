@@ -225,7 +225,9 @@ function GroupDetails({ userData }: PropType) {
                 />
               </Grid>
               <Grid item xs={12} sm={12} lg={6}>
-                <GroupDeleteForm groupData={groupData} />
+                {userData?.email == groupData.admin && (
+                  <GroupDeleteForm groupData={groupData} />
+                )}
               </Grid>
             </Grid>
           </Stack>

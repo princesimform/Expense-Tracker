@@ -89,11 +89,16 @@ function GroupMemberPage({ groupMembers, groupData, userData }: PropType) {
     userData?.email && (await dispatch(getGroups(userData?.email)));
     setGroupMemberList(new_member_list);
   };
+  console.log(
+    userData?.email,
+    groupData.admin,
+    userData?.displayName == groupData.admin
+  );
 
   return (
     <>
       <Box>
-        <Typography className="group-expense-heading" variant="h6">
+        <Typography className='group-expense-heading' variant='h6'>
           Add Member
         </Typography>
         <Formik
@@ -116,9 +121,9 @@ function GroupMemberPage({ groupMembers, groupData, userData }: PropType) {
                 <Grid item xs={12} sm={9} lg={9}>
                   <Field
                     fullWidth
-                    size="small"
-                    name="new_member"
-                    type="email"
+                    size='small'
+                    name='new_member'
+                    type='email'
                     as={TextField}
                     error={
                       Boolean(errors.new_member) && Boolean(touched.new_member)
@@ -130,9 +135,9 @@ function GroupMemberPage({ groupMembers, groupData, userData }: PropType) {
                 </Grid>
                 <Grid item xs={12} sm={3} lg={3}>
                   <Button
-                    variant="contained"
-                    color="primary"
-                    type="submit"
+                    variant='contained'
+                    color='primary'
+                    type='submit'
                     fullWidth
                   >
                     {toggles.processing ? "Processing" : "Add"}
@@ -149,11 +154,11 @@ function GroupMemberPage({ groupMembers, groupData, userData }: PropType) {
           <Loader />
         ) : (
           <TableContainer component={Paper}>
-            <Table aria-label="customized table">
+            <Table aria-label='customized table'>
               <TableHead>
                 <TableRow>
                   <StyledTableCell>
-                    <Typography variant="h6" fontWeight="bold">
+                    <Typography variant='h6' fontWeight='bold'>
                       Members
                     </Typography>
                   </StyledTableCell>
@@ -163,40 +168,41 @@ function GroupMemberPage({ groupMembers, groupData, userData }: PropType) {
                 {groupMembersList.length > 0 ? (
                   groupMembersList.map((member, index) => (
                     <StyledTableRow key={index}>
-                      <StyledTableCell component="th" scope="row">
+                      <StyledTableCell component='th' scope='row'>
                         <Stack
-                          display="flex"
-                          flexDirection="row"
-                          justifyContent="space-between"
+                          display='flex'
+                          flexDirection='row'
+                          justifyContent='space-between'
                         >
                           <Typography>{member}</Typography>
 
-                          {userData?.email != member && (
-                            <Button
-                              sx={{
-                                borderRadius: "16px",
-                                width: "32px",
-                                height: "32px",
-                              }}
-                              color="error"
-                              variant="outlined"
-                              size="small"
-                              onClick={() => DeleteMemberFromList(index)}
-                            >
-                              <DeleteIcon color="error" />
-                            </Button>
-                          )}
+                          {userData?.email != member &&
+                            userData?.email == groupData.admin && (
+                              <Button
+                                sx={{
+                                  borderRadius: "16px",
+                                  width: "32px",
+                                  height: "32px",
+                                }}
+                                color='error'
+                                variant='outlined'
+                                size='small'
+                                onClick={() => DeleteMemberFromList(index)}
+                              >
+                                <DeleteIcon color='error' />
+                              </Button>
+                            )}
                         </Stack>
                       </StyledTableCell>
                     </StyledTableRow>
                   ))
                 ) : (
                   <StyledTableRow key={"no data"}>
-                    <StyledTableCell component="th" scope="row">
+                    <StyledTableCell component='th' scope='row'>
                       <Stack
-                        display="flex"
-                        flexDirection="row"
-                        justifyContent="space-between"
+                        display='flex'
+                        flexDirection='row'
+                        justifyContent='space-between'
                       >
                         <Typography>No Data Found</Typography>
                       </Stack>

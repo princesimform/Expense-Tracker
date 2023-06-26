@@ -113,7 +113,7 @@ function GroupForm({ groupData, userData, ModelButtonStyle }: PropsType) {
         name: values.name,
         group_image: "",
         admin_user_id: userData?.uid,
-        admin_user_name: userData?.displayName,
+        admin: userData?.email,
         created_at: GetTimestemp(),
         deleted_at: "",
         member_list: [`${userData?.email}`],

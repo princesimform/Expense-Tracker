@@ -253,19 +253,22 @@ function ExpenseDetails({
                         sx={{ display: "flex", justifyContent: "end" }}
                       >
                         {expenseData.isSettle ? (
-                          <Button
-                            onClick={() => settleExpense("")}
-                            variant='contained'
-                            color='error'
-                          >
-                            Revert
-                          </Button>
+                          expenseData.settleBy == userData?.email && (
+                            <Button
+                              onClick={() => settleExpense("")}
+                              variant='contained'
+                              color='error'
+                            >
+                              Revert
+                            </Button>
+                          )
                         ) : (
                           <Button
                             // onClick={() => settleExpense()}
                             variant='contained'
                             color='primary'
                             type='submit'
+                            disabled={!isValid}
                           >
                             Settle Up
                           </Button>

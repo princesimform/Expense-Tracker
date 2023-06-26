@@ -88,7 +88,7 @@ GroupFirestoreService.getGroups = async (email: string) => {
             group_image: GroupAllData.group_image,
             created_at: GroupAllData.created_at,
             admin_user_id: GroupAllData.admin_user_id,
-            admin_user_name: GroupAllData.admin_user_name,
+            admin: GroupAllData.admin,
             member_list: GroupAllData.member_list,
             deleted_at: GroupAllData.deleted_at,
           };
