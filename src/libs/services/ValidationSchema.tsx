@@ -75,3 +75,7 @@ export const AddExpenseFormSchema = yup.object({
   paid_by: yup.string().required("reduired"),
   expense_date: yup.date().required("Please select a date"),
 });
+
+export const SettleExpenseFormSchema = yup.object({
+  settle_expense_type: yup.string().trim().required("required"),
+});

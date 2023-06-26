@@ -135,6 +135,7 @@ ExpenseFirestoreService!.getExpensesFromFirestore = async (
             group_list: ExpensesData.group_list,
             settleBy: ExpensesData.settleBy,
             deleted_at: ExpensesData.deleted_at,
+            type_of_settle : ExpensesData.type_of_settle,
           };
 
           data.push(ExpenseData);

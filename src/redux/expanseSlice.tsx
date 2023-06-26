@@ -40,7 +40,6 @@ export const updateExpense: any = createAsyncThunk(
   }
 );
 
-
 export interface expenseDataType {
   id: number;
   title: string;
@@ -53,6 +52,7 @@ export interface expenseDataType {
   expense_date: string;
   isSettle: boolean;
   settleBy: string;
+  type_of_settle: string; // online/Ofline
   group_list: string[];
   expense_file: File | null;
   created_at: string;

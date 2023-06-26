@@ -89,6 +89,7 @@ function AddExpenseForm({
     expense_file: null,
     group_list: [],
     deleted_at: "",
+    type_of_settle: "",
   });
   const [toggles, toggle] = useToggle({
     isModleOpen: false,

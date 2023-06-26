@@ -154,7 +154,7 @@ function ExpenseDataTable({ userData }: PropType) {
                   <TableCell style={{ minWidth: 150 }} align='right'>
                     {row.isSettle ? (
                       <Button
-                        onClick={() => settleExpense(row)}
+                        onClick={() => openModel(row)}
                         variant='contained'
                         color='error'
                       >
@@ -162,7 +162,7 @@ function ExpenseDataTable({ userData }: PropType) {
                       </Button>
                     ) : (
                       <Button
-                        onClick={() => settleExpense(row)}
+                        onClick={() => openModel(row)}
                         variant='contained'
                         color='primary'
                       >

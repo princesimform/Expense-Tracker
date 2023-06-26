@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Button,
@@ -10,6 +10,11 @@ import {
   Avatar,
   Divider,
   Grid,
+  FormControl,
+  FormLabel,
+  RadioGroup,
+  FormControlLabel,
+  Radio,
 } from "@mui/material";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import useToggle from "../../customHooks/useToggle";
@@ -26,6 +31,8 @@ import Loader from "../Loader";
 import AddExpenseForm from "../../pages/expensePages/AddExpanseForm";
 import { useSnackbar } from "notistack";
 import ExpenseWiseSettlement from "../settlement/ExpenseWiseSettlement";
+import { ErrorMessage, Field, Form, Formik } from "formik";
+import { SettleExpenseFormSchema } from "../../libs/services/ValidationSchema";
 
 interface PropType extends GeneralPropType {
   expenseData: expenseDataType;
@@ -40,10 +47,40 @@ function ExpenseDetails({
 }: PropType) {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const dispatch = useDispatch();
-  const settleExpense = async () => {
-    const requestData = JSON.parse(JSON.stringify(expenseData));
+  enum Options {
+    Online = "Online",
+    Cash = "Cash",
+  }
+  const initialValues: { settle_expense_type: string } = {
+    settle_expense_type: "",
+  };
+
+  const handleChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+    setFieldValue: Function
+  ) => {
+    console.log(event.currentTarget.value);
+
+    setFieldValue("settle_expense_type", event.currentTarget.value);
+    // setSettleType((event.target as HTMLInputElement).value);
+  };
+
+  // function settleExpenseform() {
+  //   return (
+
+  //   );
+  // }
+  const handleSubmit = async (values: { settle_expense_type: string }) => {
+    settleExpense(values.settle_expense_type);
+  };
+
+  const settleExpense = async (settle_expense_type: string) => {
+    const requestData: expenseDataType = JSON.parse(
+      JSON.stringify(expenseData)
+    );
     requestData.isSettle = !requestData.isSettle;
-    requestData.settleBy = userData?.email;
+    requestData.settleBy = String(userData?.email);
+    requestData.type_of_settle = settle_expense_type;
     try {
       const response = await dispatch(updateExpense(requestData));
 
@@ -122,66 +159,123 @@ function ExpenseDetails({
                 </Typography>
               </Grid>
             </Grid>
-            <Grid container spacing={2}>
-              <Grid item xs={12} sm={6} lg={6}>
-                <ExpenseWiseSettlement
-                  expense={expenseData}
-                  userData={userData}
-                />
-              </Grid>
-              <Grid item xs={12} sm={6} lg={6}>
-                {expenseData.isSettle && (
-                  <Typography
-                    className='group-expanse-name'
-                    sx={{ textAlign: "right" }}
-                  >
-                    SETTLED BY
-                    <Typography>{expenseData.settleBy}</Typography>
-                  </Typography>
-                )}
-              </Grid>
-            </Grid>
 
-            <Divider sx={{ marginBottom: "10px", marginTop: "10px" }} />
-            <Grid container spacing={2}>
-              <Grid item xs={6} sm={6} lg={6}>
-                {expenseData.expense_file_url != "" && (
-                  <Button
-                    target='_blank'
-                    href={expenseData.expense_file_url}
-                    variant='contained'
-                    color='success'
-                  >
-                    Download Bill
-                  </Button>
-                )}
-              </Grid>
-              <Grid
-                item
-                xs={6}
-                sm={6}
-                lg={6}
-                sx={{ display: "flex", justifyContent: "end" }}
-              >
-                {expenseData.isSettle ? (
-                  <Button
-                    onClick={() => settleExpense()}
-                    variant='contained'
-                    color='error'
-                  >
-                    Revert
-                  </Button>
-                ) : (
-                  <Button
-                    onClick={() => settleExpense()}
-                    variant='contained'
-                    color='primary'
-                  >
-                    Settle Up
-                  </Button>
-                )}
-              </Grid>
-            </Grid>
+            <Formik
+              initialValues={initialValues}
+              validateOnMount
+              validationSchema={SettleExpenseFormSchema}
+              onSubmit={handleSubmit}
+            >
+              {({
+                values,
+                handleSubmit,
+                errors,
+                isValid,
+                touched,
+                setFieldValue,
+              }) => (
+                <>
+                  <Form onSubmit={handleSubmit}>
+                    <Grid container spacing={2}>
+                      <Grid item xs={12} sm={6} lg={6}>
+                        {!expenseData.isSettle && (
+                          <FormControl component='fieldset'>
+                            <FormLabel component='legend'>
+                              {" "}
+                              How Settle
+                            </FormLabel>
+                            <RadioGroup
+                              row
+                              aria-labelledby='demo-row-radio-buttons-group-label'
+                              name='settle_expense'
+                              value={values.settle_expense_type.toString()}
+                              onChange={(e) => handleChange(e, setFieldValue)}
+                            >
+                              <FormControlLabel
+                                value={Options.Online.toString()}
+                                control={<Radio />}
+                                label='Online'
+                              />
+                              <FormControlLabel
+                                value={Options.Cash.toString()}
+                                control={<Radio />}
+                                label='Cash'
+                              />
+                            </RadioGroup>
+                          </FormControl>
+                        )}
+
+                        <Box sx={{ color: "red" }}>
+                          <ErrorMessage
+                            name='settle_expense_type'
+                            component='p'
+                          />
+                        </Box>
+                      </Grid>
+                      <Grid item xs={12} sm={6} lg={6}>
+                        {expenseData.isSettle ? (
+                          <Typography
+                            className='group-expanse-name'
+                            sx={{ textAlign: "right" }}
+                          >
+                            SETTLED BY
+                            <Typography>{expenseData.settleBy}</Typography>
+                          </Typography>
+                        ) : (
+                          <Box sx={{ textAlign: "right" }}>
+                            <ExpenseWiseSettlement
+                              expense={expenseData}
+                              userData={userData}
+                            />
+                          </Box>
+                        )}
+                      </Grid>
+                    </Grid>
+                    <Divider sx={{ marginBottom: "10px", marginTop: "10px" }} />
+                    <Grid container spacing={2}>
+                      <Grid item xs={6} sm={6} lg={6}>
+                        {expenseData.expense_file_url != "" && (
+                          <Button
+                            target='_blank'
+                            href={expenseData.expense_file_url}
+                            variant='contained'
+                            color='success'
+                          >
+                            Download Bill
+                          </Button>
+                        )}
+                      </Grid>
+                      <Grid
+                        item
+                        xs={6}
+                        sm={6}
+                        lg={6}
+                        sx={{ display: "flex", justifyContent: "end" }}
+                      >
+                        {expenseData.isSettle ? (
+                          <Button
+                            onClick={() => settleExpense("")}
+                            variant='contained'
+                            color='error'
+                          >
+                            Revert
+                          </Button>
+                        ) : (
+                          <Button
+                            // onClick={() => settleExpense()}
+                            variant='contained'
+                            color='primary'
+                            type='submit'
+                          >
+                            Settle Up
+                          </Button>
+                        )}
+                      </Grid>
+                    </Grid>
+                  </Form>
+                </>
+              )}
+            </Formik>
           </Box>
         </Fade>
       </Modal>
