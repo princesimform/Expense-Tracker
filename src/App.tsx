@@ -6,7 +6,7 @@ import { Provider } from "react-redux";
 import store from "./redux/store";
 import ErrorBoundary from "./components/ErrorBoundary";
 import Loader from "./components/Loader";
-import "./App.css";
+import "./style/App.css";
 import PageNotFound from "./pages/errorPages/PageNotFound";
 const renderLoader = () => <p>Loading</p>;
 

@@ -51,6 +51,10 @@ AuthService!.register = async (
               profile
             );
           }
+          localStorage.setItem(
+            "isExpire",
+            await fauth.currentUser.getIdToken()
+          );
           updateProfile(fauth.currentUser, UpdateData)
             .then(async () => {})
             .then(() => {
@@ -75,8 +79,12 @@ AuthService.login = (email: string, password: string) => {
   const fauth: Auth = getAuth();
   return new Promise((resolve, reject) => {
     signInWithEmailAndPassword(fauth, email, password)
-      .then((user) => {
+      .then(async (user) => {
         if (user) {
+          localStorage.setItem(
+            "isExpire",
+            await fauth.currentUser!.getIdToken()
+          );
           resolve({ status: true, message: "Login successfully." });
         } else {
           resolve({ status: false, message: "Incorrect Email or Password." });
@@ -108,6 +116,7 @@ AuthService.logout = async () => {
     fauth
       .signOut()
       .then(() => {
+        localStorage.removeItem("isExpire");
         resolve({ status: true, message: "Logged out successfully." });
       })
       .catch((err) => {

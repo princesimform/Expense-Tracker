@@ -187,8 +187,14 @@ function GroupDetails({ userData }: PropType) {
                         onChange={handleTab}
                         aria-label='basic tabs example'
                       >
-                        <Tab label='Active' {...a11yProps(0)} />
-                        <Tab label='Settled' {...a11yProps(1)} />
+                        <Tab
+                          label={"Active - " + activeGroupExpense.length}
+                          {...a11yProps(0)}
+                        />
+                        <Tab
+                          label={"Settled - " + settleGroupExpense.length}
+                          {...a11yProps(1)}
+                        />
                       </Tabs>
                     </Box>
 
