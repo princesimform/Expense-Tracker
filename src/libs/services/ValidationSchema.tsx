@@ -78,3 +78,7 @@ export const AddExpenseFormSchema = yup.object({
 export const SettleExpenseFormSchema = yup.object({
   settle_expense_type: yup.string().trim().required("required"),
 });
+
+export const ProfileUpdateFormSchema = yup.object({
+  profile_iamge: yup.string().trim().required("required"),
+});
