@@ -9,7 +9,7 @@ import { GeneralPropType } from "../routes/AuthRoutes";
 interface PropType extends GeneralPropType {}
 function Profile({ userData }: PropType) {
   const [ProfileData, setProfileData] = useState<User | null>();
-
+  
   const getUserData = async () => {
     const fauth: Auth = await getAuth();
     setProfileData(fauth.currentUser);
