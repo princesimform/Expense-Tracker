@@ -52,7 +52,6 @@ GroupFirestoreService.updateGroup = async (data: any) => {
 
 GroupFirestoreService.getGroups = async (email: string) => {
   return new Promise((resolve, reject) => {
-    console.log(email);
     const groupQuery = query(
       collection(firestore, "groups"),
       where("deleted_at", "==", ""),
@@ -61,7 +60,6 @@ GroupFirestoreService.getGroups = async (email: string) => {
     let data: groupDataType[] = [];
     getDocs(groupQuery)
       .then((res) => {
-        console.log(res);
         res.forEach((doc) => {
           const GroupAllData = doc.data();
           const GroupData = {

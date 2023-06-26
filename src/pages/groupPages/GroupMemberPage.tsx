@@ -44,7 +44,6 @@ function GroupMemberPage({ groupMembers, groupData, userData }: PropType) {
   };
   const dispatch = useDispatch<AppDispatch>();
   useEffect(() => {
-    console.log(groupData.member_list);
     setGroupMemberList(groupData.member_list);
   }, []);
   const handleSubmit = async (values: formFieldType) => {
@@ -78,7 +77,6 @@ function GroupMemberPage({ groupMembers, groupData, userData }: PropType) {
       (element) => element !== groupMembersList[index]
     );
     reqData.member_list = new_member_list;
-    console.log(reqData);
     await dispatch(updateData(reqData));
 
     enqueueSnackbar(`Member Removed successfully `, {
@@ -88,11 +86,7 @@ function GroupMemberPage({ groupMembers, groupData, userData }: PropType) {
     userData?.email && (await dispatch(getGroups(userData?.email)));
     setGroupMemberList(new_member_list);
   };
-  console.log(
-    userData?.email,
-    groupData.admin,
-    userData?.displayName == groupData.admin
-  );
+
 
   return (
     <>

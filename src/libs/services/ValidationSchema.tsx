@@ -11,7 +11,6 @@ export const AddGroupSchema = yup.object({
       if (value != null) return value.size <= FILE_SIZE;
     })
     .test("fileFormat", "Unsupported Format", (value: any) => {
-      console.log(value);
       if (value == null) return true;
       if (value != null) return value && SUPPORTED_FORMATS.includes(value.type);
     }),

@@ -83,7 +83,6 @@ function GroupForm({ groupData, userData, ModelButtonStyle }: PropsType) {
     if (e.target.files && e.target.files[0]) {
       const res = await setFieldValue("group_image", e.target.files[0]);
       reader.addEventListener("load", function (event) {
-        console.log(res.group_image);
         if (res.group_image == undefined)
           setgroupProfileimage(JSON.stringify(reader.result));
       });
@@ -172,7 +171,6 @@ function GroupForm({ groupData, userData, ModelButtonStyle }: PropsType) {
         });
         toggle("isModleOpen");
       }
-      console.log(response.payload);
     } catch (error) {
       enqueueSnackbar(`Group Updated successfully `, {
         variant: "error",

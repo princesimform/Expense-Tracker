@@ -105,8 +105,6 @@ ExpenseFirestoreService!.getExpensesFromFirestore = async (
   collectionName: string
 ) => {
   return new Promise((resolve, reject) => {
-    console.log(email);
-
     const getExpenseQuery = query(
       collection(firestore, collectionName),
       where("deleted_at", "==", ""),

@@ -69,7 +69,6 @@ export const groupSlice = createSlice({
       }
     });
     builder.addCase(updateData.fulfilled, (state, action) => {
-      console.log(action.payload);
       // state.groupList = groupList;
     });
   },

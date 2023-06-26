@@ -26,13 +26,11 @@ function GroupExpense(props: PropType) {
   const { children, value, index, userData, ...other } = props;
   const [isExpenseOpen, setIsExpenseOpen] = useState(false);
   const [activeExpense, setActiveExpense] = useState<expenseDataType>();
-  console.log(isExpenseOpen);
   const openModel = (expense: expenseDataType) => {
     setActiveExpense(expense);
     setIsExpenseOpen(true);
   };
   if (props.groupExpenseList != undefined) {
-    console.log(props.groupExpenseList);
     return (
       <div
         role='tabpanel'

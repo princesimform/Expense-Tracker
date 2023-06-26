@@ -60,8 +60,6 @@ function Navbar({ window, onNavOpen }: PropsTypes) {
     if (typeof AuthService.getProfile != "boolean") {
       AuthService.getProfile().then((user: User) => {
         if (user && user.displayName != null) {
-          console.log(user);
-
           setName(user.displayName);
           setUserProfile(user.photoURL);
         }

@@ -52,8 +52,6 @@ function ExpenseDetails({
     event: React.ChangeEvent<HTMLInputElement>,
     setFieldValue: Function
   ) => {
-    console.log(event.currentTarget.value);
-
     setFieldValue("settle_expense_type", event.currentTarget.value);
     // setSettleType((event.target as HTMLInputElement).value);
   };

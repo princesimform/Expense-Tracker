@@ -151,8 +151,6 @@ function AddExpenseForm({
     setListOptions(tempFriendsSelectList);
 
     if (updateExpanseData != undefined) {
-      console.log(updateExpanseData);
-      console.log("listOptions", listOptions);
       tempDefaultFriendsSelectList = [];
       updateExpanseData.group_list?.map((item) => {
         tempFriendsSelectList.map((group) => {
@@ -161,11 +159,9 @@ function AddExpenseForm({
           }
         });
       });
-      console.log(tempDefaultFriendsSelectList);
       updateExpanseData.member_list?.map((item) => {
         tempFriendsSelectList.map((friend) => {
           if (friend.value == item) {
-            console.log(friend);
             tempDefaultFriendsSelectList.push(friend);
           }
         });
@@ -176,8 +172,6 @@ function AddExpenseForm({
     tempFriendsSelectList = [];
   }
   useEffect(() => {
-    console.log(" i  am running only ones ");
-
     if (userData?.email) {
       setPaidByList([userData?.email]);
     }
@@ -186,8 +180,6 @@ function AddExpenseForm({
     }
   }, []);
   useEffect(() => {
-    console.log(" i  am running on toggle ");
-
     updateListOptions();
     if (updateExpanseData?.member_list != undefined) {
       setPaidByList(updateExpanseData.member_list);
@@ -202,7 +194,6 @@ function AddExpenseForm({
     details?: AutocompleteChangeDetails<ListOptionType>
   ) => {
     setFieldValue("member_list", value);
-    console.log(value);
     tempGroupsList = [];
     value.map((item) => {
       if (item.group == "group") {
@@ -221,7 +212,6 @@ function AddExpenseForm({
     if (e.target.files && e.target.files[0]) {
       const res = await setFieldValue("expense_file", e.target.files[0]);
       reader.addEventListener("load", function (event) {
-        console.log(res.expense_file);
         if (res.expense_file == undefined)
           setFormValues((prev) => ({
             ...prev,
@@ -235,16 +225,11 @@ function AddExpenseForm({
 
   const updatePaidByList = async (ListData: ListOptionType[]) => {
     tempGroupsList = [];
-    console.log(ListData);
-
     tempFriendsList = [];
-
-    console.log(groupList);
     ListData.map((item) => {
       if (item.group == "group") {
         groupList.map((group) => {
           if (group.name == item.value) {
-            console.log(group.member_list);
             group.member_list.map((member) => {
               tempFriendsList.push(member);
             });

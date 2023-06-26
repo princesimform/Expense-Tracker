@@ -34,7 +34,6 @@ function GroupDeleteForm({ groupData }: PropType) {
       const response = await FirebaseFileHandling.removeFile(
         RequestData.group_image
       );
-      console.log(response);
     }
 
     RequestData.deleted_at = GetTimestemp();

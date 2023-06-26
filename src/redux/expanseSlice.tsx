@@ -79,7 +79,6 @@ export const expenseSlice = createSlice({
     builder.addCase(updateExpense.fulfilled, (state, action) => {
       const { docData } = action.payload;
       if (docData.status) {
-        console.log(docData);
       }
     });
     builder.addCase(getExpenses.fulfilled, (state, action) => {

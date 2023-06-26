@@ -26,7 +26,6 @@ function GroupWiseSetttlement({ groupName, userData }: PropType) {
           expense.member_list != undefined &&
           expense.member_list.length > 1
         ) {
-          console.log(expense.expense_amount);
           if (expense.paid_by == userData?.email) {
             tempgetAmount =
               tempgetAmount +
