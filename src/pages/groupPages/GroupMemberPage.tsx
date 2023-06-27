@@ -36,6 +36,7 @@ function GroupMemberPage({ groupMembers, groupData }: PropType) {
   const { profile } = useSelector((state: Rootstate) => {
     return state.profileReducer;
   });
+  const dispatch = useDispatch<AppDispatch>();
   const [groupMembersList, setGroupMemberList] = useState<string[]>([]);
   const [toggles, toggle] = useToggle({
     processing: false,
@@ -44,15 +45,16 @@ function GroupMemberPage({ groupMembers, groupData }: PropType) {
   const formFields: formFieldType = {
     new_member: "",
   };
-  const dispatch = useDispatch<AppDispatch>();
   useEffect(() => {
     setGroupMemberList(groupData.member_list);
   }, []);
   const handleSubmit = async (values: formFieldType) => {
     toggle("processing");
-
     const reqData: groupDataType = JSON.parse(JSON.stringify(groupData));
-    reqData.member_list = [...groupMembers, values.new_member];
+    reqData.member_list = [...groupMembersList, values.new_member];
+    console.log(reqData.member_list);
+    // throw new Error("stop here");
+
     const response = await dispatch(updateData(reqData));
     if (response.payload.status) {
       enqueueSnackbar(`Member Added successfully `, {

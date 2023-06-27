@@ -32,12 +32,8 @@ interface PropType {
   isOpen: boolean;
   closeExpense: Function;
 }
-function ExpenseDetails({
-  expenseData,
-  isOpen,
-  closeExpense,
-}: PropType) {
-  const {profile} = useSelector((state: Rootstate) => {
+function ExpenseDetails({ expenseData, isOpen, closeExpense }: PropType) {
+  const { profile } = useSelector((state: Rootstate) => {
     return state.profileReducer;
   });
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
@@ -166,7 +162,7 @@ function ExpenseDetails({
                   <Form onSubmit={handleSubmit}>
                     <Grid container spacing={2}>
                       <Grid item xs={12} sm={6} lg={6}>
-                        {!expenseData.isSettle && (
+                        {!expenseData.isSettle ? (
                           <FormControl component='fieldset'>
                             <FormLabel component='legend'>
                               {" "}
@@ -191,6 +187,17 @@ function ExpenseDetails({
                               />
                             </RadioGroup>
                           </FormControl>
+                        ) : (
+                          <Box>
+                            {" "}
+                            <Typography
+                              className='group-expanse-name'
+                              sx={{ textAlign: "left" }}
+                            >
+                              Amount Received
+                              <Typography>{expenseData.type_of_settle}</Typography>
+                            </Typography>
+                          </Box>
                         )}
 
                         <Box sx={{ color: "red" }}>
@@ -211,9 +218,7 @@ function ExpenseDetails({
                           </Typography>
                         ) : (
                           <Box sx={{ textAlign: "right" }}>
-                            <ExpenseWiseSettlement
-                              expense={expenseData}
-                            />
+                            <ExpenseWiseSettlement expense={expenseData} />
                           </Box>
                         )}
                       </Grid>
