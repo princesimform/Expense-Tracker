@@ -28,7 +28,7 @@ import {
   setProfile,
   updateProfile,
 } from "../../redux/profileSlice";
-import { Rootstate } from "../../redux/store";
+import { AppDispatch, Rootstate } from "../../redux/store";
 import Loader from "../Loader";
 import AddPerson from "./../../assets/add_user.png";
 
@@ -36,10 +36,11 @@ function ProfileUpdateForm() {
   const ProfileData = useSelector((state: Rootstate) => {
     return state.profileReducer;
   });
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
   const reader = new FileReader();
   const [ProfileFile, setProfileFile] = useState<string | null>("");
+  const [isProcessing, setIsProcessing] = useState<boolean>(false);
   const [initalValues, setInitalValues] = useState<profileDataType>(
     ProfileData.profile!
   );
@@ -65,6 +66,8 @@ function ProfileUpdateForm() {
   };
 
   const handleSubmit = async (values: profileDataType) => {
+    setIsProcessing(true);
+    console.log(values);
     console.log(values);
     if (typeof values.photoURL != "string") {
       const fileUrl = await setFileinFirebase(
@@ -85,12 +88,14 @@ function ProfileUpdateForm() {
           autoHideDuration: 3000,
         });
         navigate("/profile");
+        setIsProcessing(false);
       }
     } catch (error) {
       enqueueSnackbar("Something went wrong", {
         variant: "success",
         autoHideDuration: 3000,
       });
+      setIsProcessing(false);
     }
   };
 
@@ -116,7 +121,13 @@ function ProfileUpdateForm() {
                   validationSchema={ProfileUpdateFormSchema}
                   validateOnMount
                 >
-                  {({ handleSubmit, errors, touched, setFieldValue }) => (
+                  {({
+                    handleSubmit,
+                    errors,
+                    touched,
+                    setFieldValue,
+                    isValid,
+                  }) => (
                     <Form onSubmit={handleSubmit}>
                       <Card sx={{ textAlign: "left" }}>
                         <CardHeader
@@ -188,6 +199,14 @@ function ProfileUpdateForm() {
                                   fullWidth
                                   sx={{ mb: 2 }}
                                   as={TextField}
+                                  error={
+                                    Boolean(errors.displayName) &&
+                                    Boolean(touched.displayName)
+                                  }
+                                  helperText={
+                                    Boolean(touched.displayName) &&
+                                    errors.displayName
+                                  }
                                 />
                               </Grid>
                               <Grid item xs={12} md={6}>
@@ -195,11 +214,17 @@ function ProfileUpdateForm() {
                                   fullWidth
                                   as={TextField}
                                   size='small'
-                                  helperText='Please specify the first name'
                                   label='email'
                                   type='email'
                                   name='email'
                                   disabled
+                                  error={
+                                    Boolean(errors.email) &&
+                                    Boolean(touched.email)
+                                  }
+                                  helperText={
+                                    Boolean(touched.email) && errors.email
+                                  }
                                 />
                               </Grid>
                               <Grid item xs={12} md={6}>
@@ -207,12 +232,19 @@ function ProfileUpdateForm() {
                                   as={TextField}
                                   fullWidth
                                   size='small'
-                                  helperText='Please specify the first name'
                                   label='Phone No.'
                                   name='phoneNumber'
                                   // onChange={handleChange}
                                   required
                                   // value={values.firstName}
+                                  error={
+                                    Boolean(errors.phoneNumber) &&
+                                    Boolean(touched.phoneNumber)
+                                  }
+                                  helperText={
+                                    Boolean(touched.phoneNumber) &&
+                                    errors.phoneNumber
+                                  }
                                 />
                               </Grid>
                               <Grid item xs={12} md={6}>
@@ -220,11 +252,17 @@ function ProfileUpdateForm() {
                                   as={TextField}
                                   fullWidth
                                   size='small'
-                                  helperText='Please specify the first name'
                                   label='City'
                                   name='city'
                                   // onChange={handleChange}
                                   required
+                                  error={
+                                    Boolean(errors.city) &&
+                                    Boolean(touched.city)
+                                  }
+                                  helperText={
+                                    Boolean(touched.city) && errors.city
+                                  }
                                   // value={values.firstName}
                                 />
                               </Grid>
@@ -233,11 +271,17 @@ function ProfileUpdateForm() {
                                   as={TextField}
                                   fullWidth
                                   size='small'
-                                  helperText='Please specify the first name'
                                   label='State'
                                   name='state'
                                   // onChange={handleChange}
                                   required
+                                  error={
+                                    Boolean(errors.state) &&
+                                    Boolean(touched.state)
+                                  }
+                                  helperText={
+                                    Boolean(touched.state) && errors.state
+                                  }
                                   // value={values.firstName}
                                 />
                               </Grid>
@@ -246,11 +290,17 @@ function ProfileUpdateForm() {
                                   as={TextField}
                                   fullWidth
                                   size='small'
-                                  helperText='Please specify the first name'
                                   label='Country'
                                   // onChange={handleChange}
                                   name='country'
                                   required
+                                  error={
+                                    Boolean(errors.country) &&
+                                    Boolean(touched.country)
+                                  }
+                                  helperText={
+                                    Boolean(touched.country) && errors.country
+                                  }
                                   // value={values.firstName}
                                 />
                               </Grid>
@@ -259,11 +309,18 @@ function ProfileUpdateForm() {
                                   as={TextField}
                                   fullWidth
                                   size='small'
-                                  helperText='Please specify the first name'
                                   label='Description'
                                   name='description'
                                   // onChange={handleChange}
                                   required
+                                  error={
+                                    Boolean(errors.description) &&
+                                    Boolean(touched.description)
+                                  }
+                                  helperText={
+                                    Boolean(touched.description) &&
+                                    errors.description
+                                  }
                                   // value={values.firstName}
                                 />
                               </Grid>
@@ -272,8 +329,12 @@ function ProfileUpdateForm() {
                         </CardContent>
                         <Divider />
                         <CardActions sx={{ justifyContent: "flex-end" }}>
-                          <Button type='submit' variant='contained'>
-                            Update details
+                          <Button
+                            type='submit'
+                            variant='contained'
+                            disabled={!isValid || isProcessing}
+                          >
+                            {isProcessing ? "Processing" : "Update details"}
                           </Button>
                         </CardActions>
                       </Card>

@@ -29,7 +29,7 @@ GroupFirestoreService.addGroup = async (data: groupDataType) => {
   });
 };
 
-GroupFirestoreService.updateGroup = async (data: any) => {
+GroupFirestoreService.updateGroup = async (data: { [x: string]: string }) => {
   return new Promise((resolve, reject) => {
     const docRef = doc(firestore, COLLECTION_NAME, data.id);
     updateDoc(docRef, data)
@@ -48,7 +48,6 @@ GroupFirestoreService.updateGroup = async (data: any) => {
       });
   });
 };
-
 
 GroupFirestoreService.getGroups = async (email: string) => {
   return new Promise((resolve, reject) => {

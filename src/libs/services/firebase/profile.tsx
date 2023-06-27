@@ -16,6 +16,7 @@ ProfileService.addProfile = async (data: profileDataType) => {
         });
       })
       .catch((err) => {
+        console.log(err);
         resolve({ status: false, message: err });
       });
   });

@@ -24,6 +24,7 @@ import {
   setProfile,
 } from "../../redux/profileSlice";
 import { useDispatch } from "react-redux";
+import { AppDispatch } from "../../redux/store";
 
 interface PropType {
   toggleSignUp: Function;
@@ -47,7 +48,7 @@ const formFields: formFieldType = {
 function RegisterForm({ toggleSignUp }: PropType) {
   const navigate = useNavigate();
   const reader = new FileReader();
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const [GroupProfileimage, setgroupProfileimage] = useState<string>("");
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [toggles, toggle] = useToggle({

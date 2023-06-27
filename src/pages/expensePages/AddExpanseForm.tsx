@@ -25,7 +25,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import { AddExpenseFormSchema } from "../../libs/services/ValidationSchema";
 import useToggle from "../../customHooks/useToggle";
-import { Rootstate } from "../../redux/store";
+import { AppDispatch, Rootstate } from "../../redux/store";
 import { Assignment } from "@mui/icons-material";
 import { GroupHeader, GroupItems } from "../../components/CustomStyled";
 import { LocalizationProvider } from "@mui/x-date-pickers";
@@ -48,6 +48,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import FirebaseFileHandling from "../../libs/services/firebase/fileHandling";
 import AddIcon from "@mui/icons-material/Add";
 import Styles from "./../../style/default.module.css";
+import { PayloadAction } from "@reduxjs/toolkit";
 type ListOptionType = {
   label: string;
   value: string;
@@ -70,7 +71,7 @@ function AddExpenseForm({
   const { profile } = useSelector((state: Rootstate) => {
     return state.profileReducer;
   });
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const { groupList } = useSelector((state: Rootstate) => state.groupReducer);
   var today = new Date();
@@ -283,7 +284,7 @@ function AddExpenseForm({
 
     if (updateExpanseData != undefined) {
       try {
-        const response = await dispatch(updateExpense(values));
+        const response: any = await dispatch(updateExpense(values));
 
         if (response.payload.docData.status) {
           enqueueSnackbar(`Expense Update successfully `, {
@@ -291,7 +292,8 @@ function AddExpenseForm({
             autoHideDuration: 3000,
           });
           resetForm({ values: "" });
-          await dispatch(getExpenses(profile?.email));
+          profile?.email != undefined &&
+            (await dispatch(getExpenses(profile?.email)));
           toggle("isModleOpen");
         }
       } catch (error) {
@@ -304,7 +306,7 @@ function AddExpenseForm({
     } else {
       try {
         values.id = new Date().getUTCMilliseconds();
-        const response = await dispatch(setExpense(values));
+        const response: PayloadAction<any> = await dispatch(setExpense(values));
 
         if (response.payload.docData.status) {
           enqueueSnackbar(`Expense Created successfully `, {
@@ -312,7 +314,8 @@ function AddExpenseForm({
             autoHideDuration: 3000,
           });
           resetForm({ values: "" });
-          await dispatch(getExpenses(profile?.email));
+          profile?.email != undefined &&
+            (await dispatch(getExpenses(profile?.email)));
           toggle("isModleOpen");
         }
       } catch (error) {

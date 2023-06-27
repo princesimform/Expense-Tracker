@@ -1,16 +1,3 @@
-import { alpha } from "@mui/material";
-
-const withAlphas = (color: any) => {
-  return {
-    ...color,
-    alpha4: alpha(color.main, 0.04),
-    alpha8: alpha(color.main, 0.08),
-    alpha12: alpha(color.main, 0.12),
-    alpha30: alpha(color.main, 0.3),
-    alpha50: alpha(color.main, 0.5),
-  };
-};
-
 export const gradient = {
   900: "linear-gradient(to right top, #bd55bd, #b257c2, #a559c7, #985ccb, #895ecf)",
 } 

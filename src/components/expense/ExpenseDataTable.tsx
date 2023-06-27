@@ -14,7 +14,7 @@ import React, { useEffect, useState } from "react";
 import { StyledTableCell } from "../../pages/groupPages/GroupDetails";
 import { useDispatch, useSelector } from "react-redux";
 import { useSnackbar } from "notistack";
-import { Rootstate } from "../../redux/store";
+import { AppDispatch, Rootstate } from "../../redux/store";
 import AddExpenseForm from "../../pages/expensePages/AddExpanseForm";
 import {
   expenseDataType,
@@ -32,7 +32,7 @@ function ExpenseDataTable() {
     (state: Rootstate) => state.expenseReducer
   );
   const [activeExpense, setActiveExpense] = useState<expenseDataType>();
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);

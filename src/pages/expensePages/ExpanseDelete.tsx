@@ -19,7 +19,8 @@ import {
 import { useSnackbar } from "notistack";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { GetTimestemp } from "../../libs/services/utills";
-import { Rootstate } from "../../redux/store";
+import { AppDispatch, Rootstate } from "../../redux/store";
+import { PayloadAction } from "@reduxjs/toolkit";
 
 interface PropType {
   expnaseData: expenseDataType;
@@ -31,19 +32,20 @@ function ExpanseDelete({ expnaseData }: PropType) {
 
   const [openDialog, setOpenDialog] = useState(false);
   const nevagite = useNavigate();
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const deleteExpanse = async (data: expenseDataType) => {
     const RequestData: expenseDataType = JSON.parse(JSON.stringify(data));
     RequestData.deleted_at = GetTimestemp();
     try {
-      const response = await dispatch(updateExpense(RequestData));
+      const response: any = await dispatch(updateExpense(RequestData));
       if (response.payload.docData.status) {
         enqueueSnackbar(`Expense Deleted successfully `, {
           variant: "success",
           autoHideDuration: 3000,
         });
-        await dispatch(getExpenses(profile?.email));
+        profile?.email != undefined &&
+          (await dispatch(getExpenses(profile?.email)));
 
         setOpenDialog(false);
       }

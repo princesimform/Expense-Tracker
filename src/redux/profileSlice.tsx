@@ -1,23 +1,23 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import ProfileService from "../libs/services/firebase/profile";
 
-export const setProfile: any = createAsyncThunk(
+export const setProfile = createAsyncThunk(
   "profile/setProfile",
-  async (data) => {
+  async (data: profileDataType) => {
     return await ProfileService.addProfile(data);
   }
 );
 
-export const getProfile: any = createAsyncThunk(
+export const getProfile = createAsyncThunk(
   "profile/getProfile",
-  async (u_id) => {
+  async (u_id: string) => {
     return await ProfileService.getProfile(u_id);
   }
 );
 
-export const updateProfile: any = createAsyncThunk(
+export const updateProfile = createAsyncThunk(
   "profile/updateProfile",
-  async (data) => {
+  async (data: profileDataType) => {
     return await ProfileService.updateProfile(data);
   }
 );

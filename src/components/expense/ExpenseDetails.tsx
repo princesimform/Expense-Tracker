@@ -25,7 +25,8 @@ import { useSnackbar } from "notistack";
 import ExpenseWiseSettlement from "../settlement/ExpenseWiseSettlement";
 import { ErrorMessage, Form, Formik } from "formik";
 import { SettleExpenseFormSchema } from "../../libs/services/ValidationSchema";
-import { Rootstate } from "../../redux/store";
+import { AppDispatch, Rootstate } from "../../redux/store";
+import { PayloadAction } from "@reduxjs/toolkit";
 
 interface PropType {
   expenseData: expenseDataType;
@@ -37,7 +38,7 @@ function ExpenseDetails({ expenseData, isOpen, closeExpense }: PropType) {
     return state.profileReducer;
   });
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   enum Options {
     Online = "Online",
     Cash = "Cash",
@@ -66,14 +67,17 @@ function ExpenseDetails({ expenseData, isOpen, closeExpense }: PropType) {
     requestData.settleBy = String(profile?.email);
     requestData.type_of_settle = settle_expense_type;
     try {
-      const response = await dispatch(updateExpense(requestData));
+      const response: PayloadAction<any> = await dispatch(
+        updateExpense(requestData)
+      );
 
       if (response.payload.docData.status) {
         enqueueSnackbar(`Expense Update successfully `, {
           variant: "success",
           autoHideDuration: 3000,
         });
-        await dispatch(getExpenses(profile?.email));
+        profile?.email != undefined &&
+          (await dispatch(getExpenses(profile?.email)));
         closeExpense();
       }
     } catch (error) {
@@ -195,7 +199,9 @@ function ExpenseDetails({ expenseData, isOpen, closeExpense }: PropType) {
                               sx={{ textAlign: "left" }}
                             >
                               Amount Received
-                              <Typography>{expenseData.type_of_settle}</Typography>
+                              <Typography>
+                                {expenseData.type_of_settle}
+                              </Typography>
                             </Typography>
                           </Box>
                         )}

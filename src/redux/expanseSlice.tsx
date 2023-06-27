@@ -7,20 +7,20 @@ import React from "react";
 import ExpenseFirestoreService from "../libs/services/firebase/expenseFirestore";
 import { Rootstate } from "./store";
 
-export const setExpense: any = createAsyncThunk(
+export const setExpense = createAsyncThunk(
   "firestore/setExpense",
-  async (data) => {
+  async (data : expenseDataType) => {
     const docData = await ExpenseFirestoreService.addExpenseToFirestore(
-      data,
+      data ,
       "expenses"
     );
     return { docData };
   }
 );
 
-export const getExpenses: any = createAsyncThunk(
+export const getExpenses = createAsyncThunk(
   "firestore/getExpenses",
-  async (email) => {
+  async (email : string) => {
     const docData = await ExpenseFirestoreService.getExpensesFromFirestore(
       email,
       "expenses"
@@ -29,9 +29,9 @@ export const getExpenses: any = createAsyncThunk(
   }
 );
 
-export const updateExpense: any = createAsyncThunk(
+export const updateExpense = createAsyncThunk(
   "firestore/updateExpenses",
-  async (data) => {
+  async (data : expenseDataType) => {
     const docData = await ExpenseFirestoreService.updateExpenseToFirestore(
       data,
       "expenses"

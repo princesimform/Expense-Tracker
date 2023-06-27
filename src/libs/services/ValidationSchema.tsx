@@ -88,11 +88,11 @@ export const ProfileUpdateFormSchema = yup.object({
     .mixed()
     .nullable()
     .test("fileSize", "Filesize is too large", (value: any) => {
-      if (value == null) return true;
+      if (typeof value == "string") return true;
       if (value != null) return value.size <= FILE_SIZE;
     })
     .test("fileFormat", "Unsupported Format", (value: any) => {
-      if (value == null) return true;
+      if (typeof value == "string") return true;
       if (value != null) return value && SUPPORTED_FORMATS.includes(value.type);
     }),
   email: yup.string().trim().required("required"),

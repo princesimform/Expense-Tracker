@@ -85,7 +85,7 @@ ExpenseFirestoreService!.addExpenseToFirestore = async (
 };
 
 ExpenseFirestoreService!.updateExpenseToFirestore = async (
-  data: any,
+  data : { [x: string]: string },
   collectionName: string
 ) => {
   return new Promise(async (resolve, reject) => {
