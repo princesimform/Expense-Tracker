@@ -286,8 +286,10 @@ function GroupForm({ groupData, ModelButtonStyle }: PropsType) {
                     fullWidth
                     sx={{ mb: 2 }}
                     as={TextField}
-                    error={Boolean(errors.name) && Boolean(touched.name)}
-                    helpertext={Boolean(touched.name) && errors.name}
+                    error={
+                      Boolean(errors.name) ? Boolean(touched.name) : undefined
+                    }
+                    helpertext={Boolean(touched.name) ? errors.name : undefined}
                   />
 
                   <Box
