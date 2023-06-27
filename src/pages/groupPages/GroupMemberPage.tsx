@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  CircularProgress,
   Grid,
   Paper,
   Stack,
@@ -147,7 +148,9 @@ function GroupMemberPage({ groupMembers, groupData }: PropType) {
 
       <Paper sx={{ marginTop: 4 }}>
         {toggles.processing ? (
-          <Loader />
+          <Box className='circular-progress-container' sx={{ height: 100 }}>
+            <CircularProgress className='mt-2' color='secondary' />
+          </Box>
         ) : (
           <TableContainer component={Paper}>
             <Table aria-label='customized table'>
