@@ -5,7 +5,7 @@ export const GetTimestemp = () => {
   return today.toISOString();
 };
 
-export const setFileinFilebase = async (
+export const setFileinFirebase = async (
   file: File,
   folder_name: string,
   file_name: string

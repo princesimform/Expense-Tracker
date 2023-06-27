@@ -29,6 +29,8 @@ import MenuIcon from "@mui/icons-material/Menu";
 import AvatarImg from "./../assets/avatar.jpg";
 import useToggle from "../customHooks/useToggle";
 import usePopover from "./../customHooks/usePopover";
+import { useSelector } from "react-redux";
+import { Rootstate } from "../redux/store";
 interface PropsTypes {
   window?: () => Window;
   onNavOpen: Function;
@@ -40,12 +42,13 @@ function Navbar({ window, onNavOpen }: PropsTypes) {
     processing: false,
     isDrawerOpen: false,
   });
-  const [name, setName] = useState<string>("");
-  const [userProfile, setUserProfile] = useState<string | null>();
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
   const lgUp = useMediaQuery((theme: Theme) => theme.breakpoints.up("lg"));
   const accountPopover = usePopover();
+  const { profile } = useSelector((state: Rootstate) => {
+    return state.profileReducer;
+  });
 
   const navItems = [
     "Dashboard",
@@ -55,17 +58,6 @@ function Navbar({ window, onNavOpen }: PropsTypes) {
     "Friends",
     "Bills",
   ];
-
-  useEffect(() => {
-    if (typeof AuthService.getProfile != "boolean") {
-      AuthService.getProfile().then((user: User) => {
-        if (user && user.displayName != null) {
-          setName(user.displayName);
-          setUserProfile(user.photoURL);
-        }
-      });
-    }
-  }, []);
 
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
@@ -153,7 +145,7 @@ function Navbar({ window, onNavOpen }: PropsTypes) {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title='open setting'>
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt='User' src={userProfile!} />
+                <Avatar alt='User' src={profile?.photoURL} />
               </IconButton>
             </Tooltip>
             <Menu
@@ -169,7 +161,13 @@ function Navbar({ window, onNavOpen }: PropsTypes) {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              <MenuItem key='profile' onClick={() => navigate("/profile")}>
+              <MenuItem
+                key='profile'
+                onClick={() => {
+                  handleCloseUserMenu();
+                  navigate("/profile");
+                }}
+              >
                 <Typography textAlign='center'>Profile</Typography>
               </MenuItem>
               <MenuItem key='logout' onClick={logout}>

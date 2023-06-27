@@ -11,8 +11,11 @@ import {
 } from "@mui/material";
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { profileDataType } from "../../redux/profileSlice";
 import { GeneralPropType } from "../../routes/AuthRoutes";
-interface PropType extends GeneralPropType {}
+interface PropType {
+  userData: profileDataType;
+}
 function AccountProfileDetails({ userData }: PropType) {
   const navigate = useNavigate();
   return (
@@ -21,15 +24,9 @@ function AccountProfileDetails({ userData }: PropType) {
       <CardContent sx={{ pt: 2 }}>
         <Box>
           <Grid container>
-            <Grid xs={12} md={6}>
+            <Grid xs={12} md={12}>
               <Typography sx={{ py: 2 }}>
                 <span style={{ fontWeight: 600 }}>Name : </span>{" "}
-                {userData?.displayName}
-              </Typography>
-            </Grid>
-            <Grid xs={12} md={6}>
-              <Typography sx={{ py: 2 }}>
-                <span style={{ fontWeight: 600 }}>Last Name : </span>{" "}
                 {userData?.displayName}
               </Typography>
             </Grid>
@@ -48,21 +45,28 @@ function AccountProfileDetails({ userData }: PropType) {
             <Grid xs={12} md={6}>
               <Typography sx={{ py: 2 }}>
                 <span style={{ fontWeight: 600 }}>City : </span>{" "}
-                {userData?.phoneNumber}
+                {userData?.city}
               </Typography>
             </Grid>
             <Grid xs={12} md={6}>
               <Typography sx={{ py: 2 }}>
                 <span style={{ fontWeight: 600 }}>State : </span>{" "}
-                {userData?.phoneNumber}
+                {userData?.state}
               </Typography>
             </Grid>
             <Grid xs={12} md={6}>
               <Typography sx={{ py: 2 }}>
                 <span style={{ fontWeight: 600 }}>Country : </span>{" "}
-                {userData?.phoneNumber}
+                {userData?.country}
               </Typography>
             </Grid>
+            <Grid xs={12} md={12}>
+              <Typography sx={{ py: 2 }}>
+                <span style={{ fontWeight: 600 }}>Description : </span>{" "}
+                {userData?.description}
+              </Typography>
+            </Grid>
+
           </Grid>
         </Box>
       </CardContent>

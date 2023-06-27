@@ -17,6 +17,13 @@ import { Field, Form, Formik } from "formik";
 import { RegistrationFormSchema } from "../../libs/services/ValidationSchema";
 import AddUserImg from "./../../assets/add_user.png";
 import Styles from "./../../style/Authform.module.css";
+import { Auth, getAuth } from "firebase/auth";
+import {
+  getProfile,
+  profileDataType,
+  setProfile,
+} from "../../redux/profileSlice";
+import { useDispatch } from "react-redux";
 
 interface PropType {
   toggleSignUp: Function;
@@ -40,6 +47,7 @@ const formFields: formFieldType = {
 function RegisterForm({ toggleSignUp }: PropType) {
   const navigate = useNavigate();
   const reader = new FileReader();
+  const dispatch = useDispatch();
   const [GroupProfileimage, setgroupProfileimage] = useState<string>("");
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [toggles, toggle] = useToggle({
@@ -75,12 +83,32 @@ function RegisterForm({ toggleSignUp }: PropType) {
               values.profile
             );
           if (data.status) {
-            toggle("processing");
-            navigate(`/dashboard`);
-            enqueueSnackbar(data.message, {
-              variant: "success",
-              autoHideDuration: 3000,
-            });
+            const fauth: Auth = getAuth();
+
+            const profileData: profileDataType = {
+              displayName: String(fauth.currentUser?.displayName),
+              photoURL: String(fauth.currentUser?.photoURL),
+              u_id: String(fauth.currentUser?.uid),
+              email: String(fauth.currentUser?.email),
+              phoneNumber: String(
+                fauth.currentUser?.phoneNumber != null
+                  ? fauth.currentUser?.phoneNumber
+                  : ""
+              ),
+              city: "",
+              state: "",
+              country: "",
+              description: "",
+            };
+            const response = await dispatch(setProfile(profileData));
+            if (response.payload.status) {
+              toggle("processing");
+              navigate(`/dashboard`);
+              enqueueSnackbar(data.message, {
+                variant: "success",
+                autoHideDuration: 3000,
+              });
+            }
           } else {
             toggle("processing");
             enqueueSnackbar(data.message, {
@@ -255,7 +283,7 @@ function RegisterForm({ toggleSignUp }: PropType) {
       </Box>
 
       <Box onClick={() => toggleSignUp()} className={Styles.toggleForm}>
-        Already have an account <span > Sign In</span>
+        Already have an account <span> Sign In</span>
       </Box>
     </>
   );

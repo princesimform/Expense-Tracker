@@ -1,6 +1,7 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { expenseSlice } from "./expanseSlice";
 import { groupSlice, groupStateType } from "./groupSlice";
+import { profileSlice } from "./profileSlice";
 
 // export interface Rootstate {
 //   groupReducer: groupStateType;
@@ -9,6 +10,7 @@ import { groupSlice, groupStateType } from "./groupSlice";
 const rootReducer = combineReducers({
   groupReducer: groupSlice.reducer,
   expenseReducer: expenseSlice.reducer,
+  profileReducer: profileSlice.reducer,
 });
 const store = configureStore({
   reducer: rootReducer,

@@ -14,6 +14,8 @@ import storage, {
   ref,
   uploadBytes,
 } from "firebase/storage";
+import ProfileService from "./profile";
+import { profileDataType } from "../../../redux/profileSlice";
 const firebase = initializeApp(FIREBASE_CONFIG);
 interface AuthServiceType {
   [key: string]: Function;
@@ -56,9 +58,12 @@ AuthService!.register = async (
             await fauth.currentUser.getIdToken()
           );
           updateProfile(fauth.currentUser, UpdateData)
-            .then(async () => {})
             .then(() => {
-              resolve({ status: true, message: "Register successfully." });
+              resolve({
+                status: true,
+                message: "Register successfully.",
+                data: fauth.currentUser,
+              });
             })
             .catch((error) => {
               resolve({ status: false, message: error.message });

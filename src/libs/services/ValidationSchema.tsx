@@ -1,6 +1,8 @@
 import * as yup from "yup";
 const FILE_SIZE = 200 * 1024;
 const SUPPORTED_FORMATS = ["image/jpg", "image/jpeg", "image/gif", "image/png"];
+const phoneRegExp = /^(\+91|0)?[6789]\d{9}$/;
+
 export const AddGroupSchema = yup.object({
   name: yup.string().trim().required("Please enter Full Name"),
   group_image: yup
@@ -80,5 +82,26 @@ export const SettleExpenseFormSchema = yup.object({
 });
 
 export const ProfileUpdateFormSchema = yup.object({
-  profile_iamge: yup.string().trim().required("required"),
+  // profile_iamge: yup.string().trim().required("required"),
+  displayName: yup.string().trim().required("required"),
+  photoURL: yup
+    .mixed()
+    .nullable()
+    .test("fileSize", "Filesize is too large", (value: any) => {
+      if (value == null) return true;
+      if (value != null) return value.size <= FILE_SIZE;
+    })
+    .test("fileFormat", "Unsupported Format", (value: any) => {
+      if (value == null) return true;
+      if (value != null) return value && SUPPORTED_FORMATS.includes(value.type);
+    }),
+  email: yup.string().trim().required("required"),
+  phoneNumber: yup
+    .string()
+    .required("Mobile No is required")
+    .matches(phoneRegExp, "Phone number is not valid"),
+  city: yup.string().trim(),
+  state: yup.string().trim(),
+  country: yup.string().trim(),
+  description: yup.string().trim(),
 });

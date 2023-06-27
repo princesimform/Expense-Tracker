@@ -2,25 +2,21 @@ import { Avatar, Container, Grid, Stack, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import { Auth, getAuth, User } from "firebase/auth";
 import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import AccountProfile from "../components/profile/AccountProfile";
 import AccountProfileDetails from "../components/profile/AccountProfileDetails";
 import AuthService from "../libs/services/firebase/auth";
+import { Rootstate } from "../redux/store";
 import { GeneralPropType } from "../routes/AuthRoutes";
 interface PropType extends GeneralPropType {}
 function Profile({ userData }: PropType) {
-  const [ProfileData, setProfileData] = useState<User | null>();
-  
-  const getUserData = async () => {
-    const fauth: Auth = await getAuth();
-    setProfileData(fauth.currentUser);
-    return fauth.currentUser;
-  };
-  useEffect(() => {
-    getUserData();
-  }, []);
+  const { profile } = useSelector((state: Rootstate) => {
+    return state.profileReducer;
+  });
+
   return (
     <>
-      {ProfileData != null ? (
+      {profile != null ? (
         <Box
           component='main'
           sx={{
@@ -36,10 +32,10 @@ function Profile({ userData }: PropType) {
               <div>
                 <Grid container spacing={3}>
                   <Grid item xs={12} md={6} lg={4}>
-                    <AccountProfile />
+                    <AccountProfile profileImage={profile.photoURL} />
                   </Grid>
                   <Grid item xs={12} md={6} lg={8}>
-                    <AccountProfileDetails userData={ProfileData} />
+                    <AccountProfileDetails userData={profile} />
                   </Grid>
                 </Grid>
               </div>

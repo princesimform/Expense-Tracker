@@ -12,6 +12,7 @@ import { GeneralPropType } from "../routes/AuthRoutes";
 import { getExpenses } from "../redux/expanseSlice";
 import { AppDispatch } from "../redux/store";
 import Loader from "../components/Loader";
+import { getProfile } from "../redux/profileSlice";
 interface PropType {
   component: React.ComponentType;
 }
@@ -23,9 +24,10 @@ function AuthGuards({ component }: PropType) {
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
   useEffect(() => {
-    checkToken().then((res) => {
-      res?.email && dispatch(getGroups(String(res?.email)));
-      res?.email && dispatch(getExpenses(String(res?.email)));
+    checkToken().then(async (res) => {
+      res?.email && (await dispatch(getGroups(String(res?.email))));
+      res?.email && (await dispatch(getExpenses(String(res?.email))));
+      res?.email && (await dispatch(getProfile(String(res.uid))));
       setIsFetching(true);
     });
   }, []);

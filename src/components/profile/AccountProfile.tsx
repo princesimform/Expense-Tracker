@@ -10,8 +10,10 @@ import {
 } from "@mui/material";
 import React from "react";
 import { GeneralPropType } from "../../routes/AuthRoutes";
-interface PropType extends GeneralPropType {}
-function AccountProfile({ userData }: PropType) {
+interface PropType {
+  profileImage: string;
+}
+function AccountProfile({ profileImage }: PropType) {
   return (
     <Card>
       <CardContent>
@@ -23,7 +25,7 @@ function AccountProfile({ userData }: PropType) {
           }}
         >
           <Avatar
-            src={"p"}
+            src={profileImage}
             sx={{
               height: 80,
               mb: 2,
@@ -31,7 +33,7 @@ function AccountProfile({ userData }: PropType) {
             }}
           />
           <Typography gutterBottom variant='h5'>
-            {userData?.displayName}
+            {/* {userData?.displayName} */}
           </Typography>
           <Typography color='text.secondary' variant='body2'>
             {/* {user.city} {user.country} */}
@@ -42,11 +44,11 @@ function AccountProfile({ userData }: PropType) {
         </Box>
       </CardContent>
       <Divider />
-      <CardActions>
+      {/* <CardActions>
         <Button fullWidth variant='contained'>
           Upload picture
         </Button>
-      </CardActions>
+      </CardActions> */}
     </Card>
   );
 }

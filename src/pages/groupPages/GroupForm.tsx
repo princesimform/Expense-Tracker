@@ -27,7 +27,7 @@ import { useNavigate } from "react-router-dom";
 import useToggle from "../../customHooks/useToggle";
 import { GeneralPropType } from "../../routes/AuthRoutes";
 import EditIcon from "@mui/icons-material/Edit";
-import { GetTimestemp, setFileinFilebase } from "../../libs/services/utills";
+import { GetTimestemp, setFileinFirebase } from "../../libs/services/utills";
 import { AppDispatch } from "../../redux/store";
 
 const style = {
@@ -111,7 +111,7 @@ function GroupForm({ groupData, userData, ModelButtonStyle }: PropsType) {
         member_list: [`${userData?.email}`],
       };
       if (values.group_image != null) {
-        const fileUrl = await setFileinFilebase(
+        const fileUrl = await setFileinFirebase(
           values.group_image,
           "group_images",
           `${userData?.uid + values.name}`
@@ -148,7 +148,7 @@ function GroupForm({ groupData, userData, ModelButtonStyle }: PropsType) {
     NewData.name = values.name;
     NewData.group_image = values.group_image;
     if (values.group_image != null) {
-      const fileUrl = await setFileinFilebase(
+      const fileUrl = await setFileinFirebase(
         values.group_image,
         "group_images",
         `${userData?.uid + values.name}`
