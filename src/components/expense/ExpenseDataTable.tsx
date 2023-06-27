@@ -16,7 +16,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { useSnackbar } from "notistack";
 import { Rootstate } from "../../redux/store";
 import AddExpenseForm from "../../pages/expensePages/AddExpanseForm";
-import { GeneralPropType } from "../../routes/AuthRoutes";
 import {
   expenseDataType,
   getExpenses,
@@ -28,8 +27,7 @@ import ExpanseDelete from "../../pages/expensePages/ExpanseDelete";
 import ExpenseDetails from "./ExpenseDetails";
 import NoDataFound from "../../pages/errorPages/NoDataFound";
 
-interface PropType extends GeneralPropType {}
-function ExpenseDataTable({ userData }: PropType) {
+function ExpenseDataTable() {
   const { expenseList } = useSelector(
     (state: Rootstate) => state.expenseReducer
   );
@@ -97,10 +95,9 @@ function ExpenseDataTable({ userData }: PropType) {
                         height: "32px",
                       }}
                       FriendsList={[]}
-                      userData={userData}
                       updateExpanseData={row}
                     />
-                    <ExpanseDelete expnaseData={row} userData={userData} />
+                    <ExpanseDelete expnaseData={row} />
                     <Button
                       sx={{
                         borderRadius: "16px",
@@ -178,7 +175,6 @@ function ExpenseDataTable({ userData }: PropType) {
           isOpen={isExpenseOpen}
           closeExpense={() => setIsExpenseOpen(false)}
           expenseData={activeExpense}
-          userData={userData}
         />
       )}
     </>

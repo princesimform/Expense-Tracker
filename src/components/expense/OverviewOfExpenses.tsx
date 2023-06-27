@@ -6,12 +6,12 @@ import {
   Typography,
 } from "@mui/material";
 import AddExpenseForm from "../../pages/expensePages/AddExpanseForm";
-import { GeneralPropType } from "../../routes/AuthRoutes";
-interface PropType extends GeneralPropType {
+interface PropType  {
   numberOfExpenses: number;
   sx: { height: string };
 }
-function OverviewOfExpenses({ userData, sx, numberOfExpenses }: PropType) {
+function OverviewOfExpenses({  sx, numberOfExpenses }: PropType) {
+
   return (
     <>
       <Card
@@ -47,7 +47,6 @@ function OverviewOfExpenses({ userData, sx, numberOfExpenses }: PropType) {
                 height: "56px",
               }}
               FriendsList={[]}
-              userData={userData}
             />
           </Stack>
         </CardContent>

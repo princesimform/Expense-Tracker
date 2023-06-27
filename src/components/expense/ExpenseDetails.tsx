@@ -14,30 +14,32 @@ import {
   FormControlLabel,
   Radio,
 } from "@mui/material";
-import { GeneralPropType } from "../../routes/AuthRoutes";
 import {
   expenseDataType,
   getExpenses,
   updateExpense,
 } from "../../redux/expanseSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Loader from "../Loader";
 import { useSnackbar } from "notistack";
 import ExpenseWiseSettlement from "../settlement/ExpenseWiseSettlement";
 import { ErrorMessage, Form, Formik } from "formik";
 import { SettleExpenseFormSchema } from "../../libs/services/ValidationSchema";
+import { Rootstate } from "../../redux/store";
 
-interface PropType extends GeneralPropType {
+interface PropType {
   expenseData: expenseDataType;
   isOpen: boolean;
   closeExpense: Function;
 }
 function ExpenseDetails({
-  userData,
   expenseData,
   isOpen,
   closeExpense,
 }: PropType) {
+  const {profile} = useSelector((state: Rootstate) => {
+    return state.profileReducer;
+  });
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const dispatch = useDispatch();
   enum Options {
@@ -65,7 +67,7 @@ function ExpenseDetails({
       JSON.stringify(expenseData)
     );
     requestData.isSettle = !requestData.isSettle;
-    requestData.settleBy = String(userData?.email);
+    requestData.settleBy = String(profile?.email);
     requestData.type_of_settle = settle_expense_type;
     try {
       const response = await dispatch(updateExpense(requestData));
@@ -75,7 +77,7 @@ function ExpenseDetails({
           variant: "success",
           autoHideDuration: 3000,
         });
-        await dispatch(getExpenses(userData?.email));
+        await dispatch(getExpenses(profile?.email));
         closeExpense();
       }
     } catch (error) {
@@ -211,7 +213,6 @@ function ExpenseDetails({
                           <Box sx={{ textAlign: "right" }}>
                             <ExpenseWiseSettlement
                               expense={expenseData}
-                              userData={userData}
                             />
                           </Box>
                         )}
@@ -239,7 +240,7 @@ function ExpenseDetails({
                         sx={{ display: "flex", justifyContent: "end" }}
                       >
                         {expenseData.isSettle ? (
-                          expenseData.settleBy == userData?.email && (
+                          expenseData.settleBy == profile?.email && (
                             <Button
                               onClick={() => settleExpense("")}
                               variant='contained'

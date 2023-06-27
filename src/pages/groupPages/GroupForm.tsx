@@ -12,7 +12,7 @@ import {
   Typography,
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   getGroups,
   groupDataType,
@@ -25,10 +25,9 @@ import { AddGroupSchema } from "../../libs/services/ValidationSchema";
 import { useSnackbar } from "notistack";
 import { useNavigate } from "react-router-dom";
 import useToggle from "../../customHooks/useToggle";
-import { GeneralPropType } from "../../routes/AuthRoutes";
 import EditIcon from "@mui/icons-material/Edit";
 import { GetTimestemp, setFileinFirebase } from "../../libs/services/utills";
-import { AppDispatch } from "../../redux/store";
+import { AppDispatch, Rootstate } from "../../redux/store";
 
 const style = {
   position: "absolute" as "absolute",
@@ -44,14 +43,17 @@ interface formDataType {
   name: string;
   group_image: File | null;
 }
-interface PropsType extends GeneralPropType {
+interface PropsType {
   groupData?: groupDataType;
   ModelButtonStyle: {
     [key: string]: string;
   };
 }
 
-function GroupForm({ groupData, userData, ModelButtonStyle }: PropsType) {
+function GroupForm({ groupData,  ModelButtonStyle }: PropsType) {
+  const { profile } = useSelector((state: Rootstate) => {
+    return state.profileReducer;
+  });
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
@@ -99,22 +101,22 @@ function GroupForm({ groupData, userData, ModelButtonStyle }: PropsType) {
     }
   };
   const handleAddSubmit = async (values: formDataType) => {
-    if (userData != undefined) {
+    if (profile != undefined) {
       const req_data: groupDataType = {
         id: "",
         name: values.name,
         group_image: "",
-        admin_user_id: userData?.uid,
-        admin: userData?.email,
+        admin_user_id: profile.u_id,
+        admin: profile?.email,
         created_at: GetTimestemp(),
         deleted_at: "",
-        member_list: [`${userData?.email}`],
+        member_list: [`${profile?.email}`],
       };
       if (values.group_image != null) {
         const fileUrl = await setFileinFirebase(
           values.group_image,
           "group_images",
-          `${userData?.uid + values.name}`
+          `${profile?.u_id + values.name}`
         );
         req_data.group_image = fileUrl;
       }
@@ -127,7 +129,7 @@ function GroupForm({ groupData, userData, ModelButtonStyle }: PropsType) {
           });
           toggle("processing");
           toggle("isModleOpen");
-          userData?.email && dispatch(getGroups(userData?.email));
+          profile?.email && dispatch(getGroups(profile?.email));
           navigate(`/group`);
         } else {
           enqueueSnackbar(dataId.payload.message, {
@@ -151,7 +153,7 @@ function GroupForm({ groupData, userData, ModelButtonStyle }: PropsType) {
       const fileUrl = await setFileinFirebase(
         values.group_image,
         "group_images",
-        `${userData?.uid + values.name}`
+        `${profile?.u_id + values.name}`
       );
       NewData.group_image = fileUrl;
     }
@@ -163,7 +165,7 @@ function GroupForm({ groupData, userData, ModelButtonStyle }: PropsType) {
           autoHideDuration: 3000,
         });
         toggle("isModleOpen");
-        userData?.email && dispatch(getGroups(userData?.email));
+        profile?.email && dispatch(getGroups(profile?.email));
       } else {
         enqueueSnackbar(response.payload.message, {
           variant: "success",

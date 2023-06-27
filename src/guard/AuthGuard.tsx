@@ -8,7 +8,6 @@ import { styled } from "@mui/material";
 import Sidenav from "../layouts/Sidenav";
 import { useDispatch } from "react-redux";
 import { getGroups } from "../redux/groupSlice";
-import { GeneralPropType } from "../routes/AuthRoutes";
 import { getExpenses } from "../redux/expanseSlice";
 import { AppDispatch } from "../redux/store";
 import Loader from "../components/Loader";
@@ -20,7 +19,6 @@ interface PropType {
 function AuthGuards({ component }: PropType) {
   const [status, setStatus] = useState<boolean>(false);
   const [isFetching, setIsFetching] = useState<boolean>(false);
-  const [userData, setUserData] = useState<User>();
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
   useEffect(() => {
@@ -62,7 +60,6 @@ function AuthGuards({ component }: PropType) {
         } else {
           if (oldtoken == newToken) {
             setStatus(true);
-            setUserData(user);
             return user;
           } else {
             AuthService.logout();
@@ -75,7 +72,7 @@ function AuthGuards({ component }: PropType) {
     }
   };
   const [openNav, setOpenNav] = useState(false);
-  const Component: ComponentType<GeneralPropType> = component;
+  const Component: ComponentType = component;
   return status && isFetching ? (
     <React.Fragment>
       <Box className='my-container'>
@@ -85,7 +82,7 @@ function AuthGuards({ component }: PropType) {
         </Box>
         <LayoutRoot>
           <LayoutContainer>
-            <Component userData={userData} />
+            <Component />
           </LayoutContainer>
         </LayoutRoot>
       </Box>

@@ -10,12 +10,11 @@ import {
 } from "@mui/material";
 import { groupDataType } from "../../redux/groupSlice";
 import { useNavigate } from "react-router-dom";
-import { GeneralPropType } from "../../routes/AuthRoutes";
 import GroupWiseSetttlement from "../../components/settlement/GroupWiseSetttlement";
-interface PropType extends GeneralPropType {
+interface PropType  {
   groupItem: groupDataType;
 }
-function GroupCard({ groupItem, userData }: PropType) {
+function GroupCard({ groupItem }: PropType) {
   const navigate = useNavigate();
 
   return (
@@ -37,7 +36,6 @@ function GroupCard({ groupItem, userData }: PropType) {
           </Stack>
           <Stack sx={{ textAlign: "left", py: 2 }} spacing={5}>
             <GroupWiseSetttlement
-              userData={userData}
               groupName={groupItem.name}
             />
           </Stack>

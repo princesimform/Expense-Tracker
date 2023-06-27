@@ -1,14 +1,18 @@
 import { Box, Typography } from "@mui/material";
 import React from "react";
+import { useSelector } from "react-redux";
 import { expenseDataType } from "../../redux/expanseSlice";
-import { GeneralPropType } from "../../routes/AuthRoutes";
-interface PropType extends GeneralPropType {
+import { Rootstate } from "../../redux/store";
+interface PropType{
   expense: expenseDataType;
 }
-function ExpenseWiseSettlement({ expense, userData }: PropType) {
+function ExpenseWiseSettlement({ expense }: PropType) {
+  const {profile} = useSelector((state: Rootstate) => {
+    return state.profileReducer;
+  });
   return (
     <>
-      {expense.paid_by == userData?.email ? (
+      {expense.paid_by == profile?.email ? (
         <Box color='green'>
           <Typography>
             {expense.isSettle ? "You Received" : "You owe"}

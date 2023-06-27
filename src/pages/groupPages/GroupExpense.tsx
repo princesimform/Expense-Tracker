@@ -10,20 +10,20 @@ import {
 } from "@mui/material";
 import React, { useState } from "react";
 import { expenseDataType } from "../../redux/expanseSlice";
-interface PropType extends GeneralPropType {
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import Loader from "../../components/Loader";
+import ExpenseDetails from "../../components/expense/ExpenseDetails";
+import ExpenseWiseSettlement from "../../components/settlement/ExpenseWiseSettlement";
+
+interface PropType  {
   children?: React.ReactNode;
   index: number;
   value: number;
   groupExpenseList: expenseDataType[];
 }
-import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import { GeneralPropType } from "../../routes/AuthRoutes";
-import Loader from "../../components/Loader";
-import ExpenseDetails from "../../components/expense/ExpenseDetails";
-import ExpenseWiseSettlement from "../../components/settlement/ExpenseWiseSettlement";
 
 function GroupExpense(props: PropType) {
-  const { children, value, index, userData, ...other } = props;
+  const { children, value, index, ...other } = props;
   const [isExpenseOpen, setIsExpenseOpen] = useState(false);
   const [activeExpense, setActiveExpense] = useState<expenseDataType>();
   const openModel = (expense: expenseDataType) => {
@@ -98,7 +98,6 @@ function GroupExpense(props: PropType) {
                           <TableCell key={3}>
                             <ExpenseWiseSettlement
                               expense={expanse}
-                              userData={userData}
                             />
                           </TableCell>
                           <TableCell key={4}>
@@ -131,7 +130,6 @@ function GroupExpense(props: PropType) {
         </Box>
         {activeExpense != undefined && (
           <ExpenseDetails
-            userData={props.userData}
             expenseData={activeExpense}
             isOpen={isExpenseOpen}
             closeExpense={() => setIsExpenseOpen(false)}

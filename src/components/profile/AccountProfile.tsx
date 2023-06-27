@@ -9,7 +9,6 @@ import {
   Typography,
 } from "@mui/material";
 import React from "react";
-import { GeneralPropType } from "../../routes/AuthRoutes";
 interface PropType {
   profileImage: string;
 }

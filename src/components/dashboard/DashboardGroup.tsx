@@ -10,12 +10,11 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import GroupCard from "../../pages/groupPages/GroupCard";
 import { groupDataType } from "../../redux/groupSlice";
-import { GeneralPropType } from "../../routes/AuthRoutes";
 
-interface PropType extends GeneralPropType {
+interface PropType  {
   groups: groupDataType[];
 }
-function DashboardGroup({ userData, groups }: PropType) {
+function DashboardGroup({ groups }: PropType) {
   const navigate = useNavigate();
   return (
     <>
@@ -46,7 +45,7 @@ function DashboardGroup({ userData, groups }: PropType) {
                 <>
                   {index < 3 && (
                     <Grid item xs={12} sm={6} lg={4} key={group.created_at}>
-                      <GroupCard userData={userData} groupItem={group} />
+                      <GroupCard  groupItem={group} />
                     </Grid>
                   )}
                 </>

@@ -10,9 +10,7 @@ const GroupDetails = lazy(() => import("../pages/groupPages/GroupDetails"));
 const ExpenseList = lazy(() => import("../pages/expensePages"));
 const ProfileUpdateForm = lazy(() => import("../components/profile/ProfileUpdateForm"));
 
-export interface GeneralPropType {
-  userData?: User;
-}
+
 const AuthRoutes: ReactNode[] = [
   <Route
     key='Dashboard'

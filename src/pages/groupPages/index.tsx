@@ -14,15 +14,15 @@ import { getGroups, groupDataType } from "../../redux/groupSlice";
 import { AppDispatch, Rootstate } from "../../redux/store";
 import GroupForm from "./GroupForm";
 import GroupCard from "./GroupCard";
-import { GeneralPropType } from "../../routes/AuthRoutes";
 import NoDataFound from "../errorPages/NoDataFound";
-interface PropType extends GeneralPropType {}
-function Groups({ userData }: PropType) {
+function Groups() {
   const { groupList } = useSelector((state: Rootstate) => state.groupReducer);
-
+  const { profile } = useSelector((state: Rootstate) => {
+    return state.profileReducer;
+  });
   const dispatch = useDispatch<AppDispatch>();
   useEffect(() => {
-    userData?.email && dispatch(getGroups(userData?.email));
+    profile?.email && dispatch(getGroups(profile?.email));
   }, []);
 
   return (
@@ -44,7 +44,6 @@ function Groups({ userData }: PropType) {
             margin: "0px 10px",
             height: "32px",
           }}
-          userData={userData}
         />
       </Box>
       <Divider className='divider-bottom' />
@@ -54,7 +53,7 @@ function Groups({ userData }: PropType) {
             groupList.map((group: groupDataType) => (
               <>
                 <Grid item xs={12} sm={6} lg={4} key={group.created_at}>
-                  <GroupCard userData={userData} groupItem={group} />
+                  <GroupCard  groupItem={group} />
                 </Grid>
               </>
             ))

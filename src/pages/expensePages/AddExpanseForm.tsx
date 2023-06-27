@@ -33,7 +33,6 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DemoContainer, DemoItem } from "@mui/x-date-pickers/internals/demo";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import dayjs from "dayjs";
-import { GeneralPropType } from "../../routes/AuthRoutes";
 import TextField from "../../components/FormUI/TextField";
 import TextfieldWrapper from "../../components/FormUI/TextField";
 import SelectWrapper from "../../components/FormUI/Select";
@@ -55,7 +54,7 @@ type ListOptionType = {
   group: string;
 };
 
-interface PropType extends GeneralPropType {
+interface PropType {
   FriendsList: string[];
   updateExpanseData?: expenseDataType;
   ModelButtonStyle: {
@@ -64,10 +63,13 @@ interface PropType extends GeneralPropType {
 }
 function AddExpenseForm({
   FriendsList,
-  userData,
+
   updateExpanseData,
   ModelButtonStyle,
 }: PropType) {
+  const { profile } = useSelector((state: Rootstate) => {
+    return state.profileReducer;
+  });
   const dispatch = useDispatch();
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const { groupList } = useSelector((state: Rootstate) => state.groupReducer);
@@ -130,8 +132,8 @@ function AddExpenseForm({
     tempFriendsList = tempFriendsList.filter(
       (val, id, tempFriendsList) => tempFriendsList.indexOf(val) == id
     );
-    userData?.email &&
-      tempFriendsList.splice(tempFriendsList.indexOf(userData?.email), 1);
+    profile?.email &&
+      tempFriendsList.splice(tempFriendsList.indexOf(profile.email), 1);
 
     tempGroupsList.map((groupName) => {
       tempFriendsSelectList.push({
@@ -172,8 +174,8 @@ function AddExpenseForm({
     tempFriendsSelectList = [];
   }
   useEffect(() => {
-    if (userData?.email) {
-      setPaidByList([userData?.email]);
+    if (profile?.email) {
+      setPaidByList([profile.email]);
     }
     if (updateExpanseData != undefined) {
       setFormValues(updateExpanseData);
@@ -245,13 +247,13 @@ function AddExpenseForm({
     );
 
     if (tempFriendsList.length > 0) {
-      if (userData?.email) {
-        tempFriendsList.push(userData?.email);
+      if (profile?.email) {
+        tempFriendsList.push(profile.email);
       }
       setPaidByList(tempFriendsList);
     } else {
-      if (userData?.email) {
-        setPaidByList([userData.email]);
+      if (profile?.email) {
+        setPaidByList([profile.email]);
       }
     }
 
@@ -289,7 +291,7 @@ function AddExpenseForm({
             autoHideDuration: 3000,
           });
           resetForm({ values: "" });
-          await dispatch(getExpenses(userData?.email));
+          await dispatch(getExpenses(profile?.email));
           toggle("isModleOpen");
         }
       } catch (error) {
@@ -310,7 +312,7 @@ function AddExpenseForm({
             autoHideDuration: 3000,
           });
           resetForm({ values: "" });
-          await dispatch(getExpenses(userData?.email));
+          await dispatch(getExpenses(profile?.email));
           toggle("isModleOpen");
         }
       } catch (error) {

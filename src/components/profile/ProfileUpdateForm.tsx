@@ -29,12 +29,10 @@ import {
   updateProfile,
 } from "../../redux/profileSlice";
 import { Rootstate } from "../../redux/store";
-import { GeneralPropType } from "../../routes/AuthRoutes";
 import Loader from "../Loader";
 import AddPerson from "./../../assets/add_user.png";
-interface PropType extends GeneralPropType {}
 
-function ProfileUpdateForm({ userData }: PropType) {
+function ProfileUpdateForm() {
   const ProfileData = useSelector((state: Rootstate) => {
     return state.profileReducer;
   });
@@ -47,7 +45,9 @@ function ProfileUpdateForm({ userData }: PropType) {
   );
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   useEffect(() => {
-    setProfileFile(userData != undefined ? userData.photoURL : "");
+    setProfileFile(
+      ProfileData.profile != undefined ? ProfileData.profile.photoURL : ""
+    );
   }, [ProfileData]);
 
   const handleFileInputChange = async (
@@ -97,200 +97,193 @@ function ProfileUpdateForm({ userData }: PropType) {
   if (ProfileData.profile != null)
     return (
       <>
-        {userData != null ? (
-          <Box
-            component='main'
-            sx={{
-              flexGrow: 1,
-              py: 8,
-            }}
-          >
-            <Container maxWidth='lg'>
-              <Stack spacing={3}>
-                <div>
-                  <Typography variant='h4'>Update Account</Typography>
-                </div>
-                <div>
-                  <Formik
-                    initialValues={initalValues}
-                    onSubmit={handleSubmit}
-                    validationSchema={ProfileUpdateFormSchema}
-                    validateOnMount
-                  >
-                    {({ handleSubmit, errors, touched, setFieldValue }) => (
-                      <Form onSubmit={handleSubmit}>
-                        <Card sx={{ textAlign: "left" }}>
-                          <CardHeader
-                            subheader='The information can be edited'
-                            title='Profile'
-                          />
-                          <CardContent>
-                            <Box>
-                              <Grid container spacing={3}>
-                                <Grid item xs={12} md={12} lg={12}>
-                                  <InputLabel
-                                    htmlFor='profile-image'
-                                    style={{
+        <Box
+          component='main'
+          sx={{
+            flexGrow: 1,
+            py: 8,
+          }}
+        >
+          <Container maxWidth='lg'>
+            <Stack spacing={3}>
+              <div>
+                <Typography variant='h4'>Update Account</Typography>
+              </div>
+              <div>
+                <Formik
+                  initialValues={initalValues}
+                  onSubmit={handleSubmit}
+                  validationSchema={ProfileUpdateFormSchema}
+                  validateOnMount
+                >
+                  {({ handleSubmit, errors, touched, setFieldValue }) => (
+                    <Form onSubmit={handleSubmit}>
+                      <Card sx={{ textAlign: "left" }}>
+                        <CardHeader
+                          subheader='The information can be edited'
+                          title='Profile'
+                        />
+                        <CardContent>
+                          <Box>
+                            <Grid container spacing={3}>
+                              <Grid item xs={12} md={12} lg={12}>
+                                <InputLabel
+                                  htmlFor='profile-image'
+                                  style={{
+                                    margin: "auto",
+                                    width: "fit-content",
+                                    textAlign: "center",
+                                  }}
+                                  className='m-auto '
+                                >
+                                  <Avatar
+                                    src={
+                                      ProfileFile
+                                        ? ProfileFile.slice(0, 4) == "http"
+                                          ? ProfileFile
+                                          : JSON.parse(ProfileFile)
+                                        : AddPerson
+                                    }
+                                    sx={{
+                                      height: 80,
+                                      mb: 2,
+                                      width: 80,
                                       margin: "auto",
-                                      width: "fit-content",
-                                      textAlign: "center",
                                     }}
-                                    className='m-auto '
-                                  >
-                                    <Avatar
-                                      src={
-                                        ProfileFile
-                                          ? ProfileFile.slice(0, 4) == "http"
-                                            ? ProfileFile
-                                            : JSON.parse(ProfileFile)
-                                          : AddPerson
-                                      }
-                                      sx={{
-                                        height: 80,
-                                        mb: 2,
-                                        width: 80,
-                                        margin: "auto",
-                                      }}
-                                    />
-                                    <Field
-                                      style={{ opacity: 0 }}
-                                      id='profile-image'
-                                      name='photoURL'
-                                      type='file'
-                                      value={undefined}
-                                      onChange={(
-                                        event: ChangeEvent<HTMLInputElement>
-                                      ) =>
-                                        handleFileInputChange(
-                                          event,
-                                          setFieldValue
-                                        )
-                                      }
-                                      error={
-                                        Boolean(errors.photoURL) &&
-                                        Boolean(touched.photoURL)
-                                      }
-                                      helperText={
-                                        Boolean(touched.photoURL) &&
-                                        errors.photoURL
-                                      }
-                                    />
-                                    <ErrorMessage
-                                      name='photoURL'
-                                      component='p'
-                                    />
-                                  </InputLabel>
-                                </Grid>
-                                <Grid item xs={12} md={6}>
-                                  <Field
-                                    name='displayName'
-                                    type='text'
-                                    variant='outlined'
-                                    color='primary'
-                                    label='Full Name'
-                                    size='small'
-                                    fullWidth
-                                    sx={{ mb: 2 }}
-                                    as={TextField}
                                   />
-                                </Grid>
-                                <Grid item xs={12} md={6}>
                                   <Field
-                                    fullWidth
-                                    as={TextField}
-                                    size='small'
-                                    helperText='Please specify the first name'
-                                    label='email'
-                                    type='email'
-                                    name='email'
-                                    disabled
+                                    style={{ opacity: 0 }}
+                                    id='profile-image'
+                                    name='photoURL'
+                                    type='file'
+                                    value={undefined}
+                                    onChange={(
+                                      event: ChangeEvent<HTMLInputElement>
+                                    ) =>
+                                      handleFileInputChange(
+                                        event,
+                                        setFieldValue
+                                      )
+                                    }
+                                    error={
+                                      Boolean(errors.photoURL) &&
+                                      Boolean(touched.photoURL)
+                                    }
+                                    helperText={
+                                      Boolean(touched.photoURL) &&
+                                      errors.photoURL
+                                    }
                                   />
-                                </Grid>
-                                <Grid item xs={12} md={6}>
-                                  <Field
-                                    as={TextField}
-                                    fullWidth
-                                    size='small'
-                                    helperText='Please specify the first name'
-                                    label='Phone No.'
-                                    name='phoneNumber'
-                                    // onChange={handleChange}
-                                    required
-                                    // value={values.firstName}
-                                  />
-                                </Grid>
-                                <Grid item xs={12} md={6}>
-                                  <Field
-                                    as={TextField}
-                                    fullWidth
-                                    size='small'
-                                    helperText='Please specify the first name'
-                                    label='City'
-                                    name='city'
-                                    // onChange={handleChange}
-                                    required
-                                    // value={values.firstName}
-                                  />
-                                </Grid>
-                                <Grid item xs={12} md={6}>
-                                  <Field
-                                    as={TextField}
-                                    fullWidth
-                                    size='small'
-                                    helperText='Please specify the first name'
-                                    label='State'
-                                    name='state'
-                                    // onChange={handleChange}
-                                    required
-                                    // value={values.firstName}
-                                  />
-                                </Grid>
-                                <Grid item xs={12} md={6}>
-                                  <Field
-                                    as={TextField}
-                                    fullWidth
-                                    size='small'
-                                    helperText='Please specify the first name'
-                                    label='Country'
-                                    // onChange={handleChange}
-                                    name='country'
-                                    required
-                                    // value={values.firstName}
-                                  />
-                                </Grid>
-                                <Grid item xs={12} md={12}>
-                                  <Field
-                                    as={TextField}
-                                    fullWidth
-                                    size='small'
-                                    helperText='Please specify the first name'
-                                    label='Description'
-                                    name='description'
-                                    // onChange={handleChange}
-                                    required
-                                    // value={values.firstName}
-                                  />
-                                </Grid>
+                                  <ErrorMessage name='photoURL' component='p' />
+                                </InputLabel>
                               </Grid>
-                            </Box>
-                          </CardContent>
-                          <Divider />
-                          <CardActions sx={{ justifyContent: "flex-end" }}>
-                            <Button type='submit' variant='contained'>
-                              Update details
-                            </Button>
-                          </CardActions>
-                        </Card>
-                      </Form>
-                    )}
-                  </Formik>
-                </div>
-              </Stack>
-            </Container>
-          </Box>
-        ) : (
-          <Box>No Data Avaliable</Box>
-        )}
+                              <Grid item xs={12} md={6}>
+                                <Field
+                                  name='displayName'
+                                  type='text'
+                                  variant='outlined'
+                                  color='primary'
+                                  label='Full Name'
+                                  size='small'
+                                  fullWidth
+                                  sx={{ mb: 2 }}
+                                  as={TextField}
+                                />
+                              </Grid>
+                              <Grid item xs={12} md={6}>
+                                <Field
+                                  fullWidth
+                                  as={TextField}
+                                  size='small'
+                                  helperText='Please specify the first name'
+                                  label='email'
+                                  type='email'
+                                  name='email'
+                                  disabled
+                                />
+                              </Grid>
+                              <Grid item xs={12} md={6}>
+                                <Field
+                                  as={TextField}
+                                  fullWidth
+                                  size='small'
+                                  helperText='Please specify the first name'
+                                  label='Phone No.'
+                                  name='phoneNumber'
+                                  // onChange={handleChange}
+                                  required
+                                  // value={values.firstName}
+                                />
+                              </Grid>
+                              <Grid item xs={12} md={6}>
+                                <Field
+                                  as={TextField}
+                                  fullWidth
+                                  size='small'
+                                  helperText='Please specify the first name'
+                                  label='City'
+                                  name='city'
+                                  // onChange={handleChange}
+                                  required
+                                  // value={values.firstName}
+                                />
+                              </Grid>
+                              <Grid item xs={12} md={6}>
+                                <Field
+                                  as={TextField}
+                                  fullWidth
+                                  size='small'
+                                  helperText='Please specify the first name'
+                                  label='State'
+                                  name='state'
+                                  // onChange={handleChange}
+                                  required
+                                  // value={values.firstName}
+                                />
+                              </Grid>
+                              <Grid item xs={12} md={6}>
+                                <Field
+                                  as={TextField}
+                                  fullWidth
+                                  size='small'
+                                  helperText='Please specify the first name'
+                                  label='Country'
+                                  // onChange={handleChange}
+                                  name='country'
+                                  required
+                                  // value={values.firstName}
+                                />
+                              </Grid>
+                              <Grid item xs={12} md={12}>
+                                <Field
+                                  as={TextField}
+                                  fullWidth
+                                  size='small'
+                                  helperText='Please specify the first name'
+                                  label='Description'
+                                  name='description'
+                                  // onChange={handleChange}
+                                  required
+                                  // value={values.firstName}
+                                />
+                              </Grid>
+                            </Grid>
+                          </Box>
+                        </CardContent>
+                        <Divider />
+                        <CardActions sx={{ justifyContent: "flex-end" }}>
+                          <Button type='submit' variant='contained'>
+                            Update details
+                          </Button>
+                        </CardActions>
+                      </Card>
+                    </Form>
+                  )}
+                </Formik>
+              </div>
+            </Stack>
+          </Container>
+        </Box>
       </>
     );
   else

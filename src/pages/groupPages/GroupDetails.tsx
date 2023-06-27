@@ -12,21 +12,19 @@ import {
   Tabs,
   Typography,
 } from "@mui/material";
-import React, {  useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import GroupExpense from "./GroupExpense";
 import GroupForm from "./GroupForm";
-import {  useParams } from "react-router-dom";
-import {  useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
 import { Rootstate } from "../../redux/store";
 import { groupDataType } from "../../redux/groupSlice";
 import AddExpenseForm from "../expensePages/AddExpanseForm";
-import { GeneralPropType } from "../../routes/AuthRoutes";
 import { expenseDataType } from "../../redux/expanseSlice";
 import Loader from "../../components/Loader";
 import { useSnackbar } from "notistack";
 import GroupDeleteForm from "./GroupDeleteForm";
 import GroupMemberPage from "./GroupMemberPage";
-
 
 function a11yProps(index: number) {
   return {
@@ -55,8 +53,11 @@ export const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-interface PropType extends GeneralPropType {}
-function GroupDetails({ userData }: PropType) {
+function GroupDetails() {
+  const { profile } = useSelector((state: Rootstate) => {
+    return state.profileReducer;
+  });
+
   const [tabNumber, setTabNumber] = useState(0);
   const { id } = useParams();
   const [groupMembers, setGroupMember] = useState<string[]>([]);
@@ -67,6 +68,7 @@ function GroupDetails({ userData }: PropType) {
   const { expenseList } = useSelector(
     (state: Rootstate) => state.expenseReducer
   );
+
   const groupData: groupDataType = useSelector((state: Rootstate) => {
     const data = state.groupReducer;
     const Newdata = data.groupList.filter(
@@ -128,7 +130,6 @@ function GroupDetails({ userData }: PropType) {
                   height: "32px",
                 }}
                 groupData={groupData}
-                userData={userData}
               />
             </Box>
           </Box>
@@ -152,7 +153,6 @@ function GroupDetails({ userData }: PropType) {
                       height: "32px",
                     }}
                     FriendsList={groupData.member_list}
-                    userData={userData}
                   />
                 </Box>
                 <Divider />
@@ -182,14 +182,12 @@ function GroupDetails({ userData }: PropType) {
                       value={tabNumber}
                       index={0}
                       groupExpenseList={activeGroupExpense}
-                      userData={userData}
                     ></GroupExpense>
                     {/* Settled Box  */}
                     <GroupExpense
                       value={tabNumber}
                       index={1}
                       groupExpenseList={settleGroupExpense}
-                      userData={userData}
                     ></GroupExpense>
                   </>
                 ) : (
@@ -200,11 +198,10 @@ function GroupDetails({ userData }: PropType) {
                 <GroupMemberPage
                   groupMembers={groupMembers}
                   groupData={groupData}
-                  userData={userData}
                 />
               </Grid>
               <Grid item xs={12} sm={12} lg={6}>
-                {userData?.email == groupData.admin && (
+                {profile?.email == groupData.admin && (
                   <GroupDeleteForm groupData={groupData} />
                 )}
               </Grid>

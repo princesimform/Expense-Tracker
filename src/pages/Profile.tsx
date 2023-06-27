@@ -7,9 +7,7 @@ import AccountProfile from "../components/profile/AccountProfile";
 import AccountProfileDetails from "../components/profile/AccountProfileDetails";
 import AuthService from "../libs/services/firebase/auth";
 import { Rootstate } from "../redux/store";
-import { GeneralPropType } from "../routes/AuthRoutes";
-interface PropType extends GeneralPropType {}
-function Profile({ userData }: PropType) {
+function Profile() {
   const { profile } = useSelector((state: Rootstate) => {
     return state.profileReducer;
   });

@@ -3,10 +3,11 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { expenseDataType } from "../../redux/expanseSlice";
 import { Rootstate } from "../../redux/store";
-import { GeneralPropType } from "../../routes/AuthRoutes";
 
-interface PropType extends GeneralPropType {}
-function OverAllSettlement({ userData }: PropType) {
+function OverAllSettlement() {
+  const { profile } = useSelector((state: Rootstate) => {
+    return state.profileReducer;
+  });
   const { expenseList } = useSelector(
     (state: Rootstate) => state.expenseReducer
   );
@@ -24,7 +25,7 @@ function OverAllSettlement({ userData }: PropType) {
         expense.member_list != undefined &&
         expense.member_list.length > 1
       ) {
-        if (expense.paid_by == userData?.email) {
+        if (expense.paid_by == profile?.email) {
           tempgetAmount =
             tempgetAmount +
             (expense.expense_amount -

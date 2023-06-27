@@ -1,17 +1,11 @@
 import React from "react";
-import {
-  Card,
-  CardContent,
-  Stack,
-  Typography,
-} from "@mui/material";
+import { Card, CardContent, Stack, Typography } from "@mui/material";
 import GroupForm from "../../pages/groupPages/GroupForm";
-import { GeneralPropType } from "../../routes/AuthRoutes";
-interface PropType extends GeneralPropType {
+interface PropType {
   numberOfGroups: number;
   sx: { height: string };
 }
-function OverviewOfGroups({ userData, sx, numberOfGroups }: PropType) {
+function OverviewOfGroups({ sx, numberOfGroups }: PropType) {
   return (
     <>
       <Card
@@ -38,15 +32,15 @@ function OverviewOfGroups({ userData, sx, numberOfGroups }: PropType) {
             </Stack>
             <GroupForm
               ModelButtonStyle={{
-                background: "linear-gradient( 90deg, hsl(263deg 54% 59% / 100%), hsl(263deg 54% 59% / 100%))",
-                color : "white",
-                border : "1px solid white",
+                background:
+                  "linear-gradient( 90deg, hsl(263deg 54% 59% / 100%), hsl(263deg 54% 59% / 100%))",
+                color: "white",
+                border: "1px solid white",
                 borderRadius: "27px",
                 width: "56px",
                 margin: "10px",
                 height: "56px",
               }}
-              userData={userData}
             />
           </Stack>
         </CardContent>

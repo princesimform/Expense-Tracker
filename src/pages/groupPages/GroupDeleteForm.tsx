@@ -11,14 +11,13 @@ import { Box } from "@mui/system";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { groupDataType, updateData } from "../../redux/groupSlice";
-import { GeneralPropType } from "../../routes/AuthRoutes";
 import { useDispatch } from "react-redux";
 import FirebaseFileHandling from "../../libs/services/firebase/fileHandling";
 import { useSnackbar } from "notistack";
 import { AppDispatch } from "../../redux/store";
 import { GetTimestemp } from "../../libs/services/utills";
 
-interface PropType extends GeneralPropType {
+interface PropType  {
   groupData: groupDataType;
 }
 function GroupDeleteForm({ groupData }: PropType) {

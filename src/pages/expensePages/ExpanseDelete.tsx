@@ -10,21 +10,25 @@ import {
   Typography,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   expenseDataType,
   getExpenses,
   updateExpense,
 } from "../../redux/expanseSlice";
 import { useSnackbar } from "notistack";
-import { GeneralPropType } from "../../routes/AuthRoutes";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { GetTimestemp } from "../../libs/services/utills";
+import { Rootstate } from "../../redux/store";
 
-interface PropType extends GeneralPropType {
+interface PropType {
   expnaseData: expenseDataType;
 }
-function ExpanseDelete({ expnaseData, userData }: PropType) {
+function ExpanseDelete({ expnaseData }: PropType) {
+  const { profile } = useSelector((state: Rootstate) => {
+    return state.profileReducer;
+  });
+
   const [openDialog, setOpenDialog] = useState(false);
   const nevagite = useNavigate();
   const dispatch = useDispatch();
@@ -39,7 +43,7 @@ function ExpanseDelete({ expnaseData, userData }: PropType) {
           variant: "success",
           autoHideDuration: 3000,
         });
-        await dispatch(getExpenses(userData?.email));
+        await dispatch(getExpenses(profile?.email));
 
         setOpenDialog(false);
       }

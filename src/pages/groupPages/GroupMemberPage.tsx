@@ -14,18 +14,17 @@ import {
 } from "@mui/material";
 import { Field, Formik } from "formik";
 import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { groupDataType, updateData, getGroups } from "../../redux/groupSlice";
-import { GeneralPropType } from "../../routes/AuthRoutes";
 import { StyledTableCell, StyledTableRow } from "./GroupDetails";
 import * as yup from "yup";
 import { useSnackbar } from "notistack";
-import { AppDispatch } from "../../redux/store";
+import { AppDispatch, Rootstate } from "../../redux/store";
 import useToggle from "../../customHooks/useToggle";
 import Loader from "../../components/Loader";
 import DeleteIcon from "@mui/icons-material/Delete";
 
-interface PropType extends GeneralPropType {
+interface PropType {
   groupMembers: string[];
   groupData: groupDataType;
 }
@@ -33,7 +32,10 @@ interface formFieldType {
   new_member: string;
 }
 
-function GroupMemberPage({ groupMembers, groupData, userData }: PropType) {
+function GroupMemberPage({ groupMembers, groupData }: PropType) {
+  const { profile } = useSelector((state: Rootstate) => {
+    return state.profileReducer;
+  });
   const [groupMembersList, setGroupMemberList] = useState<string[]>([]);
   const [toggles, toggle] = useToggle({
     processing: false,
@@ -57,7 +59,7 @@ function GroupMemberPage({ groupMembers, groupData, userData }: PropType) {
         variant: "success",
         autoHideDuration: 3000,
       });
-      userData?.email && (await dispatch(getGroups(userData?.email)));
+      profile?.email && (await dispatch(getGroups(profile?.email)));
       setGroupMemberList((prev) => [...prev, values.new_member]);
       values.new_member = "";
       toggle("processing");
@@ -83,10 +85,9 @@ function GroupMemberPage({ groupMembers, groupData, userData }: PropType) {
       variant: "success",
       autoHideDuration: 3000,
     });
-    userData?.email && (await dispatch(getGroups(userData?.email)));
+    profile?.email && (await dispatch(getGroups(profile?.email)));
     setGroupMemberList(new_member_list);
   };
-
 
   return (
     <>
@@ -169,8 +170,8 @@ function GroupMemberPage({ groupMembers, groupData, userData }: PropType) {
                         >
                           <Typography>{member}</Typography>
 
-                          {userData?.email != member &&
-                            userData?.email == groupData.admin && (
+                          {profile?.email != member &&
+                            profile?.email == groupData.admin && (
                               <Button
                                 sx={{
                                   borderRadius: "16px",
