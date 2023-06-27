@@ -1,17 +1,11 @@
-import {
-  Button,
-  Container,
-  Divider,
-  Grid,
-  Typography,
-} from "@mui/material";
+import { Button, Container, Divider, Grid, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import GroupCard from "../../pages/groupPages/GroupCard";
 import { groupDataType } from "../../redux/groupSlice";
 
-interface PropType  {
+interface PropType {
   groups: groupDataType[];
 }
 function DashboardGroup({ groups }: PropType) {
@@ -19,6 +13,7 @@ function DashboardGroup({ groups }: PropType) {
   return (
     <>
       <Box
+        key='dashboardList'
         margin='0px 16px'
         display='flex'
         alignItems='center'
@@ -45,7 +40,7 @@ function DashboardGroup({ groups }: PropType) {
                 <>
                   {index < 3 && (
                     <Grid item xs={12} sm={6} lg={4} key={group.created_at}>
-                      <GroupCard  groupItem={group} />
+                      <GroupCard groupItem={group} />
                     </Grid>
                   )}
                 </>

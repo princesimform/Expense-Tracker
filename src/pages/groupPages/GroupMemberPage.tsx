@@ -123,10 +123,14 @@ function GroupMemberPage({ groupMembers, groupData }: PropType) {
                     type='email'
                     as={TextField}
                     error={
-                      Boolean(errors.new_member) && Boolean(touched.new_member)
+                      Boolean(errors.new_member)
+                        ? Boolean(touched.new_member)
+                        : undefined
                     }
-                    helperText={
-                      Boolean(touched.new_member) && errors.new_member
+                    helpertext={
+                      Boolean(touched.new_member)
+                        ? errors.new_member
+                        : undefined
                     }
                   />
                 </Grid>

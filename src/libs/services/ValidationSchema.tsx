@@ -51,6 +51,14 @@ export const LoginFormSchema = yup.object({
     .min(8, "Password must be at least 8 characters long"),
 });
 
+export const ForgotPasswordFormSchema = yup.object({
+  email: yup
+    .string()
+    .trim()
+    .required("Email is required")
+    .email("Enter valid email address")
+});
+
 export const AddMemberFormSchema = yup.object({
   new_member: yup
     .string()

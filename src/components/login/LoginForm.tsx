@@ -4,12 +4,11 @@ import { Button, IconButton, InputAdornment, TextField } from "@mui/material";
 import { Box } from "@mui/system";
 import { Field, Form, Formik } from "formik";
 import { useSnackbar } from "notistack";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import useToggle from "../../customHooks/useToggle";
 import AuthService from "../../libs/services/firebase/auth";
 import { LoginFormSchema } from "../../libs/services/ValidationSchema";
 import Styles from "./../../style/Authform.module.css";
-import Link from "@mui/material";
 interface PropType {
   toggleSignUp: Function;
 }
@@ -84,7 +83,6 @@ function LoginForm({ toggleSignUp }: PropType) {
             <Form onSubmit={handleSubmit} className={Styles.LoginForm}>
               <Field
                 fullWidth
-                id='outlined-basic'
                 margin='dense'
                 label='Email Address'
                 variant='outlined'
@@ -94,14 +92,13 @@ function LoginForm({ toggleSignUp }: PropType) {
                 color='primary'
                 as={TextField}
                 error={Boolean(errors.email) && Boolean(touched.email)}
-                helperText={Boolean(touched.email) && errors.email}
+                helpertext={Boolean(touched.email) && errors.email}
               />
               <Box className={Styles.LoginFormSpace}></Box>
 
               <Field
                 fullWidth
                 margin='dense'
-                id='outlined-basic'
                 label='Password'
                 name='password'
                 as={TextField}
@@ -125,7 +122,7 @@ function LoginForm({ toggleSignUp }: PropType) {
                   ),
                 }}
                 error={Boolean(errors.password) && Boolean(touched.password)}
-                helperText={Boolean(touched.password) && errors.password}
+                helpertext={Boolean(touched.password) && errors.password}
               />
               <Box className={Styles.LoginBtn}>
                 <Button
@@ -137,14 +134,13 @@ function LoginForm({ toggleSignUp }: PropType) {
                   {toggles.processing ? "Processing..." : "Sign In"}
                 </Button>
                 <Box className={Styles.forgetPasswordBtn}>
-                  {/* <Link
-                    to='/'
-                    underline='none'
+                  <Link
+                    to='/reset-password'
                     className={Styles.forgetPasswordBtnLink}
-                    sx={{ margin: "auto 0" }}
+                    // sx={{ margin: "auto 0" }}
                   >
                     Forgot Password?
-                  </Link> */}
+                  </Link>
                 </Box>
               </Box>
             </Form>

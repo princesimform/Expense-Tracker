@@ -19,7 +19,7 @@ interface PropType  {
   children?: React.ReactNode;
   index: number;
   value: number;
-  groupExpenseList: expenseDataType[];
+  groupexpenselist: expenseDataType[];
 }
 
 function GroupExpense(props: PropType) {
@@ -30,7 +30,7 @@ function GroupExpense(props: PropType) {
     setActiveExpense(expense);
     setIsExpenseOpen(true);
   };
-  if (props.groupExpenseList != undefined) {
+  if (props.groupexpenselist != undefined) {
     return (
       <div
         role='tabpanel'
@@ -44,8 +44,8 @@ function GroupExpense(props: PropType) {
             <TableContainer sx={{ maxHeight: 440 }}>
               <Table stickyHeader aria-label='sticky table'>
                 <TableBody>
-                  {props.groupExpenseList.length > 0 ? (
-                    props.groupExpenseList.map((expanse) => (
+                  {props.groupexpenselist.length > 0 ? (
+                    props.groupexpenselist.map((expanse) => (
                       <>
                         <TableRow
                           hover

@@ -180,7 +180,7 @@ function ProfileUpdateForm() {
                                       Boolean(errors.photoURL) &&
                                       Boolean(touched.photoURL)
                                     }
-                                    helperText={
+                                    helpertext={
                                       Boolean(touched.photoURL) &&
                                       errors.photoURL
                                     }
@@ -203,7 +203,7 @@ function ProfileUpdateForm() {
                                     Boolean(errors.displayName) &&
                                     Boolean(touched.displayName)
                                   }
-                                  helperText={
+                                  helpertext={
                                     Boolean(touched.displayName) &&
                                     errors.displayName
                                   }
@@ -222,7 +222,7 @@ function ProfileUpdateForm() {
                                     Boolean(errors.email) &&
                                     Boolean(touched.email)
                                   }
-                                  helperText={
+                                  helpertext={
                                     Boolean(touched.email) && errors.email
                                   }
                                 />
@@ -241,7 +241,7 @@ function ProfileUpdateForm() {
                                     Boolean(errors.phoneNumber) &&
                                     Boolean(touched.phoneNumber)
                                   }
-                                  helperText={
+                                  helpertext={
                                     Boolean(touched.phoneNumber) &&
                                     errors.phoneNumber
                                   }
@@ -260,7 +260,7 @@ function ProfileUpdateForm() {
                                     Boolean(errors.city) &&
                                     Boolean(touched.city)
                                   }
-                                  helperText={
+                                  helpertext={
                                     Boolean(touched.city) && errors.city
                                   }
                                   // value={values.firstName}
@@ -279,7 +279,7 @@ function ProfileUpdateForm() {
                                     Boolean(errors.state) &&
                                     Boolean(touched.state)
                                   }
-                                  helperText={
+                                  helpertext={
                                     Boolean(touched.state) && errors.state
                                   }
                                   // value={values.firstName}
@@ -298,7 +298,7 @@ function ProfileUpdateForm() {
                                     Boolean(errors.country) &&
                                     Boolean(touched.country)
                                   }
-                                  helperText={
+                                  helpertext={
                                     Boolean(touched.country) && errors.country
                                   }
                                   // value={values.firstName}
@@ -317,7 +317,7 @@ function ProfileUpdateForm() {
                                     Boolean(errors.description) &&
                                     Boolean(touched.description)
                                   }
-                                  helperText={
+                                  helpertext={
                                     Boolean(touched.description) &&
                                     errors.description
                                   }

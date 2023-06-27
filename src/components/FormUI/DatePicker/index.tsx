@@ -27,7 +27,7 @@ const DateTimePicker: React.FC<DateTimePickerProps> = ({
 
   if (meta && meta.touched && meta.error) {
     configDateTimePicker.error = true;
-    configDateTimePicker.helperText = meta.error;
+    configDateTimePicker.helpertext = meta.error;
   }
 
   return <TextField {...configDateTimePicker} />;

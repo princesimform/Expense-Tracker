@@ -181,13 +181,13 @@ function GroupDetails() {
                     <GroupExpense
                       value={tabNumber}
                       index={0}
-                      groupExpenseList={activeGroupExpense}
+                      groupexpenselist={activeGroupExpense}
                     ></GroupExpense>
                     {/* Settled Box  */}
                     <GroupExpense
                       value={tabNumber}
                       index={1}
-                      groupExpenseList={settleGroupExpense}
+                      groupexpenselist={settleGroupExpense}
                     ></GroupExpense>
                   </>
                 ) : (

@@ -11,7 +11,7 @@ import {
 import { groupDataType } from "../../redux/groupSlice";
 import { useNavigate } from "react-router-dom";
 import GroupWiseSetttlement from "../../components/settlement/GroupWiseSetttlement";
-interface PropType  {
+interface PropType {
   groupItem: groupDataType;
 }
 function GroupCard({ groupItem }: PropType) {
@@ -35,9 +35,7 @@ function GroupCard({ groupItem }: PropType) {
             </Stack>
           </Stack>
           <Stack sx={{ textAlign: "left", py: 2 }} spacing={5}>
-            <GroupWiseSetttlement
-              groupName={groupItem.name}
-            />
+            <GroupWiseSetttlement groupName={groupItem.name} />
           </Stack>
           <Stack
             display='flex'
@@ -57,8 +55,8 @@ function GroupCard({ groupItem }: PropType) {
             <Stack>
               <AvatarGroup max={3}>
                 {groupItem.member_list.length > 0 ? (
-                  groupItem.member_list.map((member) => {
-                    return <Avatar alt={member} src={"asd"} />;
+                  groupItem.member_list.map((member, index) => {
+                    return <Avatar key={index} alt={member} src={"asd"} />;
                   })
                 ) : (
                   <></>

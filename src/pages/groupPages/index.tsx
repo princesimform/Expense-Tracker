@@ -1,14 +1,8 @@
 import { Add } from "@mui/icons-material";
-import {
-  Box,
-  Container,
-  Divider,
-  Grid,
-  Typography,
-} from "@mui/material";
+import { Box, Container, Divider, Grid, Typography } from "@mui/material";
 import UserImg from "./../../assets/avatar.jpg";
 
-import React, {  useEffect } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getGroups, groupDataType } from "../../redux/groupSlice";
 import { AppDispatch, Rootstate } from "../../redux/store";
@@ -26,9 +20,9 @@ function Groups() {
   }, []);
 
   return (
-    <div>
+    <div key='groups'>
       <Box
-      margin='0px 16px'
+        margin='0px 16px'
         display='flex'
         alignItems='center'
         justifyContent='space-between'
@@ -50,10 +44,10 @@ function Groups() {
       <Container maxWidth='xl'>
         <Grid container spacing={3}>
           {groupList.length > 0 ? (
-            groupList.map((group: groupDataType) => (
+            groupList.map((group: groupDataType, index) => (
               <>
-                <Grid item xs={12} sm={6} lg={4} key={group.created_at}>
-                  <GroupCard  groupItem={group} />
+                <Grid item xs={12} sm={6} lg={4} key={index}>
+                  <GroupCard groupItem={group} />
                 </Grid>
               </>
             ))

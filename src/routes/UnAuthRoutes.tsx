@@ -3,6 +3,7 @@ import { Route } from "react-router-dom";
 const UnAuthGuard = lazy(() => import("./../guard/UnAuthGuard"));
 const LandingPage = lazy(() => import("../pages/LandingPage"));
 const Form = lazy(() => import("./../pages/Form"));
+const ResetPassword = lazy(() => import("../components/resetPassword"));
 
 const UnAuthRoutes: ReactNode[] = [
   <Route
@@ -19,6 +20,11 @@ const UnAuthRoutes: ReactNode[] = [
     key='Home'
     path='/'
     element={<UnAuthGuard component={<LandingPage />} />}
+  />,
+  <Route
+    key='Reset Password'
+    path='/reset-password'
+    element={<UnAuthGuard component={<ResetPassword />} />}
   />,
 ];
 

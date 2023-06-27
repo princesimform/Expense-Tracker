@@ -50,7 +50,7 @@ interface PropsType {
   };
 }
 
-function GroupForm({ groupData,  ModelButtonStyle }: PropsType) {
+function GroupForm({ groupData, ModelButtonStyle }: PropsType) {
   const { profile } = useSelector((state: Rootstate) => {
     return state.profileReducer;
   });
@@ -164,15 +164,15 @@ function GroupForm({ groupData,  ModelButtonStyle }: PropsType) {
           variant: "success",
           autoHideDuration: 3000,
         });
-        toggle("isModleOpen");
         profile?.email && dispatch(getGroups(profile?.email));
       } else {
         enqueueSnackbar(response.payload.message, {
           variant: "success",
           autoHideDuration: 3000,
         });
-        toggle("isModleOpen");
       }
+      toggle("processing");
+      toggle("isModleOpen");
     } catch (error) {
       enqueueSnackbar(`Group Updated successfully `, {
         variant: "error",
@@ -248,11 +248,14 @@ function GroupForm({ groupData,  ModelButtonStyle }: PropsType) {
                         handleFileInputChange(event, setFieldValue)
                       }
                       error={
-                        Boolean(errors.group_image) &&
-                        Boolean(touched.group_image)
+                        Boolean(errors.group_image)
+                          ? Boolean(touched.group_image)
+                          : undefined
                       }
-                      helperText={
-                        Boolean(touched.group_image) && errors.group_image
+                      helpertext={
+                        Boolean(touched.group_image)
+                          ? errors.group_image?.toString()
+                          : undefined
                       }
                     />
                     <Avatar
@@ -284,7 +287,7 @@ function GroupForm({ groupData,  ModelButtonStyle }: PropsType) {
                     sx={{ mb: 2 }}
                     as={TextField}
                     error={Boolean(errors.name) && Boolean(touched.name)}
-                    helperText={Boolean(touched.name) && errors.name}
+                    helpertext={Boolean(touched.name) && errors.name}
                   />
 
                   <Box

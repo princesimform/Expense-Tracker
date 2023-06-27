@@ -182,7 +182,6 @@ function RegisterForm({ toggleSignUp }: PropType) {
 
               <Field
                 fullWidth
-                id='outlined-basic'
                 margin='dense'
                 label='Full Name'
                 type='text'
@@ -191,11 +190,10 @@ function RegisterForm({ toggleSignUp }: PropType) {
                 autoFocus
                 as={TextField}
                 error={Boolean(errors.full_name) && Boolean(touched.full_name)}
-                helperText={Boolean(touched.full_name) && errors.full_name}
+                helpertext={Boolean(touched.full_name) && errors.full_name}
               />
               <Field
                 fullWidth
-                id='outlined-basic'
                 margin='dense'
                 label='Email Address'
                 type='email'
@@ -203,12 +201,11 @@ function RegisterForm({ toggleSignUp }: PropType) {
                 name='email'
                 as={TextField}
                 error={Boolean(errors.email) && Boolean(touched.email)}
-                helperText={Boolean(touched.email) && errors.email}
+                helpertext={Boolean(touched.email) && errors.email}
               />
               <Field
                 fullWidth
                 margin='dense'
-                id='outlined-basic'
                 name='password'
                 label='Password'
                 variant='outlined'
@@ -232,12 +229,11 @@ function RegisterForm({ toggleSignUp }: PropType) {
                   ),
                 }}
                 error={Boolean(errors.password) && Boolean(touched.password)}
-                helperText={Boolean(touched.password) && errors.password}
+                helpertext={Boolean(touched.password) && errors.password}
               />
               <Field
                 fullWidth
                 margin='dense'
-                id='outlined-basic'
                 name='confirm_password'
                 label='Confirm Password'
                 variant='outlined'
@@ -264,7 +260,7 @@ function RegisterForm({ toggleSignUp }: PropType) {
                   Boolean(errors.confirm_password) &&
                   Boolean(touched.confirm_password)
                 }
-                helperText={
+                helpertext={
                   Boolean(touched.confirm_password) && errors.confirm_password
                 }
               />

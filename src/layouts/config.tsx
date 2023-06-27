@@ -4,6 +4,8 @@ import ShoppingCartCheckoutIcon from "@mui/icons-material/ShoppingCartCheckout";
 import { ReactNode } from "react";
 import { ReactJSXElement } from "@emotion/react/types/jsx-namespace";
 import { Group } from "@mui/icons-material";
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import DashboardIcon from '@mui/icons-material/Dashboard';
 export interface itemsType {
   title: string;
   path: string;
@@ -13,7 +15,7 @@ export const items: itemsType[] = [
   {
     title: "Dashboard",
     path: "/dashboard",
-    icon: <Group />,
+    icon: <DashboardIcon />,
   },
   {
     title: "Group",
@@ -24,5 +26,10 @@ export const items: itemsType[] = [
     title: "Expense",
     path: "/expense",
     icon: <ShoppingCartCheckoutIcon />,
+  },
+  {
+    title: "Profile",
+    path: "/profile",
+    icon: <AccountCircleIcon />,
   },
 ];
