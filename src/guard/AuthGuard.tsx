@@ -54,11 +54,11 @@ function AuthGuards({ component }: PropType) {
       if (typeof AuthService.getProfile != "boolean") {
         const user: User = await AuthService.getProfile(true);
         const oldtoken = localStorage.getItem("isExpire");
-        const newToken = await user.getIdToken();
+        const newToken = JSON.stringify(new Date().getTime());
         if (!user) {
           navigate(`/login`);
         } else {
-          if (oldtoken == newToken) {
+          if (Number(oldtoken) > Number(newToken)) {
             setStatus(true);
             return user;
           } else {

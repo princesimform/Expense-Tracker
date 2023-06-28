@@ -55,7 +55,9 @@ AuthService!.register = async (
           }
           localStorage.setItem(
             "isExpire",
-            await fauth.currentUser.getIdToken()
+            JSON.stringify(
+              new Date(new Date().getTime() + 24 * 60 * 60 * 1000).getTime()
+            )
           );
           updateProfile(fauth.currentUser, UpdateData)
             .then(() => {
@@ -88,7 +90,9 @@ AuthService.login = (email: string, password: string) => {
         if (user) {
           localStorage.setItem(
             "isExpire",
-            await fauth.currentUser!.getIdToken()
+            JSON.stringify(
+              new Date(new Date().getTime() + 24 * 60 * 60 * 1000).getTime()
+            )
           );
           resolve({ status: true, message: "Login successfully." });
         } else {
