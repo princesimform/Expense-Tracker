@@ -5,7 +5,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import AccountProfile from "../components/profile/AccountProfile";
 import AccountProfileDetails from "../components/profile/AccountProfileDetails";
-import AuthService from "../libs/services/firebase/auth";
+import AuthService from "../services/firebase/auth";
 import { Rootstate } from "../redux/store";
 function Profile() {
   const { profile } = useSelector((state: Rootstate) => {

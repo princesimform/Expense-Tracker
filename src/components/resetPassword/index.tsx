@@ -11,7 +11,7 @@ import { getAuth, sendPasswordResetEmail } from "firebase/auth";
 import { Field, Form, Formik } from "formik";
 import { useSnackbar } from "notistack";
 import React from "react";
-import { ForgotPasswordFormSchema } from "../../libs/services/ValidationSchema";
+import { ForgotPasswordFormSchema } from "../../services/ValidationSchema";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { useNavigate } from "react-router-dom";
 function ResetPassword() {

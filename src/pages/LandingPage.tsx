@@ -15,7 +15,7 @@ import {
   SupervisedUserCircle,
 } from "@mui/icons-material";
 import { Linode } from "../assets/Linode";
-import AuthService from "../libs/services/firebase/auth";
+import AuthService from "../services/firebase/auth";
 import { User } from "firebase/auth";
 import Loader from "../components/Loader";
 

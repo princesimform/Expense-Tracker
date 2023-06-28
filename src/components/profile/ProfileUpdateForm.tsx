@@ -20,8 +20,8 @@ import { useSnackbar } from "notistack";
 import React, { ChangeEvent, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { setFileinFirebase } from "../../libs/services/utills";
-import { ProfileUpdateFormSchema } from "../../libs/services/ValidationSchema";
+import { setFileinFirebase } from "../../services/utills";
+import { ProfileUpdateFormSchema } from "../../services/ValidationSchema";
 import {
   getProfile,
   profileDataType,

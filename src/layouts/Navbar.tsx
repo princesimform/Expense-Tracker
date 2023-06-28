@@ -23,7 +23,7 @@ import {
 } from "@mui/material";
 import { useSnackbar } from "notistack";
 import { NavLink, useNavigate } from "react-router-dom";
-import AuthService from "../libs/services/firebase/auth";
+import AuthService from "../services/firebase/auth";
 import { User } from "@firebase/auth";
 import MenuIcon from "@mui/icons-material/Menu";
 import AvatarImg from "./../assets/avatar.jpg";

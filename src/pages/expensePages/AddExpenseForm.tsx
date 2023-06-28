@@ -24,7 +24,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 
 import { ErrorMessage, Field, Form, Formik } from "formik";
-import { AddExpenseFormSchema } from "../../libs/services/ValidationSchema";
+import { AddExpenseFormSchema } from "../../services/ValidationSchema";
 import useToggle from "../../customHooks/useToggle";
 import { AppDispatch, Rootstate } from "../../redux/store";
 import { Assignment } from "@mui/icons-material";
@@ -43,10 +43,10 @@ import {
   setExpense,
   updateExpense,
 } from "../../redux/expenseSlice";
-import ExpenseFirestoreService from "../../libs/services/firebase/expenseFirestore";
+import ExpenseFirestoreService from "../../services/firebase/expenseFirestore";
 import { useSnackbar } from "notistack";
 import EditIcon from "@mui/icons-material/Edit";
-import FirebaseFileHandling from "../../libs/services/firebase/fileHandling";
+import FirebaseFileHandling from "../../services/firebase/fileHandling";
 import AddIcon from "@mui/icons-material/Add";
 import Styles from "./../../style/default.module.css";
 import { PayloadAction } from "@reduxjs/toolkit";

@@ -5,7 +5,7 @@ import {
 } from "@reduxjs/toolkit";
 import React from "react";
 import { Rootstate } from "./store";
-import GroupFirestoreService from "../libs/services/firebase/groupFirestoreServices";
+import GroupFirestoreService from "../services/firebase/groupFirestoreServices";
 
 export const setData = createAsyncThunk(
   "firestore/setData",

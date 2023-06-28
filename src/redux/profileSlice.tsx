@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import ProfileService from "../libs/services/firebase/profile";
+import ProfileService from "../services/firebase/profile";
 
 export const setProfile = createAsyncThunk(
   "profile/setProfile",

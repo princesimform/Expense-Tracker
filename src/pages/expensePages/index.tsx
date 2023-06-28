@@ -10,7 +10,7 @@ import { Rootstate } from "../../redux/store";
 import AddExpenseForm from "./AddExpanseForm";
 import { useSnackbar } from "notistack";
 import ExpenseDataTable from "../../components/expense/ExpenseDataTable";
-import { GetTimestemp } from "../../libs/services/utills";
+import { GetTimestemp } from "../../services/utills";
 
 function ExpenseList() {
   return (

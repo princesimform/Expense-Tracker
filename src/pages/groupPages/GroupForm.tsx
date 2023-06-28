@@ -21,12 +21,12 @@ import {
 } from "../../redux/groupSlice";
 import AddGroupImg from "./../../assets/add_group.png";
 import { ErrorMessage, Field, Form, Formik } from "formik";
-import { AddGroupSchema } from "../../libs/services/ValidationSchema";
+import { AddGroupSchema } from "../../services/ValidationSchema";
 import { useSnackbar } from "notistack";
 import { useNavigate } from "react-router-dom";
 import useToggle from "../../customHooks/useToggle";
 import EditIcon from "@mui/icons-material/Edit";
-import { GetTimestemp, setFileinFirebase } from "../../libs/services/utills";
+import { GetTimestemp, setFileinFirebase } from "../../services/utills";
 import { AppDispatch, Rootstate } from "../../redux/store";
 
 const style = {

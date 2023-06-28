@@ -24,7 +24,7 @@ import Loader from "../Loader";
 import { useSnackbar } from "notistack";
 import ExpenseWiseSettlement from "../settlement/ExpenseWiseSettlement";
 import { ErrorMessage, Form, Formik } from "formik";
-import { SettleExpenseFormSchema } from "../../libs/services/ValidationSchema";
+import { SettleExpenseFormSchema } from "../../services/ValidationSchema";
 import { AppDispatch, Rootstate } from "../../redux/store";
 import { PayloadAction } from "@reduxjs/toolkit";
 import emailjs from "@emailjs/browser";

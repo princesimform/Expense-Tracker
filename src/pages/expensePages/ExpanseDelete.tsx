@@ -18,7 +18,7 @@ import {
 } from "../../redux/expenseSlice";
 import { useSnackbar } from "notistack";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { GetTimestemp } from "../../libs/services/utills";
+import { GetTimestemp } from "../../services/utills";
 import { AppDispatch, Rootstate } from "../../redux/store";
 import { PayloadAction } from "@reduxjs/toolkit";
 

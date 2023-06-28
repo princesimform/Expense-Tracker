@@ -1,5 +1,5 @@
 import { initializeApp } from "@firebase/app";
-import { FIREBASE_CONFIG } from "../../../firebase-config";
+import { FIREBASE_CONFIG } from "../../firebase-config";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -15,7 +15,7 @@ import storage, {
   uploadBytes,
 } from "firebase/storage";
 import ProfileService from "./profile";
-import { profileDataType } from "../../../redux/profileSlice";
+import { profileDataType } from "../../redux/profileSlice";
 const firebase = initializeApp(FIREBASE_CONFIG);
 interface AuthServiceType {
   [key: string]: Function;

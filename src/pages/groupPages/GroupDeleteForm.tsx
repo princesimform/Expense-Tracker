@@ -12,10 +12,10 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { groupDataType, updateData } from "../../redux/groupSlice";
 import { useDispatch } from "react-redux";
-import FirebaseFileHandling from "../../libs/services/firebase/fileHandling";
+import FirebaseFileHandling from "../../services/firebase/fileHandling";
 import { useSnackbar } from "notistack";
 import { AppDispatch } from "../../redux/store";
-import { GetTimestemp } from "../../libs/services/utills";
+import { GetTimestemp } from "../../services/utills";
 
 interface PropType {
   groupData: groupDataType;

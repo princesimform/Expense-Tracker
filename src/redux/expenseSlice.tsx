@@ -4,7 +4,7 @@ import {
   createSlice,
 } from "@reduxjs/toolkit";
 import React from "react";
-import ExpenseFirestoreService from "../libs/services/firebase/expenseFirestore";
+import ExpenseFirestoreService from "../services/firebase/expenseFirestore";
 import { Rootstate } from "./store";
 
 export const setExpense = createAsyncThunk(
