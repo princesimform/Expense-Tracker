@@ -53,8 +53,6 @@ function GroupMemberPage({ groupMembers, groupData }: PropType) {
     toggle("processing");
     const reqData: groupDataType = JSON.parse(JSON.stringify(groupData));
     reqData.member_list = [...groupMembersList, values.new_member];
-    console.log(reqData.member_list);
-    // throw new Error("stop here");
 
     const response = await dispatch(updateData(reqData));
     if (response.payload.status) {

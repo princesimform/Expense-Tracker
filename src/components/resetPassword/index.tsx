@@ -18,7 +18,6 @@ function ResetPassword() {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const navigate = useNavigate();
   const handlesubmit = async (values: { email: string }) => {
-    console.log(values);
     const auth = getAuth();
     await sendPasswordResetEmail(auth, values.email)
       .then((res) => {
@@ -72,8 +71,12 @@ function ResetPassword() {
                     id='email'
                     label='Mail'
                     type='email'
-                    error={Boolean(errors.email) && Boolean(touched.email)}
-                    helpertext={Boolean(touched.email) && errors.email}
+                    error={
+                      Boolean(errors.email) ? Boolean(touched.email) : undefined
+                    }
+                    helpertext={
+                      Boolean(touched.email) ? errors.email : undefined
+                    }
                   />
                 </Grid>
               </Grid>

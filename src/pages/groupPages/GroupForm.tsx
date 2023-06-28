@@ -41,7 +41,7 @@ const style = {
 };
 interface formDataType {
   name: string;
-  group_image: File | null;
+  group_image: File | "";
 }
 interface PropsType {
   groupData?: groupDataType;
@@ -66,14 +66,14 @@ function GroupForm({ groupData, ModelButtonStyle }: PropsType) {
   const [GroupProfileimage, setgroupProfileimage] = useState<string>("");
   const [initalValues, setInitalValues] = useState<formDataType>({
     name: "",
-    group_image: null,
+    group_image: "",
   });
 
   useEffect(() => {
     if (groupData) {
       setInitalValues({
         name: groupData.name,
-        group_image: null,
+        group_image: "",
       }),
         setgroupProfileimage(groupData.group_image);
     }
@@ -112,7 +112,7 @@ function GroupForm({ groupData, ModelButtonStyle }: PropsType) {
         deleted_at: "",
         member_list: [`${profile?.email}`],
       };
-      if (values.group_image != null) {
+      if (values.group_image != "") {
         const fileUrl = await setFileinFirebase(
           values.group_image,
           "group_images",
@@ -149,7 +149,7 @@ function GroupForm({ groupData, ModelButtonStyle }: PropsType) {
     const NewData = JSON.parse(JSON.stringify(groupData));
     NewData.name = values.name;
     NewData.group_image = values.group_image;
-    if (values.group_image != null) {
+    if (values.group_image != "") {
       const fileUrl = await setFileinFirebase(
         values.group_image,
         "group_images",

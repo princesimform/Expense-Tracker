@@ -67,8 +67,6 @@ function ProfileUpdateForm() {
 
   const handleSubmit = async (values: profileDataType) => {
     setIsProcessing(true);
-    console.log(values);
-    console.log(values);
     if (typeof values.photoURL != "string") {
       const fileUrl = await setFileinFirebase(
         values.photoURL,
@@ -80,7 +78,6 @@ function ProfileUpdateForm() {
 
     try {
       const response = await dispatch(updateProfile(values));
-      console.log(response);
       if (response.payload.status) {
         await dispatch(getProfile(values.u_id));
         enqueueSnackbar(response.payload.message, {
@@ -177,12 +174,14 @@ function ProfileUpdateForm() {
                                       )
                                     }
                                     error={
-                                      Boolean(errors.photoURL) &&
-                                      Boolean(touched.photoURL)
+                                      Boolean(errors.photoURL)
+                                        ? Boolean(touched.photoURL)
+                                        : undefined
                                     }
                                     helpertext={
-                                      Boolean(touched.photoURL) &&
-                                      errors.photoURL
+                                      Boolean(touched.photoURL)
+                                        ? errors.photoURL?.toString()
+                                        : undefined
                                     }
                                   />
                                   <ErrorMessage name='photoURL' component='p' />
@@ -200,12 +199,14 @@ function ProfileUpdateForm() {
                                   sx={{ mb: 2 }}
                                   as={TextField}
                                   error={
-                                    Boolean(errors.displayName) &&
-                                    Boolean(touched.displayName)
+                                    Boolean(errors.displayName)
+                                      ? Boolean(touched.displayName)
+                                      : undefined
                                   }
                                   helpertext={
-                                    Boolean(touched.displayName) &&
-                                    errors.displayName
+                                    Boolean(touched.displayName)
+                                      ? errors.displayName
+                                      : undefined
                                   }
                                 />
                               </Grid>
@@ -219,11 +220,14 @@ function ProfileUpdateForm() {
                                   name='email'
                                   disabled
                                   error={
-                                    Boolean(errors.email) &&
-                                    Boolean(touched.email)
+                                    Boolean(errors.email)
+                                      ? Boolean(touched.email)
+                                      : undefined
                                   }
                                   helpertext={
-                                    Boolean(touched.email) && errors.email
+                                    Boolean(touched.email)
+                                      ? errors.email
+                                      : undefined
                                   }
                                 />
                               </Grid>
@@ -238,12 +242,14 @@ function ProfileUpdateForm() {
                                   required
                                   // value={values.firstName}
                                   error={
-                                    Boolean(errors.phoneNumber) &&
-                                    Boolean(touched.phoneNumber)
+                                    Boolean(errors.phoneNumber)
+                                      ? Boolean(touched.phoneNumber)
+                                      : undefined
                                   }
                                   helpertext={
-                                    Boolean(touched.phoneNumber) &&
-                                    errors.phoneNumber
+                                    Boolean(touched.phoneNumber)
+                                      ? errors.phoneNumber
+                                      : undefined
                                   }
                                 />
                               </Grid>
@@ -257,11 +263,14 @@ function ProfileUpdateForm() {
                                   // onChange={handleChange}
                                   required
                                   error={
-                                    Boolean(errors.city) &&
-                                    Boolean(touched.city)
+                                    Boolean(errors.city)
+                                      ? Boolean(touched.city)
+                                      : undefined
                                   }
                                   helpertext={
-                                    Boolean(touched.city) && errors.city
+                                    Boolean(touched.city)
+                                      ? errors.city
+                                      : undefined
                                   }
                                   // value={values.firstName}
                                 />
@@ -276,11 +285,14 @@ function ProfileUpdateForm() {
                                   // onChange={handleChange}
                                   required
                                   error={
-                                    Boolean(errors.state) &&
-                                    Boolean(touched.state)
+                                    Boolean(errors.state)
+                                      ? Boolean(touched.state)
+                                      : undefined
                                   }
                                   helpertext={
-                                    Boolean(touched.state) && errors.state
+                                    Boolean(touched.state)
+                                      ? errors.state
+                                      : undefined
                                   }
                                   // value={values.firstName}
                                 />
@@ -295,11 +307,14 @@ function ProfileUpdateForm() {
                                   name='country'
                                   required
                                   error={
-                                    Boolean(errors.country) &&
-                                    Boolean(touched.country)
+                                    Boolean(errors.country)
+                                      ? Boolean(touched.country)
+                                      : undefined
                                   }
                                   helpertext={
-                                    Boolean(touched.country) && errors.country
+                                    Boolean(touched.country)
+                                      ? errors.country
+                                      : undefined
                                   }
                                   // value={values.firstName}
                                 />
@@ -314,12 +329,14 @@ function ProfileUpdateForm() {
                                   // onChange={handleChange}
                                   required
                                   error={
-                                    Boolean(errors.description) &&
-                                    Boolean(touched.description)
+                                    Boolean(errors.description)
+                                      ? Boolean(touched.description)
+                                      : undefined
                                   }
                                   helpertext={
-                                    Boolean(touched.description) &&
-                                    errors.description
+                                    Boolean(touched.description)
+                                      ? errors.description
+                                      : undefined
                                   }
                                   // value={values.firstName}
                                 />

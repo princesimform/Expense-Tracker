@@ -27,6 +27,7 @@ import { ErrorMessage, Form, Formik } from "formik";
 import { SettleExpenseFormSchema } from "../../libs/services/ValidationSchema";
 import { AppDispatch, Rootstate } from "../../redux/store";
 import { PayloadAction } from "@reduxjs/toolkit";
+import emailjs from "@emailjs/browser";
 
 interface PropType {
   expenseData: expenseDataType;
@@ -76,6 +77,16 @@ function ExpenseDetails({ expenseData, isOpen, closeExpense }: PropType) {
           variant: "success",
           autoHideDuration: 3000,
         });
+        requestData.isSettle &&
+          requestData.member_list?.map(async (member, index) => {
+            const sendData = { ...requestData, user_email: member };
+            await emailjs.send(
+              "service_nd25uhj",
+              "template_ikbk7xu",
+              sendData,
+              "W8br9GiQwkAK3XCOO"
+            );
+          });
         profile?.email != undefined &&
           (await dispatch(getExpenses(profile?.email)));
         closeExpense();
@@ -119,23 +130,25 @@ function ExpenseDetails({ expenseData, isOpen, closeExpense }: PropType) {
           >
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6} lg={6}>
-                <Typography
-                  id='transition-modal-title'
-                  variant='h4'
-                  sx={{
-                    textAlign: "left",
-                    mb: 2,
-                    fontWeight: 600,
-                  }}
-                >
-                  {expenseData.title}
-                  <Typography variant='subtitle1'>
+                <Box>
+                  <Typography
+                    id='transition-modal-title'
+                    variant='h4'
+                    sx={{
+                      textAlign: "left",
+
+                      fontWeight: 600,
+                    }}
+                  >
+                    {expenseData.title}
+                  </Typography>
+                  <Typography sx={{ mb: 2 }}>
                     Paid By :{" "}
                     <Box component='span' sx={{ fontWeight: 600 }}>
                       {expenseData.paid_by}
                     </Box>
                   </Typography>
-                </Typography>
+                </Box>
               </Grid>
               <Grid item xs={12} sm={6} lg={6}>
                 <Typography
@@ -199,9 +212,9 @@ function ExpenseDetails({ expenseData, isOpen, closeExpense }: PropType) {
                               sx={{ textAlign: "left" }}
                             >
                               Amount Received
-                              <Typography>
-                                {expenseData.type_of_settle}
-                              </Typography>
+                            </Typography>
+                            <Typography className='group-expanse-name'>
+                              {expenseData.type_of_settle}
                             </Typography>
                           </Box>
                         )}
@@ -215,13 +228,20 @@ function ExpenseDetails({ expenseData, isOpen, closeExpense }: PropType) {
                       </Grid>
                       <Grid item xs={12} sm={6} lg={6}>
                         {expenseData.isSettle ? (
-                          <Typography
-                            className='group-expanse-name'
-                            sx={{ textAlign: "right" }}
-                          >
-                            SETTLED BY
-                            <Typography>{expenseData.settleBy}</Typography>
-                          </Typography>
+                          <Box>
+                            <Typography
+                              className='group-expanse-name'
+                              sx={{ textAlign: "right" }}
+                            >
+                              SETTLED BY
+                            </Typography>
+                            <Typography
+                              className='group-expanse-name'
+                              sx={{ textAlign: "right" }}
+                            >
+                              {expenseData.settleBy}
+                            </Typography>
+                          </Box>
                         ) : (
                           <Box sx={{ textAlign: "right" }}>
                             <ExpenseWiseSettlement expense={expenseData} />

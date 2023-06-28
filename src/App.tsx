@@ -8,11 +8,13 @@ import ErrorBoundary from "./components/ErrorBoundary";
 import Loader from "./components/Loader";
 import "./style/App.css";
 import PageNotFound from "./pages/errorPages/PageNotFound";
+import SendMail from "./temp/SendMail";
 const renderLoader = () => <p>Loading</p>;
 
 function App() {
   return (
     <Suspense fallback={<Loader />}>
+      {/* <SepndMail /> */}
       <ErrorBoundary>
         <Provider store={store}>
           <BrowserRouter>

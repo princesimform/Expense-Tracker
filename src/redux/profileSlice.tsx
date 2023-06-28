@@ -55,10 +55,7 @@ export const profileSlice = createSlice({
       state.profile = null;
       state.profile = res;
     });
-    builder.addCase(updateProfile.fulfilled, (state, action) => {
-      const res = action.payload;
-      console.log(res);
-    });
+    builder.addCase(updateProfile.fulfilled, (state, action) => {});
   },
 });
 

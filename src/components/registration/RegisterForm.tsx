@@ -189,8 +189,14 @@ function RegisterForm({ toggleSignUp }: PropType) {
                 name='full_name'
                 autoFocus
                 as={TextField}
-                error={Boolean(errors.full_name) && Boolean(touched.full_name)}
-                helpertext={Boolean(touched.full_name) && errors.full_name}
+                error={
+                  Boolean(errors.full_name)
+                    ? Boolean(touched.full_name)
+                    : undefined
+                }
+                helpertext={
+                  Boolean(touched.full_name) ? errors.full_name : undefined
+                }
               />
               <Field
                 fullWidth
@@ -200,8 +206,10 @@ function RegisterForm({ toggleSignUp }: PropType) {
                 variant='outlined'
                 name='email'
                 as={TextField}
-                error={Boolean(errors.email) && Boolean(touched.email)}
-                helpertext={Boolean(touched.email) && errors.email}
+                error={
+                  Boolean(errors.email) ? Boolean(touched.email) : undefined
+                }
+                helpertext={Boolean(touched.email) ? errors.email : undefined}
               />
               <Field
                 fullWidth
@@ -228,8 +236,14 @@ function RegisterForm({ toggleSignUp }: PropType) {
                     </InputAdornment>
                   ),
                 }}
-                error={Boolean(errors.password) && Boolean(touched.password)}
-                helpertext={Boolean(touched.password) && errors.password}
+                error={
+                  Boolean(errors.password)
+                    ? Boolean(touched.password)
+                    : undefined
+                }
+                helpertext={
+                  Boolean(touched.password) ? errors.password : undefined
+                }
               />
               <Field
                 fullWidth

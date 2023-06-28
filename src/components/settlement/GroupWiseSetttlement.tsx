@@ -38,6 +38,7 @@ function GroupWiseSetttlement({ groupName }: PropType) {
               paidAmount + expense.expense_amount / expense.member_list.length;
           }
           activeGroupExpenseList.push(expense);
+
           setPayAmount(paidAmount);
           setGetAmount(tempgetAmount);
         }
@@ -50,11 +51,11 @@ function GroupWiseSetttlement({ groupName }: PropType) {
     <>
       {payAmount - getAmount > 0 ? (
         <Typography color={"darkred"} fontWeight={"bold"}>
-          You should pay {payAmount - getAmount} INR
+          You should pay {(payAmount - getAmount).toFixed(2)} INR
         </Typography>
       ) : (
         <Typography color={"lightgreen"} fontWeight={"bold"}>
-          You owe {getAmount - payAmount} INR
+          You owe {(getAmount - payAmount).toFixed(2)} INR
         </Typography>
       )}
     </>

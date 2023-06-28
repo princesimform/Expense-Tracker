@@ -45,13 +45,13 @@ function GroupExpense(props: PropType) {
               <Table stickyHeader aria-label='sticky table'>
                 <TableBody>
                   {props.groupexpenselist.length > 0 ? (
-                    props.groupexpenselist.map((expanse) => (
+                    props.groupexpenselist.map((expanse , index) => (
                       <>
                         <TableRow
                           hover
                           role='checkbox'
                           tabIndex={-1}
-                          key={2}
+                          key={index}
                           onClick={() => openModel(expanse)}
                         >
                           <TableCell
@@ -110,7 +110,7 @@ function GroupExpense(props: PropType) {
                     ))
                   ) : (
                     <TableRow role='checkbox' tabIndex={-1} key={2}>
-                      <TableCell key={1}>
+                      <TableCell key={"noExpense"}>
                         <Box>
                           <Typography
                             variant='h6'

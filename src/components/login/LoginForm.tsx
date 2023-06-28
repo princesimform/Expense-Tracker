@@ -91,8 +91,10 @@ function LoginForm({ toggleSignUp }: PropType) {
                 type='email'
                 color='primary'
                 as={TextField}
-                error={Boolean(errors.email) && Boolean(touched.email)}
-                helpertext={Boolean(touched.email) && errors.email}
+                error={
+                  Boolean(errors.email) ? Boolean(touched.email) : undefined
+                }
+                helpertext={Boolean(touched.email) ? errors.email : undefined}
               />
               <Box className={Styles.LoginFormSpace}></Box>
 
@@ -121,8 +123,14 @@ function LoginForm({ toggleSignUp }: PropType) {
                     </InputAdornment>
                   ),
                 }}
-                error={Boolean(errors.password) && Boolean(touched.password)}
-                helpertext={Boolean(touched.password) && errors.password}
+                error={
+                  Boolean(errors.password)
+                    ? Boolean(touched.password)
+                    : undefined
+                }
+                helpertext={
+                  Boolean(touched.password) ? errors.password : undefined
+                }
               />
               <Box className={Styles.LoginBtn}>
                 <Button

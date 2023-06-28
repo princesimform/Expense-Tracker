@@ -3,6 +3,7 @@ import React, {
   ReactNode,
   SyntheticEvent,
   useEffect,
+  useRef,
   useState,
 } from "react";
 import {
@@ -49,6 +50,7 @@ import FirebaseFileHandling from "../../libs/services/firebase/fileHandling";
 import AddIcon from "@mui/icons-material/Add";
 import Styles from "./../../style/default.module.css";
 import { PayloadAction } from "@reduxjs/toolkit";
+
 type ListOptionType = {
   label: string;
   value: string;
@@ -68,6 +70,7 @@ function AddExpenseForm({
   updateExpanseData,
   ModelButtonStyle,
 }: PropType) {
+  const expenseform = useRef<HTMLFormElement>(null);
   const { profile } = useSelector((state: Rootstate) => {
     return state.profileReducer;
   });
@@ -143,14 +146,6 @@ function AddExpenseForm({
         group: "group",
       });
     });
-    // tempFriendsList.map((friendName) => {
-    //   tempFriendsSelectList.push({
-    //     label: friendName,
-    //     value: friendName,
-    //     group: "friend",
-    //   });
-    // });
-
     setListOptions(tempFriendsSelectList);
 
     if (updateExpanseData != undefined) {
@@ -294,6 +289,7 @@ function AddExpenseForm({
           resetForm({ values: "" });
           profile?.email != undefined &&
             (await dispatch(getExpenses(profile?.email)));
+
           toggle("isModleOpen");
         }
       } catch (error) {
@@ -394,7 +390,7 @@ function AddExpenseForm({
                   touched,
                   setFieldValue,
                 }) => (
-                  <Form onSubmit={handleSubmit}>
+                  <Form ref={expenseform} onSubmit={handleSubmit}>
                     <Box sx={{ margin: "auto", textAlign: "center" }}>
                       <ErrorMessage name='expense_file' component='p' />
                     </Box>
@@ -472,8 +468,9 @@ function AddExpenseForm({
                               handleFileInputChange(event, setFieldValue)
                             }
                             error={
-                              Boolean(errors.expense_file) &&
-                              Boolean(touched.expense_file)
+                              Boolean(errors.expense_file)
+                                ? Boolean(touched.expense_file)
+                                : undefined
                             }
                           />
                           <Avatar

@@ -17,7 +17,7 @@ import { useSnackbar } from "notistack";
 import { AppDispatch } from "../../redux/store";
 import { GetTimestemp } from "../../libs/services/utills";
 
-interface PropType  {
+interface PropType {
   groupData: groupDataType;
 }
 function GroupDeleteForm({ groupData }: PropType) {
@@ -28,8 +28,8 @@ function GroupDeleteForm({ groupData }: PropType) {
 
   const deleteGroup = async (groupData: groupDataType) => {
     const RequestData = JSON.parse(JSON.stringify(groupData));
-
-    if (RequestData.group_image != null) {
+    console.log(RequestData);
+    if (RequestData.group_image != "") {
       const response = await FirebaseFileHandling.removeFile(
         RequestData.group_image
       );

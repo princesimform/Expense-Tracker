@@ -87,16 +87,18 @@ function ExpenseDataTable() {
                   <TableCell>{row.paid_by}</TableCell>
                   <TableCell>{row.expense_amount}</TableCell>
                   <TableCell style={{ minWidth: 170 }}>
-                    <AddExpenseForm
-                      ModelButtonStyle={{
-                        borderRadius: "16px",
-                        width: "32px",
-                        margin: "5px 4px",
-                        height: "32px",
-                      }}
-                      FriendsList={[]}
-                      updateExpanseData={row}
-                    />
+                    {!row.isSettle && (
+                      <AddExpenseForm
+                        ModelButtonStyle={{
+                          borderRadius: "16px",
+                          width: "32px",
+                          margin: "5px 4px",
+                          height: "32px",
+                        }}
+                        FriendsList={[]}
+                        updateExpanseData={row}
+                      />
+                    )}
                     <ExpanseDelete expnaseData={row} />
                     <Button
                       sx={{

@@ -15,13 +15,14 @@ function Groups() {
     return state.profileReducer;
   });
   const dispatch = useDispatch<AppDispatch>();
-  useEffect(() => {
-    profile?.email && dispatch(getGroups(profile?.email));
-  }, []);
+  // useEffect(() => {
+  //   profile?.email && dispatch(getGroups(profile?.email));
+  // }, []);
 
   return (
-    <div key='groups'>
+    <div>
       <Box
+        key='GroupListBox'
         margin='0px 16px'
         display='flex'
         alignItems='center'
@@ -45,14 +46,14 @@ function Groups() {
         <Grid container spacing={3}>
           {groupList.length > 0 ? (
             groupList.map((group: groupDataType, index) => (
-              <>
-                <Grid item xs={12} sm={6} lg={4} key={index}>
-                  <GroupCard groupItem={group} />
-                </Grid>
-              </>
+              <Grid item xs={12} sm={6} lg={4} key={index}>
+                <GroupCard groupItem={group} />
+              </Grid>
             ))
           ) : (
-            <NoDataFound />
+            <Box key='noData'>
+              <NoDataFound />
+            </Box>
           )}
         </Grid>
       </Container>

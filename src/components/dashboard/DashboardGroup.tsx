@@ -35,7 +35,7 @@ function DashboardGroup({ groups }: PropType) {
       {groups.length > 0 ? (
         <Container maxWidth='xl'>
           <Grid container spacing={3}>
-            {groups.length >= 0 ? (
+            {groups.length > 0 ? (
               groups.map((group: groupDataType, index) => (
                 <>
                   {index < 3 && (
@@ -46,7 +46,7 @@ function DashboardGroup({ groups }: PropType) {
                 </>
               ))
             ) : (
-              <p>No data avaliable</p>
+              <p key={"noGroupAvaliable"}>No data avaliable</p>
             )}
           </Grid>
         </Container>

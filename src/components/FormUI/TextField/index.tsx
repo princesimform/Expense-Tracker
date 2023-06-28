@@ -25,7 +25,7 @@ const TextfieldWrapper: React.FC<TextfieldWrapperProps> = ({
 
   if (meta && meta.touched && meta.error) {
     configTextfield.error = true;
-    configTextfield.helpertext = meta.error;
+    configTextfield.helperText = meta.error;
   }
 
   return <TextField {...configTextfield} />;
