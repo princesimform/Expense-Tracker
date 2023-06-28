@@ -66,7 +66,6 @@ interface PropType {
 }
 function AddExpenseForm({
   FriendsList,
-
   updateExpanseData,
   ModelButtonStyle,
 }: PropType) {

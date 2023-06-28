@@ -125,7 +125,7 @@ function GroupMemberPage({ groupMembers, groupData }: PropType) {
                         ? Boolean(touched.new_member)
                         : undefined
                     }
-                    helpertext={
+                    helperText={
                       Boolean(touched.new_member)
                         ? errors.new_member
                         : undefined

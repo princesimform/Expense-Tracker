@@ -178,7 +178,7 @@ function ProfileUpdateForm() {
                                         ? Boolean(touched.photoURL)
                                         : undefined
                                     }
-                                    helpertext={
+                                    helperText={
                                       Boolean(touched.photoURL)
                                         ? errors.photoURL?.toString()
                                         : undefined
@@ -203,7 +203,7 @@ function ProfileUpdateForm() {
                                       ? Boolean(touched.displayName)
                                       : undefined
                                   }
-                                  helpertext={
+                                  helperText={
                                     Boolean(touched.displayName)
                                       ? errors.displayName
                                       : undefined
@@ -224,7 +224,7 @@ function ProfileUpdateForm() {
                                       ? Boolean(touched.email)
                                       : undefined
                                   }
-                                  helpertext={
+                                  helperText={
                                     Boolean(touched.email)
                                       ? errors.email
                                       : undefined
@@ -246,7 +246,7 @@ function ProfileUpdateForm() {
                                       ? Boolean(touched.phoneNumber)
                                       : undefined
                                   }
-                                  helpertext={
+                                  helperText={
                                     Boolean(touched.phoneNumber)
                                       ? errors.phoneNumber
                                       : undefined
@@ -267,7 +267,7 @@ function ProfileUpdateForm() {
                                       ? Boolean(touched.city)
                                       : undefined
                                   }
-                                  helpertext={
+                                  helperText={
                                     Boolean(touched.city)
                                       ? errors.city
                                       : undefined
@@ -289,7 +289,7 @@ function ProfileUpdateForm() {
                                       ? Boolean(touched.state)
                                       : undefined
                                   }
-                                  helpertext={
+                                  helperText={
                                     Boolean(touched.state)
                                       ? errors.state
                                       : undefined
@@ -311,7 +311,7 @@ function ProfileUpdateForm() {
                                       ? Boolean(touched.country)
                                       : undefined
                                   }
-                                  helpertext={
+                                  helperText={
                                     Boolean(touched.country)
                                       ? errors.country
                                       : undefined
@@ -333,7 +333,7 @@ function ProfileUpdateForm() {
                                       ? Boolean(touched.description)
                                       : undefined
                                   }
-                                  helpertext={
+                                  helperText={
                                     Boolean(touched.description)
                                       ? errors.description
                                       : undefined

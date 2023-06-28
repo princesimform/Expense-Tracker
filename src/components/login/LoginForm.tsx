@@ -94,7 +94,7 @@ function LoginForm({ toggleSignUp }: PropType) {
                 error={
                   Boolean(errors.email) ? Boolean(touched.email) : undefined
                 }
-                helpertext={Boolean(touched.email) ? errors.email : undefined}
+                helperText={Boolean(touched.email) ? errors.email : undefined}
               />
               <Box className={Styles.LoginFormSpace}></Box>
 
@@ -128,7 +128,7 @@ function LoginForm({ toggleSignUp }: PropType) {
                     ? Boolean(touched.password)
                     : undefined
                 }
-                helpertext={
+                helperText={
                   Boolean(touched.password) ? errors.password : undefined
                 }
               />

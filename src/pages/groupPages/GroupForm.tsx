@@ -252,7 +252,7 @@ function GroupForm({ groupData, ModelButtonStyle }: PropsType) {
                           ? Boolean(touched.group_image)
                           : undefined
                       }
-                      helpertext={
+                      helperText={
                         Boolean(touched.group_image)
                           ? errors.group_image?.toString()
                           : undefined
@@ -289,7 +289,7 @@ function GroupForm({ groupData, ModelButtonStyle }: PropsType) {
                     error={
                       Boolean(errors.name) ? Boolean(touched.name) : undefined
                     }
-                    helpertext={Boolean(touched.name) ? errors.name : undefined}
+                    helperText={Boolean(touched.name) ? errors.name : undefined}
                   />
 
                   <Box

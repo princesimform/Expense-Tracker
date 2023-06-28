@@ -74,7 +74,7 @@ function ResetPassword() {
                     error={
                       Boolean(errors.email) ? Boolean(touched.email) : undefined
                     }
-                    helpertext={
+                    helperText={
                       Boolean(touched.email) ? errors.email : undefined
                     }
                   />

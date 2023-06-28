@@ -194,7 +194,7 @@ function RegisterForm({ toggleSignUp }: PropType) {
                     ? Boolean(touched.full_name)
                     : undefined
                 }
-                helpertext={
+                helperText={
                   Boolean(touched.full_name) ? errors.full_name : undefined
                 }
               />
@@ -209,7 +209,7 @@ function RegisterForm({ toggleSignUp }: PropType) {
                 error={
                   Boolean(errors.email) ? Boolean(touched.email) : undefined
                 }
-                helpertext={Boolean(touched.email) ? errors.email : undefined}
+                helperText={Boolean(touched.email) ? errors.email : undefined}
               />
               <Field
                 fullWidth
@@ -241,7 +241,7 @@ function RegisterForm({ toggleSignUp }: PropType) {
                     ? Boolean(touched.password)
                     : undefined
                 }
-                helpertext={
+                helperText={
                   Boolean(touched.password) ? errors.password : undefined
                 }
               />
@@ -274,7 +274,7 @@ function RegisterForm({ toggleSignUp }: PropType) {
                   Boolean(errors.confirm_password) &&
                   Boolean(touched.confirm_password)
                 }
-                helpertext={
+                helperText={
                   Boolean(touched.confirm_password) && errors.confirm_password
                 }
               />
