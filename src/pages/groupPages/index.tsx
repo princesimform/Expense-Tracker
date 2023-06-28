@@ -51,7 +51,7 @@ function Groups() {
               </Grid>
             ))
           ) : (
-            <Box key='noData'>
+            <Box key='noData' sx={{ margin: "auto" }}>
               <NoDataFound />
             </Box>
           )}

@@ -10,17 +10,20 @@ import {
 import { Box } from "@mui/system";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { groupDataType, updateData } from "../../redux/groupSlice";
-import { useDispatch } from "react-redux";
+import { getGroups, groupDataType, updateData } from "../../redux/groupSlice";
+import { useDispatch, useSelector } from "react-redux";
 import FirebaseFileHandling from "../../services/firebase/fileHandling";
 import { useSnackbar } from "notistack";
-import { AppDispatch } from "../../redux/store";
+import { AppDispatch, Rootstate } from "../../redux/store";
 import { GetTimestemp } from "../../services/utills";
 
 interface PropType {
   groupData: groupDataType;
 }
 function GroupDeleteForm({ groupData }: PropType) {
+  const { profile } = useSelector((state: Rootstate) => {
+    return state.profileReducer;
+  });
   const [openDialog, setOpenDialog] = useState(false);
   const nevagite = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
@@ -44,6 +47,7 @@ function GroupDeleteForm({ groupData }: PropType) {
         autoHideDuration: 3000,
       });
       setOpenDialog(false);
+      await dispatch(getGroups(String(profile?.email)));
       nevagite("/group");
     } else {
       enqueueSnackbar("Something went wrong", {

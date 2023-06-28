@@ -23,7 +23,7 @@ import {
 } from "../../redux/expenseSlice";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import { TablePaginationActions } from "../TablePaginationActions";
-import ExpanseDelete from "../../pages/expensePages/ExpanseDelete";
+import ExpanseDelete from "../../pages/expensePages/ExpenseDelete";
 import ExpenseDetails from "./ExpenseDetails";
 import NoDataFound from "../../pages/errorPages/NoDataFound";
 
