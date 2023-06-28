@@ -41,7 +41,7 @@ const SelectWrapper: React.FC<SelectWrapperProps> = ({
 
   if (meta && meta.touched && meta.error) {
     configSelect.error = true;
-    configSelect.helpertext = meta.error;
+    configSelect.helperText = meta.error;
   }
 
   return (
