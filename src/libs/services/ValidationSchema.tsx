@@ -67,11 +67,11 @@ export const AddMemberFormSchema = yup.object({
 });
 
 export const AddExpenseFormSchema = yup.object({
-  title: yup.string().trim().required("reduired"),
-  expense_description: yup.string().trim().required("reduired"),
+  title: yup.string().trim().required("required"),
+  expense_description: yup.string().trim().required("required"),
   member_list: yup
     .array()
-    .required("reduired")
+    .required("required")
     .min(1, "at least one member orgroup require"),
   expense_file: yup
     .mixed()
@@ -80,8 +80,8 @@ export const AddExpenseFormSchema = yup.object({
       if (value == null) return true;
       if (value != null) return value.size <= FILE_SIZE;
     }),
-  expense_amount: yup.number().required("reduired"),
-  paid_by: yup.string().required("reduired"),
+  expense_amount: yup.number().required("required"),
+  paid_by: yup.string().required("required"),
   expense_date: yup.date().required("Please select a date"),
 });
 

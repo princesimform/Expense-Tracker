@@ -9,7 +9,7 @@ import {
   Typography,
 } from "@mui/material";
 import React, { useState } from "react";
-import { expenseDataType } from "../../redux/expanseSlice";
+import { expenseDataType } from "../../redux/expenseSlice";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import Loader from "../../components/Loader";
 import ExpenseDetails from "../../components/expense/ExpenseDetails";
@@ -45,14 +45,14 @@ function GroupExpense(props: PropType) {
               <Table stickyHeader aria-label='sticky table'>
                 <TableBody>
                   {props.groupexpenselist.length > 0 ? (
-                    props.groupexpenselist.map((expanse , index) => (
+                    props.groupexpenselist.map((expense , index) => (
                       <>
                         <TableRow
                           hover
                           role='checkbox'
                           tabIndex={-1}
                           key={index}
-                          onClick={() => openModel(expanse)}
+                          onClick={() => openModel(expense)}
                         >
                           <TableCell
                             key={1}
@@ -61,11 +61,11 @@ function GroupExpense(props: PropType) {
                               <Typography
                                 variant='h6'
                                 fontWeight='bold'
-                                className='group-expanse-name'
+                                className='group-expense-name'
                               >
-                                {expanse.title}
-                                <Typography className='group-expanse-amount'>
-                                  {expanse.expense_amount}
+                                {expense.title}
+                                <Typography className='group-expense-amount'>
+                                  {expense.expense_amount}
                                 </Typography>
                               </Typography>
                             </Box>
@@ -80,7 +80,7 @@ function GroupExpense(props: PropType) {
                                 >
                                   Paid by{" "}
                                 </span>
-                                {expanse.paid_by}
+                                {expense.paid_by}
                               </Typography>
                               <Typography>
                                 <span
@@ -91,13 +91,13 @@ function GroupExpense(props: PropType) {
                                 >
                                   on{" "}
                                 </span>
-                                {expanse.expense_date.substring(0, 10)}
+                                {expense.expense_date.substring(0, 10)}
                               </Typography>
                             </Box>
                           </TableCell>
                           <TableCell key={3}>
                             <ExpenseWiseSettlement
-                              expense={expanse}
+                              expense={expense}
                             />
                           </TableCell>
                           <TableCell key={4}>
@@ -115,7 +115,7 @@ function GroupExpense(props: PropType) {
                           <Typography
                             variant='h6'
                             fontWeight='bold'
-                            className='group-expanse-name'
+                            className='group-expense-name'
                           >
                             No Expense Remain
                           </Typography>

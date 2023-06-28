@@ -20,7 +20,7 @@ import { useSelector } from "react-redux";
 import { Rootstate } from "../../redux/store";
 import { groupDataType } from "../../redux/groupSlice";
 import AddExpenseForm from "../expensePages/AddExpanseForm";
-import { expenseDataType } from "../../redux/expanseSlice";
+import { expenseDataType } from "../../redux/expenseSlice";
 import Loader from "../../components/Loader";
 import { useSnackbar } from "notistack";
 import GroupDeleteForm from "./GroupDeleteForm";

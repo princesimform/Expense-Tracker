@@ -40,7 +40,7 @@ function DashBoard() {
       <Divider className='divider-top' />
       <DashboardGroup groups={groupList} />
       <Divider className='divider-top' />
-      <DashboardExpense expanses={expenseList} />
+      <DashboardExpense expenses={expenseList} />
     </>
   );
 }

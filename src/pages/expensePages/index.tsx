@@ -5,7 +5,7 @@ import {
   expenseDataType,
   getExpenses,
   updateExpense,
-} from "../../redux/expanseSlice";
+} from "../../redux/expenseSlice";
 import { Rootstate } from "../../redux/store";
 import AddExpenseForm from "./AddExpanseForm";
 import { useSnackbar } from "notistack";

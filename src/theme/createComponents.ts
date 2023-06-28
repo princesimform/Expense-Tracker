@@ -112,11 +112,11 @@ const createComponents = () => {
             fontWeight: "bold",
             color: "gray",
           },
-          "&.group-expanse-name": {
+          "&.group-expense-name": {
             color: `${buttonColor}`,
             fontWeight: "bold",
           },
-          "&.group-expanse-amount": {
+          "&.group-expense-amount": {
             color: "gray",
             fontWeight: "bold",
           },

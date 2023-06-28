@@ -20,7 +20,7 @@ import {
   expenseDataType,
   getExpenses,
   updateExpense,
-} from "../../redux/expanseSlice";
+} from "../../redux/expenseSlice";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import { TablePaginationActions } from "../TablePaginationActions";
 import ExpanseDelete from "../../pages/expensePages/ExpanseDelete";

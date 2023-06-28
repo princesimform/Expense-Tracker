@@ -11,7 +11,7 @@ import {
 import { Bar } from "react-chartjs-2";
 import { useSelector } from "react-redux";
 import { Rootstate } from "../../redux/store";
-import { expenseDataType } from "../../redux/expanseSlice";
+import { expenseDataType } from "../../redux/expenseSlice";
 
 ChartJS.register(
   CategoryScale,

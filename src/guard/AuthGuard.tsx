@@ -8,7 +8,7 @@ import { styled } from "@mui/material";
 import Sidenav from "../layouts/Sidenav";
 import { useDispatch } from "react-redux";
 import { getGroups } from "../redux/groupSlice";
-import { getExpenses } from "../redux/expanseSlice";
+import { getExpenses } from "../redux/expenseSlice";
 import { AppDispatch } from "../redux/store";
 import Loader from "../components/Loader";
 import { getProfile } from "../redux/profileSlice";

@@ -2,13 +2,13 @@ import { Button, Container, Divider, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { expenseDataType } from "../../redux/expanseSlice";
+import { expenseDataType } from "../../redux/expenseSlice";
 import ExpenseDataTable from "../expense/ExpenseDataTable";
 
 interface PropType {
-  expanses: expenseDataType[];
+  expenses: expenseDataType[];
 }
-function DashboardExpense({ expanses }: PropType) {
+function DashboardExpense({ expenses }: PropType) {
   const navigate = useNavigate();
   return (
     <>
@@ -32,7 +32,7 @@ function DashboardExpense({ expanses }: PropType) {
       </Box>
       <Divider className='divider-bottom' />
       <Container maxWidth='xl'>
-        {expanses.length > 0 ? (
+        {expenses.length > 0 ? (
           <ExpenseDataTable />
         ) : (
           <Typography> No Data Avaliable</Typography>

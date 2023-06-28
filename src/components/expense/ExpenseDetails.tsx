@@ -18,7 +18,7 @@ import {
   expenseDataType,
   getExpenses,
   updateExpense,
-} from "../../redux/expanseSlice";
+} from "../../redux/expenseSlice";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../Loader";
 import { useSnackbar } from "notistack";
@@ -208,12 +208,12 @@ function ExpenseDetails({ expenseData, isOpen, closeExpense }: PropType) {
                           <Box>
                             {" "}
                             <Typography
-                              className='group-expanse-name'
+                              className='group-expense-name'
                               sx={{ textAlign: "left" }}
                             >
                               Amount Received
                             </Typography>
-                            <Typography className='group-expanse-name'>
+                            <Typography className='group-expense-name'>
                               {expenseData.type_of_settle}
                             </Typography>
                           </Box>
@@ -230,13 +230,13 @@ function ExpenseDetails({ expenseData, isOpen, closeExpense }: PropType) {
                         {expenseData.isSettle ? (
                           <Box>
                             <Typography
-                              className='group-expanse-name'
+                              className='group-expense-name'
                               sx={{ textAlign: "right" }}
                             >
                               SETTLED BY
                             </Typography>
                             <Typography
-                              className='group-expanse-name'
+                              className='group-expense-name'
                               sx={{ textAlign: "right" }}
                             >
                               {expenseData.settleBy}

@@ -1,5 +1,5 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
-import { expenseSlice } from "./expanseSlice";
+import { expenseSlice } from "./expenseSlice";
 import { groupSlice, groupStateType } from "./groupSlice";
 import { profileSlice } from "./profileSlice";
 

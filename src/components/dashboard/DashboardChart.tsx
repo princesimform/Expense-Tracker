@@ -11,9 +11,9 @@ import {
 } from "@mui/material";
 import { useSelector } from "react-redux";
 import { Rootstate } from "../../redux/store";
-import { expenseDataType } from "../../redux/expanseSlice";
-import PieChart from "../Chart/PieChart";
-import BarChart from "../Chart/BarChart";
+import { expenseDataType } from "../../redux/expenseSlice";
+import PieChart from "../chart/PieChart";
+import BarChart from "../chart/BarChart";
 import OverviewOfGroups from "../group/OverviewOfGroups";
 import OverviewOfExpenses from "../expense/OverviewOfExpenses";
 ChartJS.register(ArcElement, Tooltip, Legend);
