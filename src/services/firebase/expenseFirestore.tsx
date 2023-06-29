@@ -11,7 +11,7 @@ import {
   deleteDoc,
 } from "firebase/firestore";
 import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
-import { expenseDataType } from "../../../redux/expenseSlice";
+import { expenseDataType } from "../../redux/expenseSlice";
 import FirebaseFileHandling from "./fileHandling";
 import { firestore, FirestoreServiceType } from "./firestore";
 

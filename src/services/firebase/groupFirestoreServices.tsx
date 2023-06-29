@@ -8,7 +8,7 @@ import {
   updateDoc,
   where,
 } from "firebase/firestore";
-import { groupDataType } from "../../../redux/groupSlice";
+import { groupDataType } from "../../redux/groupSlice";
 import { FirestoreServiceType, firestore } from "./firestore";
 
 const COLLECTION_NAME = "groups";

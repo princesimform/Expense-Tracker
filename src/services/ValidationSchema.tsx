@@ -56,7 +56,7 @@ export const ForgotPasswordFormSchema = yup.object({
     .string()
     .trim()
     .required("Email is required")
-    .email("Enter valid email address")
+    .email("Enter valid email address"),
 });
 
 export const AddMemberFormSchema = yup.object({

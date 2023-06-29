@@ -1,6 +1,7 @@
 import { Auth, getAuth, updateProfile } from "firebase/auth";
 import { addDoc, collection, doc, getDoc, setDoc } from "firebase/firestore";
-import { profileDataType } from "../../../redux/profileSlice";
+import { profileDataType } from "../../redux/profileSlice";
+// import { profileDataType } from "../../../profileSlice";
 import { firestore, FirestoreServiceType } from "./firestore";
 
 const COLLECTION_NAME = "profiles";
