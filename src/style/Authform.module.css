@@ -180,7 +180,7 @@
 .ProfileAvatar {
   /* m-auto flex w-fit text-center */
   margin: auto;
-  display: flex;
+  display: grid;
   width: fit-content;
   text-align: center;
 }

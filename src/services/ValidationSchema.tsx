@@ -19,6 +19,17 @@ export const AddGroupSchema = yup.object({
 });
 
 export const RegistrationFormSchema = yup.object({
+  profile: yup
+    .mixed()
+    .nullable()
+    .test("fileSize", "Filesize is too large", (value: any) => {
+      if (value == null) return true;
+      if (value != null) return value.size <= FILE_SIZE;
+    })
+    .test("fileFormat", "Unsupported Format", (value: any) => {
+      if (value == null) return true;
+      if (value != null) return value && SUPPORTED_FORMATS.includes(value.type);
+    }),
   full_name: yup.string().trim().required("Full name is required"),
   email: yup
     .string()
@@ -35,7 +46,6 @@ export const RegistrationFormSchema = yup.object({
     .trim()
     .oneOf([yup.ref("password"), undefined], "Password must match")
     .required("confirm password require"),
-  profile: yup.string(),
 });
 
 export const LoginFormSchema = yup.object({

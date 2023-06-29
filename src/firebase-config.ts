@@ -1,5 +1,4 @@
 // Your web app's Firebase configuration
-console.log(import.meta.env.REACT_APP_API_KEY);
 export const FIREBASE_CONFIG = {
   apiKey: import.meta.env.VITE_APP_API_KEY,
   authDomain: import.meta.env.VITE_APP_AUTH_DOMAIN,

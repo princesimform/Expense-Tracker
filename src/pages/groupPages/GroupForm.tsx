@@ -231,7 +231,6 @@ function GroupForm({ groupData, ModelButtonStyle }: PropsType) {
                     htmlFor='group-image'
                     style={{
                       margin: "auto",
-                      display: "play",
                       width: "fit-content",
                       textAlign: "center",
                     }}

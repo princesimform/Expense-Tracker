@@ -13,7 +13,7 @@ import { useNavigate } from "react-router-dom";
 import { useSnackbar } from "notistack";
 import AuthService from "../../services/firebase/auth";
 import useToggle from "../../customHooks/useToggle";
-import { Field, Form, Formik } from "formik";
+import { ErrorMessage, Field, Form, Formik } from "formik";
 import { RegistrationFormSchema } from "../../services/ValidationSchema";
 import AddUserImg from "./../../assets/add_user.png";
 import Styles from "./../../style/Authform.module.css";
@@ -49,20 +49,23 @@ function RegisterForm({ toggleSignUp }: PropType) {
   const navigate = useNavigate();
   const reader = new FileReader();
   const dispatch = useDispatch<AppDispatch>();
-  const [GroupProfileimage, setgroupProfileimage] = useState<string>("");
+  const [profileimage, setProfileimage] = useState<string>("");
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [toggles, toggle] = useToggle({
     passwordVisibility: false,
     confirmPasswordVisibility: false,
     processing: false,
   });
-  const handleFileInputChange = (
+
+  const handleFileInputChange = async (
     e: ChangeEvent<HTMLInputElement>,
     setFieldValue: Function
   ) => {
     if (e.target.files && e.target.files[0]) {
+      const res = await setFieldValue("profile", e.target.files[0]);
       reader.addEventListener("load", function (event) {
-        setgroupProfileimage(JSON.stringify(reader.result));
+        if (res.profile == undefined)
+          setProfileimage(JSON.stringify(reader.result));
       });
       reader.readAsDataURL(e.target.files[0]);
       setFieldValue("profile", e.target.files[0]);
@@ -153,7 +156,7 @@ function RegisterForm({ toggleSignUp }: PropType) {
                 sx={{ mb: 2 }}
               >
                 <Field
-                  style={{ display: "none" }}
+                  style={{ opacity: 0 }}
                   id='profile'
                   name='profile'
                   type='file'
@@ -165,19 +168,17 @@ function RegisterForm({ toggleSignUp }: PropType) {
 
                 <Avatar
                   alt='Remy Sharp'
-                  src={
-                    GroupProfileimage
-                      ? JSON.parse(GroupProfileimage)
-                      : AddUserImg
-                  }
+                  src={profileimage ? JSON.parse(profileimage) : AddUserImg}
                   sx={{
                     width: 100,
                     height: 100,
+                    margin: "auto",
                     borderWidth: 2,
                     borderColor: "primary",
                     backgroundColor: "primary",
                   }}
                 />
+                <ErrorMessage name='profile' component='p' />
               </InputLabel>
 
               <Field
