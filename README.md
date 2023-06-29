@@ -1,4 +1,67 @@
-## Project Idea : Expense Tracker
+# <p align="center">Expense Tracker</p>
+
+---
+
+## Live Working Link
+
+---
+
+<br />
+
+- [https://expense-tracker-910c0.web.app/](https://expense-tracker-910c0.web.app)
+
+<br />
+
+---
+
+## Used Language and Library
+
+---
+
+- Html
+- Css
+- Mui
+- Javascript
+- ReactJs
+- Redux
+- React-router-dom
+- Firebase
+- netlify
+- circleci
+
+<br />
+
+---
+
+## Project Setup
+
+---
+
+<br />
+
+- ### **Recommended IDE Setup**
+
+  > VsCode/ sublime text
+
+- ### **Update .env**
+
+  > create .env file
+
+  > set firebase configration in .env
+
+- ### **Install Package**
+
+  > `npm install`
+
+- ### **Compile and Hot-reload for Development**
+
+  > `npm run dev`
+
+- ### **Type Check, Compile and Minify for Production**
+
+  > `npm run build`
+
+<br />
 
 ## Description :
 
@@ -17,7 +80,7 @@
     - Enable users to edit or delete expenses.
   - create a group of friends for split expance
   - Settlements : admin able to settle payment when due bills are paid
-  - History : History of old bills
+  <!-- - History : History of old bills -->
   - Reports and Analytics
   - Reports and Analytics:
     - Generate reports summarizing expense data for a specific time period.
@@ -25,10 +88,20 @@
   - Responsive Design:
     - Develop a responsive and user-friendly interface that works well on different devices and screen sizes.
 
-- **Used Library** :
-  - Authentication : firebase
-  - Style : Mui , tailwindcss
-  - Routing : React-router-dom
-  - State Management : redux-toolkit
+<!-- **Note** : Project Feature are derived based on Project Requirement it may be vary with development requirement. -->
 
-**Note** : Project Feature are derived based on Project Requirement it may be vary with development requirement.
+<br />
+
+---
+
+## Live Project Demo
+
+---
+
+<br />
+
+<img src="./src/assets/readmeImg/landingPage.png" align="center"/>
+<img src="./src/assets/readmeImg/LoginPage.png" align="center"/>
+<img src="./src/assets/readmeImg/Dashboard.png" align="center"/>
+<img src="./src/assets/readmeImg/groupPage.png" align="center"/>
+<img src="./src/assets/readmeImg/expensePage.png" align="center"/>
