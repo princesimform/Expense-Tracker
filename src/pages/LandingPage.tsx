@@ -62,6 +62,7 @@ function LandingPage() {
           if (oldtoken == newToken) {
             setisLoggedIn(true);
           } else {
+            setisLoggedIn(false);
             AuthService.logout();
           }
         }
