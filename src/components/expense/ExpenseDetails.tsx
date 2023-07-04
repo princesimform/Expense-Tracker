@@ -81,10 +81,10 @@ function ExpenseDetails({ expenseData, isOpen, closeExpense }: PropType) {
           requestData.member_list?.map(async (member, index) => {
             const sendData = { ...requestData, user_email: member };
             await emailjs.send(
-              "service_nd25uhj",
-              "template_ikbk7xu",
+              import.meta.env.VITE_APP_EMAIL_SERVICE_ID,
+              import.meta.env.VITE_APP_EMAIL_TEMPLATE_ID,
               sendData,
-              "W8br9GiQwkAK3XCOO"
+              import.meta.env.VITE_APP_EMAIL_PUBLIC_KEY
             );
           });
         profile?.email != undefined &&

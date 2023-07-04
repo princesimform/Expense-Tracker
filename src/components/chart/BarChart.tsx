@@ -30,11 +30,11 @@ function BarChart() {
     (state: Rootstate) => state.expenseReducer
   );
 
-  const [expenseName, setExpenseName] = useState<any[]>([]);
-  const [expenseAmount, setExpenseAmount] = useState<any[]>([]);
+  const [expenseName, setExpenseName] = useState<string[]>([]);
+  const [expenseAmount, setExpenseAmount] = useState<number[]>([]);
   useEffect(() => {
-    let tempexpenseName: any = [];
-    let amount: any = [];
+    let tempexpenseName: string[] = [];
+    let amount: number[] = [];
     expenseList.forEach((expense) => {
       if (
         !expense.isSettle &&
